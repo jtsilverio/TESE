@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+01_data/csv/
+01_data/rds/
+04_models_rds

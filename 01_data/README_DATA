@@ -1,0 +1,16 @@
+- Folders
+    - animals
+        animals_metadata.csv: File containing animal data such as season, weight and sex.
+    - csv
+        Raw data .csv files
+    - rds
+        ─ tuco_acc_raw.rds:
+            The raw accelerometer data read from the .csv files and then converted to rds.
+        ─ tuco_lux_raw:
+            Luximeter raw .csv data converted to .rds.
+        ─ tuco_10hz_vedba.rds: 
+            VEDBA calculated from the raw accelerometer data from the raw (10hz) data.
+        ─ tuco_01hz_preprocessed.rds: 
+            Preprocessed and merged acceleration and lux data downsampled to 0.1Hz.
+        ─ tuco_smoothing_subset:
+            Subset used to assess the smooth window used to calcute the effects of static acceleration (gravity).
