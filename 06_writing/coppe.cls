@@ -227,7 +227,7 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 			\vspace*{1.5mm}
 			\setlength\baselineskip{0pt}
 			\setlength\parskip{1mm}
-			\makebox[10mm][c]{\includegraphics{logo}}
+			\makebox[10mm][c]{\includegraphics{figures/logo}}
 		\end{center}
 		
 		\vspace{0.5cm}

@@ -6,7 +6,7 @@ options(digits.secs=5)
 ### 1. READ ACCELEROMETER DATA FROM FOLDERS ####
 ################################################
 # Set data folder
-dir.data = paste0(getwd(),"/data/csv/activity/")
+dir.data = paste0(getwd(),"/01_data/csv/activity/")
 # Get all files in data folder
 files = list.files(path = dir.data, pattern = "*\\.csv$", full.names = F)
 # Disconsider animal OCT02 - It was predated and collar found 1km from the tunnel
@@ -55,4 +55,4 @@ tuco_acc = rbindlist(tuco_acc)
 setcolorder(tuco_acc, c("ID", "day_number", "datetime", "X", "Y", "Z"))
 
 # Save created data.frame as a .rds file
-saveRDS(tuco_acc, "data_rds/activity/tuco_10hz_raw.rds")
+#saveRDS(tuco_acc, "data_rds/activity/tuco_10hz_raw.rds")

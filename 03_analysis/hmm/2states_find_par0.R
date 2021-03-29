@@ -58,3 +58,29 @@ Sys.time() - start_script
 all_nllk = unlist(lapply(allm_parallel, function(m){m$mod$minimum}))
 best_m = which.min(all_nllk)
 allm_parallel[[best_m]]
+
+# BEST MODEL
+# Value of the maximum log-likelihood: 1704629 
+# 
+# vedba parameters:
+# -----------------
+#                 rest       active
+# mean     0.039563939 2.907706e-01
+# sd       0.036110078 1.776693e-01
+# zeromass 0.001203833 3.109470e-11
+# 
+# Regression coeffs for the transition probabilities:
+# ---------------------------------------------------
+#               1 -> 2    2 -> 1
+# (Intercept) -3.44615 -3.405001
+# 
+# Transition probability matrix:
+# ------------------------------
+#              rest     active
+# rest   0.96911611 0.03088389
+# active 0.03213953 0.96786047
+# 
+# Initial distribution:
+# ---------------------
+#      rest    active 
+# 0.6120755 0.3879245 

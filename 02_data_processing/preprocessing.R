@@ -21,14 +21,14 @@ dba = function(X, Y, Z, time_window, hz =  10){
     #' (2) dynamic acceleration is calculated by subtracting the static 
     #' acceleration from the raw acceleration
     X = X - frollmean(x = X,
-                   n = hz * time_window,
-                   align = "left")
+                      n = hz * time_window,
+                      align = "left")
     Y = Y - frollmean(x = Y,
-                   n = hz * time_window,
-                   align = "left")
+                      n = hz * time_window,
+                      align = "left")
     Z = Z - frollmean(x = Z,
-                   n = hz * time_window,
-                   align = "left")
+                      n = hz * time_window,
+                      align = "left")
     
     return(data.table("Xd" = X,"Yd" = Y,"Zd" = Z))
 }
@@ -50,6 +50,9 @@ add_sex_season = function(data){
     animals = fread("01_data/animals/animal_metadata.csv")
     animals[,rep_state := NULL]
     animals[,weight_cap := NULL]
+    animals[, sex := as.factor(sex)]
+    animals[, season := as.factor(season)] 
+    
     data = left_join(data, animals, by = "ID")
     
     return(data)
@@ -68,7 +71,7 @@ join_acc_lux= function(acc, lux){
     # Match acc data to lux
     lux$datetime = ceiling_date(lux$datetime, "5 min")
     joint_data = left_join(acc, lux) 
-
+    
     # As the luximeters have 1 minute sampling time but only record the maximum value each 5 minutes
     joint_data[,lux := nafill(x = lux, type = "nocb"), by = "ID"]
     joint_data[,lux := nafill(x = lux, type = "locf"), by = "ID"] 
@@ -80,31 +83,32 @@ join_acc_lux= function(acc, lux){
 # when the file is sourced, execution will end here 
 ################################################################################
 if (sys.nframe() == 0){
-    tuco = readRDS("01_data/rds/tuco_acc_raw.rds")
+    source("02_data_processing/read_acc.R")
     
     # subset animals ----------------------------------------------------------
-    tuco_subset = tuco[ID %in% c("FEV02","MAR02","JUL16", "OCT08")]
-    tuco_subset = tuco[day_number <= 4]
+    tuco_subset = tuco_acc[ID %in% c("FEV02","MAR02","JUL16", "OCT08")]
+    tuco_subset = tuco_acc[day_number <= 4]
     tz(tuco_subset$datetime) = "America/Argentina/La_Rioja"
-    saveRDS(tuco_subset, "01_data/rds/tuco_smooth_subset.rds")
+    saveRDS(tuco_subset, "01_data/rds/tuco_10hz_smooth_subset.rds")
     rm(tuco_subset)
     
     # Calculate Dynamic acceleration ------------------------------------------
-    tuco[, c("Xd", "Yd" , "Zd") := dba(X, Y, Z, time_window = 4), by = ID]
-    tuco[, c("X","Y","Z") := NULL]
-    tuco = na.omit(tuco)
+    tuco_acc[, c("Xd", "Yd" , "Zd") := dba(X, Y, Z, time_window = 4), by = ID]
+    tuco_acc[, c("X","Y","Z") := NULL]
+    tuco_acc = na.omit(tuco_acc)
     
     # Calculate VeDBA ---------------------------------------------------------
-    tuco[, vedba := vedba(Xd, Yd, Zd)]
-    tuco[, c("Xd","Yd","Zd") := NULL]
-    saveRDS(tuco, file = "01_data/rds/tuco_10hz_vedba.rds")
+    tuco_acc[, vedba := vedba(Xd, Yd, Zd)]
+    tuco_acc[, c("Xd","Yd","Zd") := NULL]
     
     # Downsample --------------------------------------------------------------
-    tuco = downsample(tuco)
-
+    tuco_acc = downsample(tuco_acc)
+    
     # Join Acc and Lux --------------------------------------------------------
-    tuco_lux = readRDS("01_data/rds/tuco_lux_raw.rds")
-    tuco = join_acc_lux(tuco, tuco_lux)
-    tuco = add_sex_season(tuco)
-    saveRDS(tuco, "01_data/rds/tuco_01hz_preprocessed.rds")
+    source("02_data_processing/read_lux.R")
+    tuco = join_acc_lux(tuco_acc, tuco_lux)
+    tuco = add_sex_season(tuco_acc)
+    rm(tuco_acc, tuco_lux, i, files, dir.data)
+    saveRDS(tuco_, "01_data/rds/tuco_01hz_preprocessed.rds")
+    
 }
