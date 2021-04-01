@@ -35,7 +35,7 @@ tuco[, c("X","Y","Z") := NULL]
 setkey(tuco, ID)
 tuco10 = tuco[, lapply(X = .SD, FUN = rollapply, width = 100, by = 100, mean), by = ID]
 
-# Calculate mean VEDBA over 1min
+# Calculate mean VEDBA over 1h
 setkey(tuco, ID)
 tuco10000 = tuco[, lapply(X = .SD, FUN = rollapply, width = 10000, by = 10000, mean), by = ID]
 

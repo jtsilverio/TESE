@@ -40,7 +40,7 @@ weather$sunset = sunriset(anillaco, weather$datetime, direction="sunset", POSIXc
 
 weather.daily = weather %>%
     mutate(day = cut(datetime, breaks="day")) %>%
-    mutate(daytime = ifelse(hour(datetime) > hour(sunrise) & hour(datetime) > hour(sunset), "Day", "Night")) %>% 
+    mutate(daytime = ifelse(hour(datetime) > hour(sunrise) & hour(datetime) < hour(sunset), "Day", "Night")) %>% 
     group_by(day, daytime) %>% 
     summarise(rain = sum(rain), 
               max.temp = max(hi.temp), 
@@ -70,6 +70,6 @@ rain = ggplot(data = weather.monthly) +
     theme(panel.grid.major.y = element_line(color = "lightgrey", linetype = "dashed")) +
     xlab("") +
     ylab("Precipitation [mm]")
-climograph = temp + rain
+climograph = temp / rain + plot_annotation(tag_levels = 'A')
 
-ggsave("05_figures/weather/boxplot_temp.png", climograph, "png", width = 15, height = 7)
+ggsave("05_figures/weather/weather.png", climograph, "png", width = 7, height = 10)

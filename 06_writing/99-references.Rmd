@@ -10,12 +10,12 @@ The bib chunk below must go last in this document according to how R Markdown re
 If you'd like to change the name of the bibliography to something else,
 delete "References" and replace it.
 -->
-
-<!--
 # References {-}
+<!--
 This manually sets the header for this unnumbered chapter.
--->
+
 \markboth{References}{References}
+-->
 <!--
 To remove the indentation of the first entry.
 -->
