@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.30)  30 MAR 2021 19:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.30)  1 APR 2021 16:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -555,81 +555,87 @@ Cap\'{\i }tulo 1.
 
 ] [4] [5] [6] [7] [8] [9] [10]
 Cap\'{\i }tulo 2.
+<../05_figures/map/tuco_map.png, id=353, 597.1911pt x 597.1911pt>
+File: ../05_figures/map/tuco_map.png Graphic file (type png)
+<use ../05_figures/map/tuco_map.png>
+Package pdftex.def Info: ../05_figures/map/tuco_map.png  used on input line 212
+.
+(pdftex.def)             Requested size: 426.79135pt x 426.78793pt.
 [11
 
-] [12]
+] [12 <../05_figures/map/tuco_map.png>] [13]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 2
-55.
+56.
 (/home/jeff/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-) [13
+) [14
 
-] [14
+] [15
 
 ]
 Ap\^endice A.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 273.
-<../05_figures/plants/plant_frequency.png, id=389, 505.89pt x 722.7pt>
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 274.
+<../05_figures/plants/plant_frequency.png, id=401, 505.89pt x 722.7pt>
 File: ../05_figures/plants/plant_frequency.png Graphic file (type png)
 <use ../05_figures/plants/plant_frequency.png>
 Package pdftex.def Info: ../05_figures/plants/plant_frequency.png  used on inpu
-t line 277.
+t line 278.
 (pdftex.def)             Requested size: 426.79135pt x 609.71045pt.
-[15
+[16
 
-] [16 <../05_figures/plants/plant_frequency.png (PNG copy)>]
+] [17 <../05_figures/plants/plant_frequency.png (PNG copy)>]
 Ap\^endice B.
-<../05_figures/weather/weather.png, id=400, 505.89pt x 722.7pt>
+<../05_figures/weather/weather.png, id=411, 505.89pt x 722.7pt>
 File: ../05_figures/weather/weather.png Graphic file (type png)
 <use ../05_figures/weather/weather.png>
 Package pdftex.def Info: ../05_figures/weather/weather.png  used on input line 
-287.
+288.
 (pdftex.def)             Requested size: 426.79135pt x 609.71045pt.
-[17
+[18
 
-] [18 <../05_figures/weather/weather.png (PNG copy)>]
+] [19 <../05_figures/weather/weather.png (PNG copy)>]
 No file thesis.bbl.
-[19
+[20
 
 
-] [20]
-Overfull \hbox (9.4094pt too wide) in paragraph at lines 368--370
+] [21]
+Overfull \hbox (9.4094pt too wide) in paragraph at lines 369--371
  [][]\T1/cmr/m/n/12 Jansen, Heiko T., Tanya Leise, Gor-don Ste-nhouse, Ka-rine 
 Pi-geon, Wayne Kasworm,
  []
 
 
-Overfull \hbox (7.81349pt too wide) in paragraph at lines 380--382
+Overfull \hbox (7.81349pt too wide) in paragraph at lines 381--383
  \T1/cmr/m/it/12 ter-na-ti-o-nal \T1/cmr/m/n/12 24 (4): 599--613. []$\T1/cmtt/m
 /n/12 https : / / doi . org / 10 . 1080 / 07420520701534640$[]\T1/cmr/m/n/12 . 
 
  []
 
-[21]
-Overfull \hbox (49.37pt too wide) in paragraph at lines 389--391
+[22]
+Overfull \hbox (49.37pt too wide) in paragraph at lines 390--392
  \T1/cmr/m/it/12 Rhythm Re-se-arch \T1/cmr/m/n/12 35 (1-2): 3--12. []$\T1/cmtt/
 m/n/12 https : / / doi . org / 10 . 1080 / 09291010412331313205$[]\T1/cmr/m/n/1
 2 . 
  []
 
-[22] [23] [24] 
+[23] [24] [25] 
 AED: lastpage setting LastPage
-[25] (./thesis.aux)
+[26] (./thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: B7A0E2455287AD268F7AFCF506ADAB36;3396.
+(rerunfilecheck)             Checksum: E6C5DF3DCD7196D16C549B771321AABD;3413.
  ) 
 Here is how much of TeX's memory you used:
- 11732 strings out of 480942
- 168973 string characters out of 5906841
- 510491 words of memory out of 5000000
- 28606 multiletter control sequences out of 15000+600000
+ 11744 strings out of 480942
+ 169278 string characters out of 5906841
+ 510652 words of memory out of 5000000
+ 28614 multiletter control sequences out of 15000+600000
  415583 words of font info for 56 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 83i,11n,88p,2606b,402s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 83i,11n,88p,2606b,408s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk> <
 /home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk> </hom
 e/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/je
@@ -642,10 +648,10 @@ t/fonts/type1/public/amsfonts/cm/cmmi12.pfb></home/jeff/.TinyTeX/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmr12.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmr8.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/publ
 ic/amsfonts/cm/cmsy10.pfb>
-Output written on thesis.pdf (35 pages, 637835 bytes).
+Output written on thesis.pdf (36 pages, 12058117 bytes).
 PDF statistics:
- 953 PDF objects out of 1000 (max. 8388607)
- 532 compressed objects within 6 object streams
- 133 named destinations out of 1000 (max. 500000)
- 192 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 969 PDF objects out of 1000 (max. 8388607)
+ 540 compressed objects within 6 object streams
+ 135 named destinations out of 1000 (max. 500000)
+ 197 words of extra memory for PDF output out of 10000 (max. 10000000)
 

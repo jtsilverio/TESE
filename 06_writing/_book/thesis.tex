@@ -111,9 +111,9 @@
 
   % Adiciona Corpo da Tese
   \mainmatter
-  \hypertarget{general-introduction}{%
-  \chapter*{General Introduction}\label{general-introduction}}
-  \addcontentsline{toc}{chapter}{General Introduction}
+  \hypertarget{introduuxe7uxe3o-geral}{%
+  \chapter*{Introdução Geral}\label{introduuxe7uxe3o-geral}}
+  \addcontentsline{toc}{chapter}{Introdução Geral}
 
   Welcome to the \emph{R Markdown} thesis template. This template is based on (and in many places copied directly from) the Reed College LaTeX template, but hopefully it will provide a nicer interface for those that have never used TeX or LaTeX before. Using \emph{R Markdown} will also allow you to easily keep track of your analyses in \textbf{R} chunks of code, with the resulting plots and output included as well. The hope is this \emph{R Markdown} template gets you in the habit of doing reproducible research, which benefits you long-term as a researcher, but also will greatly help anyone that is trying to reproduce or build onto your results down the road.
 
@@ -145,7 +145,7 @@
 
   ~
 
-  \emph{biological rhythms; wild-clocks; field and laboratory; biologger; free-ranging; activity patterns.}
+  \emph{\emph{Keywords:} biological rhythms; wild-clocks; field and laboratory; biologger; free-ranging; activity patterns.}
 
   \hypertarget{introduction}{%
   \section{Introduction}\label{introduction}}
@@ -207,9 +207,10 @@
   \hypertarget{study-site}{%
   \subsection{Study site}\label{study-site}}
 
-  Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m) is a relatively undisturbed natural area surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (\emph{Larrea cuneifolia} Cav., \emph{Tricomaria usillo}), Fabaceae (\emph{Prosopis torquata}, \emph{Senna aphylla}) and Cactaceae (\emph{Trichocereus} spp, \emph{Tephrocactus} spp) (Abraham et al. \protect\hyperlink{ref-abrahamOverviewGeographyMonte2009}{2009}; Aranda-Rickert, Diez, and Marazzi \protect\hyperlink{ref-aranda-rickertExtrafloralNectarFuels2014}{2014}; Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}). At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (\emph{Larrea cuneifolia}, \emph{Tricomaria usillo}), Poaceae (\emph{Microchloa indica}, \emph{Aristida mendocina}) and Fabaceae (\emph{Zuccagnia punctata}) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C (Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}), with clear differences in the daily range and between summer and winter months (Abraham et al. \protect\hyperlink{ref-abrahamOverviewGeographyMonte2009}{2009}, see Appendix).
-  The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months (Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}, see Appendix).
-
+  Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \ref{fig:methods-map}) is a relatively undisturbed natural area surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (\emph{Larrea cuneifolia} Cav., \emph{Tricomaria usillo}), Fabaceae (\emph{Prosopis torquata}, \emph{Senna aphylla}) and Cactaceae (\emph{Trichocereus} spp, \emph{Tephrocactus} spp) (Abraham et al. \protect\hyperlink{ref-abrahamOverviewGeographyMonte2009}{2009}; Aranda-Rickert, Diez, and Marazzi \protect\hyperlink{ref-aranda-rickertExtrafloralNectarFuels2014}{2014}; Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}). At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (\emph{Larrea cuneifolia}, \emph{Tricomaria usillo}), Poaceae (\emph{Microchloa indica}, \emph{Aristida mendocina}) and Fabaceae (\emph{Zuccagnia punctata}) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C (Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}), with clear differences in the daily range and between summer and winter months (Abraham et al. \protect\hyperlink{ref-abrahamOverviewGeographyMonte2009}{2009}). The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months (Fracchia et al. \protect\hyperlink{ref-fracchiaDispersalArbuscularMycorrhizal2011}{2011}).
+  \begin{figure}
+  \includegraphics[width=1\linewidth]{../05_figures/map/tuco_map} \caption{Study site location (orange icon) at the Monte Desert, approximately 5km away form the village of Anillaco, northwest of Argentina}\label{fig:methods-map}
+  \end{figure}
   \hypertarget{study-species}{%
   \subsection{Study species}\label{study-species}}
   \begin{itemize}
@@ -244,13 +245,13 @@
   \hypertarget{activity-levels}{%
   \subsection{Activity Levels}\label{activity-levels}}
 
-  Vectorial Dynamic Body Acceleration (VeDBA) (Qasem et al. \protect\hyperlink{ref-qasemTriAxialDynamicAcceleration2012}{2012}) was used as a proxy for animal's activity level. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration was estimated by applying a moving average over the raw acceleration data. There is not a consensus over the number of points to calculate the moving average, which can be dependent on the study species and device's recording frequency (REF??). Generally, a 1 or 2-second moving average is used to calculated the static acceleration (REF??). However, in the case of the tucos we opted to use a 4-second moving average (40 data points) after following the method proposed by (Shepard et al. \protect\hyperlink{ref-shepardDerivationBodyMotion2008}{2008}) (see Appendix). (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the dynamic acceleration over the device's axis, using:
+  Vectorial Dynamic Body Acceleration (VeDBA, Qasem et al. \protect\hyperlink{ref-qasemTriAxialDynamicAcceleration2012}{2012}) was used as a proxy for the animal's activity level. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency (REF??). Generally, a 1 or 2-second moving average is used to calculated the static acceleration (REF??). However, in the case of the tucos we opted to use a 4-second moving average (40 data points) after following the method proposed by (Shepard et al. \protect\hyperlink{ref-shepardDerivationBodyMotion2008}{2008}, see Appendix). (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axis, using:
 
   \[ VeDBA = \sqrt{Xd^2 + Yd^2 + Zd^2} \]
 
-  \hypertarget{conclusion-1}{%
-  \chapter*{Conclusion}\label{conclusion-1}}
-  \addcontentsline{toc}{chapter}{Conclusion}
+  \hypertarget{conclusuxe3o-geral}{%
+  \chapter*{Conclusão Geral}\label{conclusuxe3o-geral}}
+  \addcontentsline{toc}{chapter}{Conclusão Geral}
 
   If we don't want Conclusion to have a chapter number next to it, we can add the \texttt{\{-\}} attribute.
 
