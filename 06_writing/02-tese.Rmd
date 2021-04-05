@@ -4,7 +4,7 @@
 
 ### Study site
 
-Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (_Larrea cuneifolia_ Cav., _Tricomaria usillo_), Fabaceae (_Prosopis torquata_, _Senna aphylla_) and Cactaceae (_Trichocereus_ spp, _Tephrocactus_ spp) [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (_Larrea cuneifolia_, _Tricomaria usillo_), Poaceae (_Microchloa indica_, _Aristida mendocina_) and Fabaceae (_Zuccagnia punctata_) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C [@fracchiaDispersalArbuscularMycorrhizal2011], with clear differences in the daily range and between summer and winter months [@abrahamOverviewGeographyMonte2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchiaDispersalArbuscularMycorrhizal2011].
+Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area - with little human disturbance and no artificial light source - surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (_Larrea cuneifolia_ Cav., _Tricomaria usillo_), Fabaceae (_Prosopis torquata_, _Senna aphylla_) and Cactaceae (_Trichocereus_ spp, _Tephrocactus_ spp) [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (_Larrea cuneifolia_, _Tricomaria usillo_), Poaceae (_Microchloa indica_, _Aristida mendocina_) and Fabaceae (_Zuccagnia punctata_) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C [@fracchiaDispersalArbuscularMycorrhizal2011], with clear differences in the daily range and between summer and winter months [@abrahamOverviewGeographyMonte2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchiaDispersalArbuscularMycorrhizal2011].
 
 ```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange icon) at the Monte Desert, approximately 5km away form the village of Anillaco, northwest of Argentina"}
 
@@ -13,15 +13,26 @@ include_graphics("../05_figures/map/tuco_map.png")
 
 ### Study species
 
-- espécie
-- possible predators?
-- the Ctenomys is a subterranean genus 
-- distribution
-- 
+The studied _Ctenomys_ population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species (REF Amaya form and function). In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco (REF Amaya) and as _Ctenomys aff. knightii_ (REF) or _Ctenomys cf. knightii_ (REF).
 
-Todos os animais utilizados são indivíduos adultos (>120g) de C aff. knightii capturados em Anillaco, La Rioja, Argentina (26° 48’ S; 66° 56’ W; 1445 m). Os animais foram capturados em área próxima ao Centro Regional de Pesquisa Cientifica e Transferência Tecnológica de La Rioja (CRILAR). O local de coleta (S28° 47.719' W66° 53.607') possui vegetação nativa, pouca influência antrópica e nenhuma fonte de luz artificial. A região de Anillaco é localizada no Deserto do Monte, de clima semiárido, solo arenoso e com vegetação composta de arbustos, plantas rasteiras e poucas árvores (Fracchia et al, 2011).
+### Capture and Recapture
 
-### Data collection
+Tucos were captured by searching the study area for fresh signs of burrow entrances. Once found, custom made traps, similar in functionality to a Shermann trap, were placed at the burrow's entrance. Our custom made traps were made out of PVC tubing (35cm length, 10cm diameter) with a spring-loaded aluminum door at one and a cul-de-sac at the other. The traps were placed in the field during the morning and checked every hour until the beginning of the night, when they were taken out. 
+
+After being captured, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive a collar with activity sensors. We used a clear plastic anesthesia chamber (volume?) with a clip-on lid and a cotton ball inside. We added approximately 0.5 mL of isoflurane (REF) to the cotton ball before transferring the animal from the trap to the plastic anesthesia chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Out of the chamber anesthetezied animals were weighted, sexed, marked with a subcutaneous identification PIT Tag (Passive Integrative Transponder. Allflex, Brasil) and received a collar with activity sensors and a telemetry transmitter (SOM-2011. Wildlife Materials, Illinois, USA). Tucos were them placed back in the trap and observed until fully recovered. Once recovered tucos were transported and released in the same burrow they were captured. Marked animals were left in the field for 5-10 days before being recaptured. The telemetry transmitter were used to maximize the animals relocation and recapture, avoiding the loss the other devices. 
+
+### Activity data
+
+The accelerometers attached to the animal's collar were configured to record at a 10 Hz sampling frequency with a 4G sensitivity. The lightloggers were set to record at a sample each 5 minutes with range of sensitivity from 0.3 to 19000 lux.
+The data collection were done The recaptures were done with the to the 
+
+Accelerometers are devices that continuously record the animal's movement in a three axis orthogonal system with a high sampling frequency (REF). 
+
+- apendice:
+    - fotos da armadilha
+    - foto do colar
+
+a lightlogger (Migrate Technology, Cambridge, UK), a accelerometer (Axy3. Technosmart, Rome, Italy)
 
 - acelerometros
 - luximetros
