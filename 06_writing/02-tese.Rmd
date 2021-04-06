@@ -13,35 +13,34 @@ include_graphics("../05_figures/map/tuco_map.png")
 
 ### Study species
 
-The studied _Ctenomys_ population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species (REF Amaya form and function). In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco (REF Amaya) and as _Ctenomys aff. knightii_ (REF) or _Ctenomys cf. knightii_ (REF).
+The studied _Ctenomys_ population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amayaFormFunctionLongrange2016]. In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco [@amayaDynamicSpatialOverlap2021] and as _Ctenomys aff. knightii_ [@tomotaniPosefeitosSincronizacaoEm2011] or _Ctenomys cf. knightii_ [@valentinuzziCircadianPatternWheel2009].
 
 ### Capture and Recapture
 
-Tucos were captured by searching the study area for fresh signs of burrow entrances. Once found, custom made traps, similar in functionality to a Shermann trap, were placed at the burrow's entrance. Our custom made traps were made out of PVC tubing (35cm length, 10cm diameter) with a spring-loaded aluminum door at one and a cul-de-sac at the other. The traps were placed in the field during the morning and checked every hour until the beginning of the night, when they were taken out. 
+Trapping was conducted in four different campaigns to the study site. Three campaigns were done in 2019 during March, July and October. A fourth campaing was done in February 2020. A fifth campaign was planned to occur in April 2020 but had to be canceled due to the COVID outbreak. Traps were placed at all active burrows found at the study, limited to the number of traps available. Active burrows could be identified by the presence of freshly excavated soil mounds or by fresh soil plugging the burrow's entrance. Active plugged burrows were first opened by excavating and unplugging the access to the underground tunnels. Traps were placed horizontally at the burrow's entrance adjacent to the tunnels direction. Traps were set in the field during the morning and checked every 2 hours until the beginning of the night, when they were taken out. During checking traps would be reset if they had been plugged with soil or had been activated by soil throw into the trap.
+Our custom made traps were made out of PVC tubing (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other.
 
-After being captured, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive a collar with activity sensors. We used a clear plastic anesthesia chamber (volume?) with a clip-on lid and a cotton ball inside. We added approximately 0.5 mL of isoflurane (REF) to the cotton ball before transferring the animal from the trap to the plastic anesthesia chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Out of the chamber anesthetezied animals were weighted, sexed, marked with a subcutaneous identification PIT Tag (Passive Integrative Transponder. Allflex, Brasil) and received a collar with activity sensors and a telemetry transmitter (SOM-2011. Wildlife Materials, Illinois, USA). Tucos were them placed back in the trap and observed until fully recovered. Once recovered tucos were transported and released in the same burrow they were captured. Marked animals were left in the field for 5-10 days before being recaptured. The telemetry transmitter were used to maximize the animals relocation and recapture, avoiding the loss the other devices. 
+After being captured, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive the activity sensors. We used a clear plastic anesthesia chamber (volume?) with a clip-on lid and a cotton ball inside. We added approximately 0.5 mL of isoflurane (REF) to the cotton ball before transferring the animal from the trap to the plastic anesthesia chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Out of the chamber, the animals were weighted, sexed, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and received a collar with activity sensors and telemetry transmitter (SOM-2011. Wildlife Materials, Illinois, USA). Tucos were then placed back in the trap and observed until fully recovered. Once recovered they were transported back to the same burrow where they were captured and released. Marked animals were left in the field for 5-10 days before being recaptured for data recovery. The telemetry transmitter were used to maximize the animals relocation and recapture, avoiding the loss of the other devices. 
+
+- apendice:
+    - fotos da armadilha ?
+    - foto do colar ?
+    - burrows
+    
+    Each adult  was  fitted  with  a  radiocollar  (GV-13  transmitters,  AVM  Instrument Company, Colfax, California) weighing 4.5 g, which represented ~4% of an individual’s body weight.
 
 ### Activity data
 
 The accelerometers attached to the animal's collar were configured to record at a 10 Hz sampling frequency with a 4G sensitivity. The lightloggers were set to record at a sample each 5 minutes with range of sensitivity from 0.3 to 19000 lux.
-The data collection were done The recaptures were done with the to the 
 
-Accelerometers are devices that continuously record the animal's movement in a three axis orthogonal system with a high sampling frequency (REF). 
-
-- apendice:
-    - fotos da armadilha
-    - foto do colar
-
-a lightlogger (Migrate Technology, Cambridge, UK), a accelerometer (Axy3. Technosmart, Rome, Italy)
-
+- The data collection were done The recaptures were done with the to the 
+- Accelerometers are devices that continuously record the animal's movement in a three axis orthogonal system with a high sampling frequency (REF). 
+- a lightlogger (Migrate Technology, Cambridge, UK), a accelerometer (Axy3. Technosmart, Rome, Italy)
 - acelerometros
 - luximetros
 - radiotelemetria
 - armadilhas
 - permissoes
-
-
-### Activity Levels
 
 Vectorial Dynamic Body Acceleration [VeDBA, @qasemTriAxialDynamicAcceleration2012] was used as a proxy for the animal's activity level. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency (REF??). Generally, a 1 or 2-second moving average is used to calculated the static acceleration (REF??). However, in the case of the tucos we opted to use a 4-second moving average (40 data points) after following the method proposed by [@shepardDerivationBodyMotion2008, see Appendix]. (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axis, using:
 
