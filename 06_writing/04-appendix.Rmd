@@ -1,7 +1,5 @@
-`r if(knitr:::is_latex_output()) '\\appendix'`
-`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'` 
-\appendix
-# Appendix {-}
+`r if(knitr:::is_latex_output()) "\\appendix"`
+`r if(knitr:::is_latex_output()) "# Apêndice {-}"` 
 
 # Anillaco's Plant Community
 
@@ -9,14 +7,14 @@ Following methods similar to @aranda-rickertExtrafloralNectarFuels2014 a non-ext
 
 The results for the plant survey is in line with what has been described in the literature for the region [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. The results show a dominance of Zygolhyllaceae, Poaceae and Fabaceae families. The relative frequency of plant families and species recorded in the area are shown in the graphs below (Fig. \@ref(fig:appendix-plants)).
 
-```{r appendix-plants, out.width = "100%", fig.cap="Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)"}
+```{r appendix-plants, out.width = "100%", fig.cap="Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)", echo=F}
 
 include_graphics("../05_figures/plants/plant_frequency.png")
 ```
 
 # Anillaco's Weather 
 
-```{r appendix-weather, out.width = "100%", fig.cap=""}
+```{r appendix-weather, out.width = "100%", fig.cap="", echo=F}
 
 include_graphics("../05_figures/weather/weather.png")
 ```
