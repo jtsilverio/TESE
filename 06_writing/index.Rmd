@@ -41,10 +41,8 @@ thanks:
 - title: Agradecimentos
   text:  |
     Gostaria de agradecer a X
-abstract: |
-    `r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = '\n  ')`
-foreignabstract: |
-    `r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = '\n  ')`
+abstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = "\n  ")`'
+foreignabstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = "\n  ")`'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 bibliography: bib/thesis.bib
@@ -53,7 +51,7 @@ link-citations: true
 output: 
     coppedown::thesis_pdf: default
 #  coppedown::thesis_gitbook: default
-#  coppedown::thesis_word: 
+#  coppedown::thesis_word: default
 #    reference_docx: template_docx.docx
 #  coppedown::thesis_epub: default
 
