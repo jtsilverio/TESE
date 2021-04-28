@@ -1,5 +1,6 @@
 ---
 doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
+classoption: a4paper
 english: false 
 title:  'Titulo de Tese'
 foreigntitle: "Thesis' Title"
