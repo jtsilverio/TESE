@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.30)  6 APR 2021 19:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.30)  3 MAY 2021 15:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -454,7 +454,7 @@ LaTeX Info: Redefining \nameref on input line 22.
 Package hyperref Info: Option `breaklinks' set `true' on input line 42.
 Package hyperref Info: Option `raiselinks' set `true' on input line 42.
 Package hyperref Info: Option `pageanchor' set `true' on input line 42.
-<figures/logo.pdf, id=96, 97.41797pt x 139.5544pt>
+<figures/logo.pdf, id=100, 97.41797pt x 139.5544pt>
 File: figures/logo.pdf Graphic file (type pdf)
 <use figures/logo.pdf>
 Package pdftex.def Info: figures/logo.pdf  used on input line 42.
@@ -505,17 +505,17 @@ LaTeX Warning: Reference `bib:end' on page iii undefined on input line 44.
 
 ] [7
 
-] (./thesis.toc)
+] (./thesis.toc [8
+
+])
 \tf@toc=\write6
 \openout6 = `thesis.toc'.
 
-[8
-
-] (./thesis.lof)
+[9] (./thesis.lof)
 \tf@lof=\write7
 \openout7 = `thesis.lof'.
 
-[9
+[10
 
 ] (./thesis.lot)
 \tf@lot=\write8
@@ -523,7 +523,7 @@ LaTeX Warning: Reference `bib:end' on page iii undefined on input line 44.
 
 No file thesis.los.
 No file thesis.lab.
-[10
+[11
 
 ] [1
 
@@ -534,17 +534,17 @@ Cap\'{\i }tulo 1.
 
 ] [4] [5] [6] [7] [8] [9] [10]
 Cap\'{\i }tulo 2.
-<../05_figures/map/tuco_map.png, id=359, 597.1911pt x 597.1911pt>
-File: ../05_figures/map/tuco_map.png Graphic file (type png)
-<use ../05_figures/map/tuco_map.png>
-Package pdftex.def Info: ../05_figures/map/tuco_map.png  used on input line 172
+<../04_figures/map/tuco_map.png, id=368, 597.1911pt x 597.1911pt>
+File: ../04_figures/map/tuco_map.png Graphic file (type png)
+<use ../04_figures/map/tuco_map.png>
+Package pdftex.def Info: ../04_figures/map/tuco_map.png  used on input line 172
 .
 (pdftex.def)             Requested size: 426.79135pt x 426.78793pt.
 [11
 
-] [12 <../05_figures/map/tuco_map.png>] [13] [14] [15]
+] [12 <../04_figures/map/tuco_map.png>] [13] [14] [15]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 2
-36.
+43.
 (/home/jeff/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 ) [16
@@ -553,44 +553,44 @@ File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 
 ]
 Ap\^endice A.
-<../05_figures/plants/plant_frequency.png, id=424, 505.89pt x 722.7pt>
-File: ../05_figures/plants/plant_frequency.png Graphic file (type png)
-<use ../05_figures/plants/plant_frequency.png>
-Package pdftex.def Info: ../05_figures/plants/plant_frequency.png  used on inpu
-t line 251.
+<../04_figures/plants/plant_frequency.png, id=434, 505.89pt x 722.7pt>
+File: ../04_figures/plants/plant_frequency.png Graphic file (type png)
+<use ../04_figures/plants/plant_frequency.png>
+Package pdftex.def Info: ../04_figures/plants/plant_frequency.png  used on inpu
+t line 258.
 (pdftex.def)             Requested size: 426.79135pt x 609.71045pt.
 [18
 
-] [19 <../05_figures/plants/plant_frequency.png (PNG copy)>]
+] [19 <../04_figures/plants/plant_frequency.png (PNG copy)>]
 Ap\^endice B.
-<../05_figures/weather/weather.png, id=434, 505.89pt x 722.7pt>
-File: ../05_figures/weather/weather.png Graphic file (type png)
-<use ../05_figures/weather/weather.png>
-Package pdftex.def Info: ../05_figures/weather/weather.png  used on input line 
-256.
+<../04_figures/weather/weather.png, id=445, 505.89pt x 722.7pt>
+File: ../04_figures/weather/weather.png Graphic file (type png)
+<use ../04_figures/weather/weather.png>
+Package pdftex.def Info: ../04_figures/weather/weather.png  used on input line 
+263.
 (pdftex.def)             Requested size: 426.79135pt x 609.71045pt.
 [20
 
-] [21 <../05_figures/weather/weather.png (PNG copy)>]
+] [21 <../04_figures/weather/weather.png (PNG copy)>]
 No file thesis.bbl.
 [22
 
 
 ] [23]
-Overfull \hbox (9.4094pt too wide) in paragraph at lines 343--345
+Overfull \hbox (9.4094pt too wide) in paragraph at lines 350--352
  [][]\T1/cmr/m/n/12 Jansen, Heiko T., Tanya Leise, Gor-don Ste-nhouse, Ka-rine 
 Pi-geon, Wayne Kasworm,
  []
 
 [24]
-Overfull \hbox (7.81349pt too wide) in paragraph at lines 355--357
+Overfull \hbox (7.81349pt too wide) in paragraph at lines 362--364
  \T1/cmr/m/it/12 ter-na-ti-o-nal \T1/cmr/m/n/12 24 (4): 599--613. []$\T1/cmtt/m
 /n/12 https : / / doi . org / 10 . 1080 / 07420520701534640$[]\T1/cmr/m/n/12 . 
 
  []
 
 
-Overfull \hbox (49.37pt too wide) in paragraph at lines 364--366
+Overfull \hbox (49.37pt too wide) in paragraph at lines 371--373
  \T1/cmr/m/it/12 Rhythm Re-se-arch \T1/cmr/m/n/12 35 (1-2): 3--12. []$\T1/cmtt/
 m/n/12 https : / / doi . org / 10 . 1080 / 09291010412331313205$[]\T1/cmr/m/n/1
 2 . 
@@ -603,16 +603,16 @@ AED: lastpage setting LastPage
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: A05C63584A9E217344FA1507C6760E99;3909.
+(rerunfilecheck)             Checksum: 519B377289F6CCD090D788AC2AE3CD56;3996.
  ) 
 Here is how much of TeX's memory you used:
- 11238 strings out of 480942
- 161756 string characters out of 5906841
- 499495 words of memory out of 5000000
- 28111 multiletter control sequences out of 15000+600000
+ 11244 strings out of 480942
+ 161823 string characters out of 5906841
+ 499526 words of memory out of 5000000
+ 28114 multiletter control sequences out of 15000+600000
  416983 words of font info for 58 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 83i,11n,88p,2606b,393s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 83i,11n,88p,2606b,506s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk> <
 /home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk> </hom
 e/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi2488.600pk> </home/je
@@ -627,10 +627,10 @@ type1/public/amsfonts/cm/cmmi12.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmr12.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmr8.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb>
-Output written on thesis.pdf (38 pages, 12073306 bytes).
+Output written on thesis.pdf (39 pages, 12078170 bytes).
 PDF statistics:
- 1031 PDF objects out of 1200 (max. 8388607)
- 573 compressed objects within 6 object streams
- 142 named destinations out of 1000 (max. 500000)
- 205 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1053 PDF objects out of 1200 (max. 8388607)
+ 584 compressed objects within 6 object streams
+ 145 named destinations out of 1000 (max. 500000)
+ 213 words of extra memory for PDF output out of 10000 (max. 10000000)
 

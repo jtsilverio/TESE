@@ -9,13 +9,13 @@ The results for the plant survey is in line with what has been described in the 
 
 ```{r appendix-plants, out.width = "100%", fig.cap="Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)", echo=F}
 
-include_graphics("../05_figures/plants/plant_frequency.png")
+include_graphics("../04_figures/plants/plant_frequency.png")
 ```
 
 # Anillaco's Weather 
 
 ```{r appendix-weather, out.width = "100%", fig.cap="", echo=F}
 
-include_graphics("../05_figures/weather/weather.png")
+include_graphics("../04_figures/weather/weather.png")
 ```
 
