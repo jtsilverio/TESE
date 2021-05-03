@@ -1,0 +1,98 @@
+$if(english)$
+  \documentclass[english,$doc_type$,numbers,hidelinks]{coppe}
+$else$
+  \documentclass[$doc_type$,numbers,hidelinks]{coppe}
+$endif$
+
+%Added by @MyKo101, code provided by @GerbrichFerdinands
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$
+
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\makelosymbols
+\makeloabbreviations
+
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+\begin{document}
+
+  \title{$title$}
+  \foreigntitle{$foreigntitle$}
+  $for(author)$
+  \author{$author.name$}{$author.surname$}
+  $endfor$
+  $for(advisor)$
+  \advisor{$advisor.title$}{$advisor.name$}{$advisor.surname$}{$advisor.degree$}
+  $endfor$
+
+
+  $for(examiner)$
+  \examiner{$examiner.title$}{$examiner.name$}{$examiner.degree$}
+  $endfor$
+  \department{$department$}
+  \date{$date_month$}{$date_year$}
+  $for(keyword)$
+  \keyword{$keyword$}
+  $endfor$
+  
+  % Adiciona Pagina de Titulo
+  \maketitle
+
+  % Adiciona Pagina de Rosto com 
+  \frontmatter
+  
+  %Adiciona dedicatorias
+  \dedication{$dedication$}
+  $for(thanks)$
+  \chapter*{$thanks.title$}
+  $thanks.text$
+  $endfor$
+
+  % Adiciona Abstracts
+  \begin{abstract}
+  $abstract$
+  \end{abstract}
+
+  \pagebreak
+
+  \begin{foreignabstract}
+  $foreignabstract$
+  \end{foreignabstract}
+
+  % Adiciona Sumário
+  \tableofcontents
+  
+  % Adiciona Lista de Figuras
+  $if(listoffigures)$
+  \listoffigures
+  $endif$
+
+  % Adiciona Lista de Tabelas
+  $if(listoftables)$
+  \listoftables
+  $endif$
+
+  % Adiciona Lista de Simbolos e Abreviacoes
+  \printlosymbols
+  \printloabbreviations
+
+  % Adiciona Corpo da Tese
+  \mainmatter
+  $body$
+
+\end{document}

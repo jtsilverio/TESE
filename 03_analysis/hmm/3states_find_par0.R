@@ -9,7 +9,7 @@ library(dplyr)
 library(parallel)
 
 start_script = Sys.time()
-tuco = readRDS("01_data/rds/tuco_01hz_preprocessed.rds")
+tuco = readRDS("01_data/rds/tuco_preprocessed.rds")
 
 # Delete unused columns
 tuco$datetime = NULL

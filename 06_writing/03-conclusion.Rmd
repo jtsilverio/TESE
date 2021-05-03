@@ -1,3 +1,0 @@
-# Conclusão Geral {-}
-
-If we don't want Conclusion to have a chapter number next to it, we can add the `{-}` attribute.

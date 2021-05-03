@@ -6,7 +6,7 @@ options(digits.secs=5)
 ### 1. READ ACCELEROMETER DATA FROM FOLDERS ####
 ################################################
 # Set data folder
-dir.data = paste0(getwd(),"/01_data/csv/activity/")
+dir.data = paste0(getwd(),"/01_data/activity/")
 # Get all files in data folder
 files = list.files(path = dir.data, pattern = "*\\.csv$", full.names = F)
 # Disconsider animal OCT02 - It was predated and collar found 1km from the tunnel
@@ -17,12 +17,12 @@ for (i in 1:length(files)) {
     # 1. READ FILE
     message("\nReading file:", files[i], "...")
     tuco_acc[[i]] = fread(paste0(dir.data,"/",files[i]),
-                          header = F,   # ignore file's header
-                          skip = 1 ,    # skip first line corresponding to header
+                          header = T,   # ignore file's header
+                          #skip = 1 ,    # skip first line corresponding to header
                           sep = "auto", # set sep to auto. Some files use comma, others space
                           fill = T,
-                          select = 2:5, # ignore id column
-                          col.names = c("datetime", "X", "Y", "Z"),
+                          select = c("Timestamp","X","Y","Z","Temp. (?C)"),
+                          col.names = c("datetime", "X", "Y","Z","temp"),
                           showProgress = T,
                           data.table = T)
     
@@ -37,7 +37,7 @@ for (i in 1:length(files)) {
     
     
     # DELETE PARTICULAR DATA
-    # delete last 7 days of #FEV05 because it was brought to the lab and continued recording for a week
+    # delete last 5 days of #FEV05 because it was brought to the lab and continued recording for a week
     # delete last 2 days of #JUL23 due to recapture efforts
     # delete last 5 days of #JUL16 due to recapture efforts
     if(files[i] == "FEV05.csv"){
@@ -52,7 +52,11 @@ for (i in 1:length(files)) {
 }
 # Bind the whole list to create a unique data.table with all animals' data
 tuco_acc = rbindlist(tuco_acc)
-setcolorder(tuco_acc, c("ID", "day_number", "datetime", "X", "Y", "Z"))
+setcolorder(tuco_acc, c("ID", "day_number", "datetime", "temp", "X", "Y", "Z"))
+tuco_acc[,ID := factor(ID, levels = c("MAR01", "MAR02",
+                                      "JUL15", "JUL16", "JUL17", "JUL18", "JUL19", "JUL20", "JUL21", "JUL23",
+                                      "OCT01", "OCT08", "OCT09", "OCT10", "OCT13", "OCT14",
+                                      "FEV01", "FEV02", "FEV03", "FEV05", "FEV06"))]
 
 # Save created data.frame as a .rds file
 #saveRDS(tuco_acc, "data_rds/activity/tuco_10hz_raw.rds")

@@ -1,0 +1,53 @@
+# Daily activity patterns in the Anillaco Tuco-tuco (_Ctenomys sp._)
+
+## Methods
+
+### Study site
+
+Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area, with little human disturbance and no artificial light source. The area is surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (_Larrea cuneifolia_ Cav., _Tricomaria usillo_), Fabaceae (_Prosopis torquata_, _Senna aphylla_) and Cactaceae (_Trichocereus_ spp, _Tephrocactus_ spp) [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (_Larrea cuneifolia_, _Tricomaria usillo_), Poaceae (_Microchloa indica_, _Aristida mendocina_) and Fabaceae (_Zuccagnia punctata_) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C [@fracchiaDispersalArbuscularMycorrhizal2011], with clear differences in the daily range and between summer and winter months [@abrahamOverviewGeographyMonte2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchiaDispersalArbuscularMycorrhizal2011].
+
+```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange icon) at the Monte Desert, approximately 5km away form the village of Anillaco, northwest of Argentina"}
+
+include_graphics("../04_figures/map/tuco_map.png")
+```
+ 
+### Study species
+
+The studied Ctenomys population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amayaFormFunctionLongrange2016]. In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco [@amayaDynamicSpatialOverlap2021] and as _Ctenomys aff. knightii_ [@tomotaniPosefeitosSincronizacaoEm2011] or _Ctenomys cf. knightii_ [@valentinuzziCircadianPatternWheel2009].
+
+### Animal capture
+
+Trapping was conducted in four different campaigns to the study site. Three campaigns were done in 2019 during March, July and October. A fourth campaign was done in February 2020. A fifth campaign was planned to occur in April 2020 but had to be canceled due to the COVID outbreak. Traps were placed at all active burrows found at the study site, limited to the number of traps available. Active burrows could be identified by the presence of freshly excavated soil mounds or by fresh soil plugging the burrow's entrance. Active plugged burrows were first excavated to open the access to the underground tunnels. Traps were placed horizontally at the burrow's entrance in the following the tunnel's orientation. Traps were set in the field during the morning and checked every 2 hours until the night when they were taken out, the exact time of the trap placement changed according to the season. Every check traps would be reset if they had been plugged with soil or had been activated without capturing any tuco. Our traps were custom made out of PVC tubing (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other.
+
+After capture, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive a collar. We used a clear plastic anesthesia chamber (318.5cm³) with a clip-on lid and a cotton ball inside. We added approximately 0.5 mL of isoflurane (*REF*) to the cotton ball before transferring the animal from the trap to the plastic anesthesia chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Animals were then weighted, sexed, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and fitted with a collar with activity sensors and telemetry transmitter (SOM-2011. Wildlife Materials, Illinois, USA). The collar setup weighted approximately 6g. After receiving the collar, tucos were placed back in the trap and observed until fully recovered. They were released back in the same burrow they were captured. Marked animals were left in the field for 5-10 days before being recaptured for collar recovery. The telemetry transmitter were used to maximize the animals relocation thus avoiding the loss of the other devices. All animal captures, procedures and animal handling were authorized by the local authorities at _Dirección General de Ambiente y Desarrollo Sustentable – Secretaría de Ambiente del Ministerio de Producción y Desarollo Local_ – La Rioja, Argentina (#00501-17). All procedures were also approved by the Ethics Committee at the _Instituto de Biociências_ (#308-2018) and _Faculdade de Medicina Veterinária_ (#2045300519) of the _Universidade de São Paulo_. 
+
+- apendice:
+    - fotos da armadilha ?
+    - foto do colar ?
+    - burrows
+
+### Tuco's activity data
+
+The accelerometers attached to the animal's collar were configured to record at a 10 Hz sampling frequency with a 4G sensitivity. The lightloggers were set to record a sample every 5 minutes with light sensitivity ranging from 0.3 to 19000 lux.
+
+- Accelerometers are devices that continuously record the animal's movement in a three axis orthogonal system with a high sampling frequency (REF). 
+- a lightlogger (Migrate Technology, Cambridge, UK), a accelerometer (Axy3, Technosmart, Rome, Italy)
+- acelerometros
+- luximetros
+
+
+### Data pre-processing
+
+Vectorial Dynamic Body Acceleration [VeDBA, @qasemTriAxialDynamicAcceleration2012] was used as a proxy for the animal's activity level. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency (REF??). Generally, a 1 or 2-second moving average is used to calculated the static acceleration (REF??). However, in the case of the tucos we opted to use a 4-second moving average (40 data points) after following the method proposed by [@shepardDerivationBodyMotion2008, see Appendix]. (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axis, using:
+
+$$ VeDBA = \sqrt{Xd^2 + Yd^2 + Zd^2} $$
+
+- como dados foram resumidos
+- pq usamos esse tipo de resumo
+
+## Resultados
+
+- lista de animais
+- lista de pesos por sexo
+- lista de quanto tempo cada animal teve de registro
+- 
