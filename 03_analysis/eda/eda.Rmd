@@ -1,0 +1,197 @@
+---
+title: "Exploratory Data Analysis"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    echo = FALSE, 
+    dev = "png",
+    dpi = 120, 
+    fig.align = "center", 
+    #fig.pos = 'H',
+    message = FALSE
+    )
+
+library(ggplot2)
+library(knitr)
+library(data.table)
+library(dplyr)
+library(cowplot)
+library(maptools)
+library(egg)
+
+dir = "/home/jeff/Documents/[TESE]"
+tuco = readRDS(paste0(dir,"/01_data/rds/tuco_preprocessed.rds"))
+tuco.metadata = fread(paste0(dir,"/01_data/animals/animal_metadata.csv"))
+```
+
+# Sample Size
+
+Ao todo foram capturados 22 tucos. Desse número nem todos receberam acelerômetro e lightlogger. As tabelas abaixo mostram quantos animais foram capturados por campanha e quantos animais receberam acelerômetro ou lightloggers.
+
+```{r sample-size}
+# Numero Amostral com colar
+tuco.n = tuco.metadata %>%
+          group_by(Month = season) %>% 
+          summarise(n = length(ID), Accelerometer = sum(acc), Lightlogger = sum(lux)) %>% 
+          bind_rows(colSums(.[2:4]))
+tuco.n[which(is.na(tuco.n)),1] = "TOTAL"
+
+kable(tuco.n, caption = "Número de tucos capturados por campanha.")
+```
+
+```{r sample-size2}
+# Numero Amostral com colar por sexo/estação
+tuco.n = tuco.metadata %>% 
+    group_by(season, sex) %>% 
+    summarise("n" = length(ID), Accelerometer = sum(acc), Lightlogger = sum(lux))
+tuco.n[which(is.na(tuco.n)),1] = "TOTAL"
+kable(tuco.n, caption = "Número de tucos capturados por campanha separados por sexo.")
+```
+
+# Data Pre-processing
+
+Os dados de acelerômetro são coletados em 10Hz. Para transformarmos os dados da aceleração de cada eixo em um índice de atividade calculamos o VeDBA. Esse índice é a soma vetorial dos valores de aceleração dos valores de cada eixo descontado o valor da gravidade. Depois de calculado o VeDBA vamos resumir os dado para tornar as análises mais convenientes computacionalmente e também melhorar a visualização desses dados. Os dados de VeDBA foram resumidos a cada um minuto usando-se a mediana dessa janela de tempo, o que corresponde a uma mediana móvel sem sobreposição a cada 600 amostras. A maneira que podemos *interpretar esses dados* é que cada amostra na verdade representa o valor de VeDBA que o animal teve por pelo menos 30s consecutivos. Ou seja, caso uma amostra tenha valor de 0.4 de VeDBA podemos afirmar que naquele minuto o animal se manteve com um VeDBA maior ou igual à 0.4 durante 30 segundos consecutivos. Isso talvez tenha mais importância depois que classificarmos as amostras usando o HMM.
+
+Os dados de exposição à luz são amostrados a cada 1 minutos mas só registram a amostra com maior valor a cada 5 minutos. Para esses dados o que penso ser a melhor saída é estabelecer um limiar e considerar que qualquer valor maior que esse limiar é um episódio de exposição à luz. Para isso sigo usando o limiar de 2 lux [@Milene]. Importante também pensarmos que temos dados de acelerômetro e lightlogger que são desiguais temporalmente e talvez seja necessário nos atentarmos pra isso quando sobrepusermos esses dados.
+
+# Time Series Plot
+
+Primeiro uma verificada geral nos dados em formato de série temporal. Os gráficos mostram apenas os 4 primeiros dias de registro de cada animal. 
+
+Não é possível ver muita diferença entre os animais então nas séries temporais então estão plotados apenas 4 animais. É interessante que em alguns animais já é possível ver que oo pontos parecem estar mais ou menos organizados em três regiões distintas na vertical.
+
+```{r timeseries, fig.width = 25, fig.asp=0.35}
+ts_plot = tuco %>% filter(day_number < 5 & day_number > 1 & ID %in% c("MAR01", "JUL17", "OCT08", "FEV02"))
+
+ggplot(ts_plot) +
+  geom_point(aes(x = datetime, y = vedba)) +
+  facet_wrap(~ID, scales = "free", drop = T, ncol = 2) +
+  xlab("") +
+  #theme_bw() +
+  theme(text = element_text(size=30), legend.position = "none")
+rm(ts_plot)
+```
+
+# Actogramas
+
+Os actogramas estão divididos por animais, com o sexo no topo direito. Os dados de acelerômetro estão em preto, sem nenhum limiar aplicado aos gráficos. Os dados de exposição à luz estão em laranja, todos registros maiores do que 2 lux são considerados como uma saída e plotados como barras nos gráficos.
+
+O segundo conjunto de actogramas estão num formato de heatmap. Esses actogramas possuem apenas os dados de atividade e foram plotados apenas para ver se observaíamos melhor algum padrão em relação aos actogramas de barras.
+
+O que é possível observar nos actogramas, e que não é muita surpresa, é que parece realmente existir algum ritmo circadiano nos animais de campo. Esse ritmo é mais marcado em alguns animais do que em outros, independente da época de captura, como por exemplo entre os animais MAR01 e MAR02.
+
+```{r actogram, out.width="95%"}
+include_graphics(paste0(dir,"/04_figures/actograms.png"))
+```
+
+```{r actogram_heatmap, out.width="95%"}
+include_graphics(paste0(dir,"/04_figures/actograms_heatmap.png"))
+```
+
+\newpage
+
+# Histogramas
+
+Antes de seguir para outras análises vamos observar as distribuições dos dados de acelerômetros para ver se há muita heterogeneidade entre os animais. Os dados de atividade para esses gráficos foram limitados à 4 dias por animal, assim o número de amostras por animal é o mesmo. 
+
+As distribuições de VeDBA parecem ter um range muito próximo de valores. Ou seja, parece não haver animais que possuam uma atividade muito mais intensa do que outros, o que também pode ser visto na tabela abaixo. Porém, o formato da distribuição muda entre alguns animais, principalmente entre estações. Por exemplo, os animais capturados em outubro parecem ter maior número de amostras com valores mais à direita da distribuição, entre 0.2 e 0.5. Alguns animais capturados em Fevereiro parecem continuar com essa tendência. Em julho, porém, os animais parecem ter uma distribuição com maior concentração em valores mais centrais, entre 0.05 e 0.2. Essas mesmas tendências também podem ser observadas de uma forma mais compacta no gráficos de densidade por animal. 
+
+Então, os animais, apesar de terem distribuição de VeDBA que não distoam muito uns dos outros no seu range, parecem passar tempos diferentes em tipos de diferentes de comportamentos.
+
+```{r}
+# range = tuco %>%
+#   group_by(ID) %>% 
+#   summarise(Max = max(vedba), Min = min(vedba), Range = Max - Min)
+# 
+# kable(range, caption = "Range dos valores de VeDBA por animal.")
+```
+
+```{r hist, fig.width=10, fig.asp=1.1, fig.cap="Histograma dos valore de VeDBA por animal (cada quadro). As cores representam os meses em que esses animais foram capturados."}
+hist_data = tuco %>% filter(day_number < 5 & day_number > 1)
+
+graph_hist = ggplot(hist_data) +
+  geom_histogram(aes(x = vedba, fill = season), bins = 40 ) +
+  facet_wrap(~ID, ncol = 3) +
+  theme_article() +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major.y = element_line(color = "grey95"))
+
+
+sexlabels = unique(hist_data %>% select(ID, sex) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))) 
+graph_hist = graph_hist + geom_text(x = Inf, y = Inf, 
+                                  aes(label = sex), 
+                                  data = sexlabels, vjust = 1.3, hjust = 1.3, 
+                                  fontface = "bold", size = 5) + 
+              theme(legend.position = "none")
+
+graph_hist
+#rm(hist_plot)
+```
+
+```{r ridge, fig.width=10, fig.asp=0.6, fig.cap="Ridge plot mostrando a densidade da distribuição dos valores de VeDBA divididos por animal. As cores representam os meses em que os animais foram capturados."}
+ggplot(hist_data) +
+  ggridges::geom_density_ridges(aes(x = vedba, y = ID, fill = season, height = ..density..), color = "grey40", alpha = 0.9, stat = "density", trim = T) +
+  scale_y_discrete(limits = rev)+
+  theme_minimal(base_size = 12) + 
+  theme(axis.text.y = element_text(vjust = 0))+
+  theme(legend.position = "bottom")
+```
+
+\newpage
+
+# Padrões Médios de Atividade por Animal
+
+Para terminar, é interessante ver como é o "ritmo médio" ao longo de todo tempo de registro dos animais. Acho que esse gráfico é especialmente interessante para pessoas fora da cronobiologia, já que é bem mais intuitivo do que os actogramas.
+
+Nesses primeiro gráfico foi plotado a média por hora dos valores de VeDBA de cada animal.
+
+```{r graph-hourly-id, dev = "png", fig.height=10, fig.width=9}
+library(grid)
+library(gtable)
+
+tuco_hourly = tuco %>%
+    mutate(time = cut(datetime, breaks="1 hour")) %>%
+    mutate(time = hour(time)) %>% 
+    group_by(ID, sex, season, time) %>% 
+    summarize(mean_vedba = mean(vedba), sum_vedba = sum(vedba), median_vedba = median(vedba), datetime = min(datetime)) %>%  
+    ungroup()
+
+anillaco_coord = matrix(c(-66.95, -28.8), nrow = 1)
+
+tuco_hourly = tuco_hourly %>% 
+    mutate(
+        sunrise = sunriset(anillaco_coord, tuco_hourly$datetime, direction="sunrise") * 24,
+        sunset  = sunriset(anillaco_coord, tuco_hourly$datetime, direction="sunset")* 24,
+        dawn    = crepuscule(anillaco_coord, tuco_hourly$datetime, direction="dawn", solarDep=6) * 24,
+        dusk    = crepuscule(anillaco_coord, tuco_hourly$datetime, direction="dusk", solarDep=6) * 24
+    )
+
+graph_hourly = 
+  ggplot(data = tuco_hourly) +
+    geom_vline(aes(xintercept = dawn), linetype = 2, alpha = 0.2) +
+    geom_vline(aes(xintercept = dusk), linetype = 2, alpha = 0.2) +
+    geom_line(aes(x = time, y = mean_vedba, col = season), size = 0.6) +
+    geom_point(aes(x = time, y = mean_vedba, col = season), size = 0.7) +
+    scale_x_continuous(breaks = seq(from = 0, to = 23, by = 2))+
+	facet_wrap(vars(ID), ncol = 3) +
+	theme_article() +
+	theme(panel.grid.major.y = element_line(color = "grey95")) +
+	xlab("") +
+	ylab("mean(VeDBA)") 
+
+sexlabels = unique(tuco_hourly %>% select(ID, sex) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))) 
+graph_hourly = graph_hourly + geom_text(x = Inf, y = Inf, 
+                                  aes(label = sex), 
+                                  data = sexlabels, vjust = 1.3, hjust = 1.3, 
+                                  fontface = "bold", size = 5) + 
+              theme(legend.position = "none")
+
+graph_hourly
+```
+
+

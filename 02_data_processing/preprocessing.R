@@ -3,23 +3,17 @@ library(dplyr)
 library(zoo)
 library(tidyr)
 library(lubridate)
+library(xts)
 
-dba = function(X, Y, Z, time_window, hz =  10){
+dba = function(X, Y, Z, time_window = 4, hz =  10){
     #' Dynamic Body Acceleration
-    #'
-    #' The raw values of acceleration in each axis are the result of the combination of 
-    #' static acceleration (due to gravity) and dynamic acceleration (due to movement).
     #' 
-    #' To approximate DBA,
-    #' (1) static acceleration is first approximated by 
-    #' smoothing the obtained acceleration using 2-sec running means,
-    #' according to Halsey et al (2009)
-    #' Halsey LG, Shepard ELC, Quintana F, Laich AG, Green JA, Wilson RP.
-    #' The relationship between oxygen consumption and body acceleration in 
-    #' a range of species. Comp Biochem Physiol A Mol Integr Physiol. 2009; 152: 197–202.
-    #' PMID: 18854225
-    #' (2) dynamic acceleration is calculated by subtracting the static 
-    #' acceleration from the raw acceleration
+    #' The Dynamic Body Acceleration in each axis is
+    #' the device's acceleration discounting the effects of gravity
+    #' This is done by (1) Calculating the effect of gravity using a
+    #' movig average over 4 seconds, know as the static acceleration.
+    #' (2) The static acceleration id discounted from the raw acceleration to obtain de Dynamic Acceleration of each axis.
+
     X = X - frollmean(x = X,
                       n = hz * time_window,
                       align = "left")
@@ -34,22 +28,20 @@ dba = function(X, Y, Z, time_window, hz =  10){
 }
 
 vedba = function(X, Y, Z){
-    #' Vector sum of 3d dynamic accelaration data
+    #' Vectorial Dynamic Body Acceleration
     #' 
-    #' Aka Euclidean norm.
-    #'   
-    #' Qasem L, Cardew A, Wilson A, Griffiths I, Halsey LG, Shepard ELC, et al.
-    #' Tri-axial dynamic acceleration as a proxy for animal energy expenditure;
-    #' should we be summing values or calculating the vector?.
-    #' PLoS One. 2012; 7. PMID: 22363576
+    #' The vectorial sum of the dynamic acceleration of the three axis.
+    
     return(sqrt(X^2 + Y^2 + Z^2))
 }
 
 add_sex_season = function(data){
-    # Add a column for sex and season into a dataframe
+    #' Add a column for sex and season into a dataframe
+
     animals = fread("01_data/animals/animal_metadata.csv")
-    animals[,rep_state := NULL]
-    animals[,weight_cap := NULL]
+    animals[, weight_cap := NULL]
+    animals[, acc := NULL]
+    animals[, lux := NULL]
     animals[, sex := as.factor(sex)]
     animals[, season := as.factor(season)] 
     
@@ -58,13 +50,28 @@ add_sex_season = function(data){
     return(data)
 }
 
-downsample = function(data, time_window = 100){
-    # Downsample the 10Hz data to a lower frequency.
-    # time_window: time in seconds to use for downsample
-    data[, vedba := rollapply(data = vedba, FUN = mean, width = time_window, by = time_window, fill = NA, align = "left"), by = ID]
-    data = na.omit(data)
+downsample = function(data, window = 600, FUN = median){
+    #' Downsample the 10Hz data to a lower frequency.
+    #' 
+    #' Get split data, aggregate VeDBA and Temp by FUN with a non-overlapping window
+    #' Return a new data frame with smaller size
+
+    id_apply = function(df){
+        endpoints = c(0, seq(window + 1, length(df$vedba), by = window))
+        vedba_aggregated = data.table(vedba = period.apply(df$vedba, endpoints, FUN, na.rm = T))
+        temp_aggregated = data.table(temp = period.apply(df$temp, endpoints, FUN, na.rm = T))
+        endpoints[1] = 1
+        
+        df = df[endpoints,]
+        df[,vedba := vedba_aggregated]
+        df[,temp := temp_aggregated]
+        
+        return(df)
+    }
     
-    return(data)
+    data_split = split(data, data$ID)
+    data_split = lapply(data_split, id_apply)
+    return(rbindlist(data_split))
 }
 
 join_acc_lux= function(acc, lux){
@@ -73,19 +80,18 @@ join_acc_lux= function(acc, lux){
     joint_data = left_join(acc, lux) 
     
     # As the luximeters have 1 minute sampling time but only record the maximum value each 5 minutes
-    joint_data[,lux := nafill(x = lux, type = "nocb"), by = "ID"]
-    joint_data[,lux := nafill(x = lux, type = "locf"), by = "ID"] 
+    # joint_data[,lux := nafill(x = lux, type = "nocb"), by = "ID"]
+    # joint_data[,lux := nafill(x = lux, type = "locf"), by = "ID"] 
     
     return(joint_data)
 }
 
-
-# when the file is sourced, execution will end here 
+# Do not run on source().
 ################################################################################
 if (sys.nframe() == 0){
     source("02_data_processing/read_acc.R")
-    
-    # subset animals ----------------------------------------------------------
+
+# subset animals ----------------------------------------------------------
     tuco_subset = tuco_acc[ID %in% c("FEV02","MAR02","JUL16", "OCT08")]
     tuco_subset = tuco_acc[day_number <= 4]
     tz(tuco_subset$datetime) = "America/Argentina/La_Rioja"
@@ -93,22 +99,27 @@ if (sys.nframe() == 0){
     rm(tuco_subset)
     
     # Calculate Dynamic acceleration ------------------------------------------
-    tuco_acc[, c("Xd", "Yd" , "Zd") := dba(X, Y, Z, time_window = 4), by = ID]
+    tuco_acc[, c("Xd", "Yd" , "Zd") := dba(X, Y, Z), by = ID]
     tuco_acc[, c("X","Y","Z") := NULL]
-    tuco_acc = na.omit(tuco_acc)
+    # tuco_acc = na.omit(tuco_acc)
     
     # Calculate VeDBA ---------------------------------------------------------
     tuco_acc[, vedba := vedba(Xd, Yd, Zd)]
     tuco_acc[, c("Xd","Yd","Zd") := NULL]
-    
+
     # Downsample --------------------------------------------------------------
     tuco_acc = downsample(tuco_acc)
     
     # Join Acc and Lux --------------------------------------------------------
     source("02_data_processing/read_lux.R")
     tuco = join_acc_lux(tuco_acc, tuco_lux)
-    tuco = add_sex_season(tuco_acc)
+    tuco = add_sex_season(tuco)
     rm(tuco_acc, tuco_lux, i, files, dir.data)
-    saveRDS(tuco_, "01_data/rds/tuco_01hz_preprocessed.rds")
-    
+    setcolorder(tuco, c(1,7,6,2,3,4,5))
+    tuco[,ID := factor(ID, levels = c("MAR01", "MAR02",
+                                      "JUL15", "JUL16", "JUL17", "JUL18", "JUL19", "JUL20", "JUL21", "JUL23",
+                                      "OCT01", "OCT08", "OCT09", "OCT10", "OCT13", "OCT14",
+                                      "FEV01", "FEV02", "FEV03", "FEV05", "FEV06"))]
+    saveRDS(tuco, "01_data/rds/tuco_preprocessed.rds")
+    gc()
 }

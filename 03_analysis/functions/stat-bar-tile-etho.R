@@ -1,5 +1,44 @@
 #' @rdname stat_tile_etho
 #' @export
+stat_bar_tile_etho <- function(mapping = NULL, data = NULL,
+                               geom = "bar_tile",
+                               position = "identity",
+                               ...,
+                               method = mean,
+                               method.args = list(),
+                               na.rm = FALSE,
+                               show.legend = NA,
+                               inherit.aes = TRUE) {
+  ggplot2::layer(
+    data = data,
+    mapping = mapping,
+    stat = StatBarTileEtho,
+    geom = geom,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      method = method,
+      method.args = method.args,
+      ...
+    )
+  )
+}
+
+
+StatBarTileEtho <- ggproto("StatBarTileEtho", Stat,
+                           default_aes = aes(height = ..value..),
+                           required_aes = c("x", "y", "z"),
+                           compute_group = function(data, scales, method, method.args = list()){
+                             data <- data.table::as.data.table(data)
+                             foo <- function(z){
+                               all_args <- append(list(z), method.args)
+                               do.call(method, all_args)
+                             }
+                             out <- data[,.(value=foo(z)),by="x,y"]
+                             out
+                           }
+)
 
 "%||%" <- function(a, b) {
   if (!is.null(a)) a else b
@@ -13,16 +52,16 @@ GeomBarTile <- ggproto("GeomBarTile", GeomRect,
                                          colour = NA,
                                          size = 0.1, linetype = 1,
                                          alpha = NA),
-                     setup_data = function(data, params) {
-                       data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
-                       data$fill <-  params$fill %||% data$fill
-                       data$z_rel <- data$height / max(data$height)
-                       transform(data,
-                                 xmin = x - width / 2,  xmax = x + width / 2,  width = NULL,
-                                 ymin = y - 1/2,
-                                 ymax = y - 1/2 + z_rel
-                       )
-                     },
+                       setup_data = function(data, params) {
+                         data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
+                         data$fill <-  params$fill %||% data$fill
+                         data$z_rel <- data$height / max(data$height)
+                         transform(data,
+                                   xmin = x - width / 2,  xmax = x + width / 2,  width = NULL,
+                                   ymin = y - 1 / 2,
+                                   ymax = y - 1/2 + z_rel
+                         )
+                       },
                        draw_key = draw_key_polygon
                        # draw_panel = function(self, data, panel_params, coord, width = NULL) {
                        #   # Hack to ensure that width is detected as a parameter
@@ -55,19 +94,4 @@ geom_bar_tile <- function(mapping = NULL, data = NULL,
     params = par
   )
 }
-
-library(scales)
-c_trans <- function(a, b, breaks = b$breaks, format = b$format) {
-  a <- as.trans(a)
-  b <- as.trans(b)
-  
-  name <- paste(a$name, b$name, sep = "-")
-  
-  trans <- function(x) a$trans(b$trans(x))
-  inv <- function(x) b$inverse(a$inverse(x))
-  
-  trans_new(name, trans, inverse = inv, breaks = breaks, format=format)
-  
-}
-rev_date <- c_trans("reverse", "date")
 
