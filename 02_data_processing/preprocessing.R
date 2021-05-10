@@ -46,6 +46,7 @@ add_sex_season = function(data){
     animals[, season := as.factor(season)] 
     
     data = left_join(data, animals, by = "ID")
+    data[,season := factor(season, levels = c("March", "July", "October", "February"))]
     
     return(data)
 }
