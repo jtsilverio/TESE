@@ -23,6 +23,7 @@ library(dplyr)
 library(cowplot)
 library(maptools)
 library(egg)
+library(ggridges)
 
 dir = "/home/jeff/Documents/[TESE]"
 tuco = readRDS(paste0(dir,"/01_data/rds/tuco_preprocessed.rds"))
@@ -77,6 +78,21 @@ ggplot(ts_plot) +
 rm(ts_plot)
 ```
 
+```{r timeseries-oneday, fig.width = 25, fig.asp=0.35}
+#ts_plot = tuco %>% filter(day_number == 1 & ID %in% c("MAR01", "JUL17", "OCT08", "FEV02"))
+ts_plot = tuco %>% filter(day_number == 1 & ID %in% c("JUL17", "OCT08"))
+ts_plot = ts_plot %>% group_by(ID) %>% slice_head(n = 180)
+    
+ggplot(ts_plot) +
+  geom_point(aes(x = datetime, y = vedba), size = 2.5) +
+  facet_wrap(~ID, scales = "free", drop = T, ncol = 1) +
+  xlab("") +
+  #theme_bw() +
+  theme(text = element_text(size=30), legend.position = "none")
+rm(ts_plot)
+```
+\newpage
+
 # Actogramas
 
 Os actogramas estão divididos por animais, com o sexo no topo direito. Os dados de acelerômetro estão em preto, sem nenhum limiar aplicado aos gráficos. Os dados de exposição à luz estão em laranja, todos registros maiores do que 2 lux são considerados como uma saída e plotados como barras nos gráficos.
@@ -93,9 +109,11 @@ include_graphics(paste0(dir,"/04_figures/actograms.png"))
 include_graphics(paste0(dir,"/04_figures/actograms_heatmap.png"))
 ```
 
+---
+
 \newpage
 
-# Histogramas
+# Histogramas e Gráficos de Densidade
 
 Antes de seguir para outras análises vamos observar as distribuições dos dados de acelerômetros para ver se há muita heterogeneidade entre os animais. Os dados de atividade para esses gráficos foram limitados à 4 dias por animal, assim o número de amostras por animal é o mesmo. 
 
@@ -103,18 +121,23 @@ As distribuições de VeDBA parecem ter um range muito próximo de valores. Ou s
 
 Então, os animais, apesar de terem distribuição de VeDBA que não distoam muito uns dos outros no seu range, parecem passar tempos diferentes em tipos de diferentes de comportamentos.
 
-```{r}
-# range = tuco %>%
-#   group_by(ID) %>% 
-#   summarise(Max = max(vedba), Min = min(vedba), Range = Max - Min)
-# 
-# kable(range, caption = "Range dos valores de VeDBA por animal.")
+```{r range-table, message=FALSE, warning=FALSE}
+tuco_hist = tuco %>% filter(day_number < 5 & day_number > 1)
+
+range = tuco_hist %>%
+  group_by(ID) %>%
+  summarise(Max = max(vedba), Min = min(vedba), Range = Max - Min, VeDBA_Sum = sum(vedba))
+
+if(knitr::is_html_output()){
+    
+    DT::datatable(range, options = list(pageLength = 7), 
+                  caption = "Tabela com o range de VeDBA para cada animal.")
+}
 ```
 
 ```{r hist, fig.width=10, fig.asp=1.1, fig.cap="Histograma dos valore de VeDBA por animal (cada quadro). As cores representam os meses em que esses animais foram capturados."}
-hist_data = tuco %>% filter(day_number < 5 & day_number > 1)
 
-graph_hist = ggplot(hist_data) +
+graph_hist = ggplot(tuco_hist) +
   geom_histogram(aes(x = vedba, fill = season), bins = 40 ) +
   facet_wrap(~ID, ncol = 3) +
   theme_article() +
@@ -122,7 +145,7 @@ graph_hist = ggplot(hist_data) +
   theme(panel.grid.major.y = element_line(color = "grey95"))
 
 
-sexlabels = unique(hist_data %>% select(ID, sex) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))) 
+sexlabels = unique(tuco_hist %>% select(ID, sex) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))) 
 graph_hist = graph_hist + geom_text(x = Inf, y = Inf, 
                                   aes(label = sex), 
                                   data = sexlabels, vjust = 1.3, hjust = 1.3, 
@@ -130,19 +153,29 @@ graph_hist = graph_hist + geom_text(x = Inf, y = Inf,
               theme(legend.position = "none")
 
 graph_hist
-#rm(hist_plot)
+```
+\newpage
+
+```{r boxplot, fig.width=10, fig.asp=0.6, fig.cap="Ridge plot mostrando a densidade da distribuição dos valores de VeDBA divididos por animal. As cores representam os meses em que os animais foram capturados."}
+# ggplot(tuco_hist) +
+#     geom_boxplot(aes(x = ID, y = vedba, fill = season)) +
+#     facet_wrap(vars(season), scales = "free_x") +
+#     theme_article() +
+#     theme(legend.position = "bottom") +
+#     theme(panel.grid.major.y = element_line(color = "grey95"))
 ```
 
 ```{r ridge, fig.width=10, fig.asp=0.6, fig.cap="Ridge plot mostrando a densidade da distribuição dos valores de VeDBA divididos por animal. As cores representam os meses em que os animais foram capturados."}
-ggplot(hist_data) +
-  ggridges::geom_density_ridges(aes(x = vedba, y = ID, fill = season, height = ..density..), color = "grey40", alpha = 0.9, stat = "density", trim = T) +
-  scale_y_discrete(limits = rev)+
-  theme_minimal(base_size = 12) + 
-  theme(axis.text.y = element_text(vjust = 0))+
-  theme(legend.position = "bottom")
+
+ggplot(tuco) +
+    geom_density_ridges(aes(x = vedba, y = ID, fill = season, height = ..density..), color = "grey40", alpha = 0.9, stat = "density", trim = T) +
+    scale_y_discrete(limits = rev)+
+    theme_minimal(base_size = 12) + 
+    theme(axis.text.y = element_text(vjust = 0))+
+    theme(legend.position = "bottom")
 ```
 
-\newpage
+\pagebreak
 
 # Padrões Médios de Atividade por Animal
 
@@ -151,9 +184,6 @@ Para terminar, é interessante ver como é o "ritmo médio" ao longo de todo tem
 Nesses primeiro gráfico foi plotado a média por hora dos valores de VeDBA de cada animal.
 
 ```{r graph-hourly-id, dev = "png", fig.height=10, fig.width=9}
-library(grid)
-library(gtable)
-
 tuco_hourly = tuco %>%
     mutate(time = cut(datetime, breaks="1 hour")) %>%
     mutate(time = hour(time)) %>% 
@@ -177,7 +207,7 @@ graph_hourly =
     geom_vline(aes(xintercept = dusk), linetype = 2, alpha = 0.2) +
     geom_line(aes(x = time, y = mean_vedba, col = season), size = 0.6) +
     geom_point(aes(x = time, y = mean_vedba, col = season), size = 0.7) +
-    scale_x_continuous(breaks = seq(from = 0, to = 23, by = 2))+
+    scale_x_continuous(breaks = seq(from = 0, to = 24, by = 2))+
 	facet_wrap(vars(ID), ncol = 3) +
 	theme_article() +
 	theme(panel.grid.major.y = element_line(color = "grey95")) +
@@ -194,4 +224,88 @@ graph_hourly = graph_hourly + geom_text(x = Inf, y = Inf,
 graph_hourly
 ```
 
+---
+
+\newpage
+
+# Gráficos Agrupados por Estação e Sexo
+
+## Histogramas/Gráfico de Densidade
+
+Visualmente parece haver alguma diferença sazonal nas atividade dos tucos. Vamos inspecionar melhor isso agrupando os dados por estação e sexo. 
+
+Como o número de amostras varia entre estações e sexo o histograma não seria muito informativo nesse caso. Então pra isso podemos fazer um gráfico de densidade. Esses gráficos basicamente refletem a forma do histograma mas, nesse caso, tem a vantagem de que são padronizados para que a área abaixo da curva serja sempre igual a 1. 
+
+Assim, podemos ver como o perfil das distribuições muda ao longo das estações e entre sexos mesmo tendo um número de amostras diferente para cada condição. Os valores em ```y``` não significam muita coisa individualmente. O mais importante, nesse caso, é que as áreas de todas as curvas são iguais. Para uma discussão interessante sobre a diferença entre histogramas e gráficos de densidade probabilística: [https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0](https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0).
+
+Visualmente temos o que também vimos nos histogramas anteriores. A distribuição parece mudar ao longo do ano. No entanto, quando sobrepomos as distribuições de cada sexo parece não haver muita diferença entre machos e fêmeas.
+
+
+```{r density-season-sex, fig.width=8, fig.height=6}
+ggplot(tuco) +
+    geom_density(aes(x = vedba,fill = sex, col = sex), alpha = 0.5)+
+    facet_grid(season~.) +
+    theme_article()
+```
+```{r boxplot-season-sex}
+# ggplot(tuco) +
+#     geom_boxplot(aes(y = vedba, x = season,fill = sex, col = sex), alpha = 0.5)+
+#     theme_article()
+```
+
+\newpage
+
+## Padrão Médio de Atividade por Estação e Sexo
+
+Nesse último gráfico eu queria verificar se temporalmente existe alguma diferença entre macho e fêmeas. Cada painel é um grupo entre as opções de combinação de sexo e estação. 
+
+As mesma curvas de VeDBA médio por hora são mostradas em cinza ao fundo, onde cada curva representa um animal diferente. Em cores, colorido por estação, está a média de VeDBA por hora do grupo representado no painel.
+
+Aparentemente também não existe uma diferença tão grande entre machos e fêmeas quanto aos horário de atividade. Porém, temos um n bem baixo de machos capturados o que torna dificil fazermos uma observação muito concreta.
+
+```{r graph-hourly-season, fig.height=9, fig.width=9, message=FALSE, warning=FALSE, dev="png"}
+tuco_hourly = tuco %>%
+    mutate(time = cut(datetime, breaks="1 hour")) %>%
+    mutate(time = hour(time)) %>% 
+    group_by(ID, sex, season, time) %>% 
+    summarize(mean_vedba = mean(vedba), sum_vedba = sum(vedba), median_vedba = median(vedba), datetime = min(datetime)) %>%  
+    ungroup()
+
+tuco_mean = tuco %>%
+    mutate(time = cut(datetime, breaks="1 hour")) %>%
+    mutate(time = hour(time)) %>% 
+    group_by(sex, season, time) %>% 
+    summarize(mean_vedba = mean(vedba), sum_vedba = sum(vedba), median_vedba = median(vedba), datetime = min(datetime)) %>%  
+    ungroup()
+
+
+graph_hourly = 
+  ggplot() +
+    geom_point(data = tuco_hourly, aes(x = time, y = mean_vedba, fill = ID), size = 0.4, alpha = 0.1) +
+    geom_line(data = tuco_hourly, aes(x = time, y = mean_vedba, fill = ID), size = 0.4, alpha = 0.1) +
+    geom_point(data = tuco_mean, aes(x = time, y = mean_vedba, col = season), size = 0.9) +
+    geom_line(data = tuco_mean, aes(x = time, y = mean_vedba, col = season), size = 0.9) +
+    geom_density(data = tuco_hourly, aes(x = time, y = mean_vedba)) +
+    scale_x_continuous(breaks = seq(from = 0, to = 23, by = 2))+
+	facet_grid(season~sex) +
+	theme_article() +
+	theme(panel.grid.major.y = element_line(color = "grey97")) +
+    theme(legend.position = "none") +
+	xlab("") +
+	ylab("mean(VeDBA)") 
+
+
+graph_hourly = 
+  ggplot(data = tuco_hourly) +
+    geom_density(aes(x = as.factor(time), y = mean_vedba)) +
+    scale_x_continuous(breaks = seq(from = 0, to = 23, by = 2))+
+	facet_grid(season~sex) +
+	theme_article() +
+	theme(panel.grid.major.y = element_line(color = "grey97")) +
+    theme(legend.position = "none") +
+	xlab("") +
+	ylab("mean(VeDBA)") 
+
+graph_hourly
+```
 
