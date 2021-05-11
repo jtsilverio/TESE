@@ -96,7 +96,7 @@ if (sys.nframe() == 0){
     tuco_subset = tuco_acc[ID %in% c("FEV02","MAR02","JUL16", "OCT08")]
     tuco_subset = tuco_acc[day_number <= 4]
     tz(tuco_subset$datetime) = "America/Argentina/La_Rioja"
-    saveRDS(tuco_subset, "01_data/rds/tuco_10hz_smooth_subset.rds")
+    saveRDS(tuco_subset, "01_data/activity_processed/tuco_10hz_smooth_subset.rds")
     rm(tuco_subset)
     
     # Calculate Dynamic acceleration ------------------------------------------
@@ -121,6 +121,6 @@ if (sys.nframe() == 0){
                                       "JUL15", "JUL16", "JUL17", "JUL18", "JUL19", "JUL20", "JUL21", "JUL23",
                                       "OCT01", "OCT08", "OCT09", "OCT10", "OCT13", "OCT14",
                                       "FEV01", "FEV02", "FEV03", "FEV05", "FEV06"))]
-    saveRDS(tuco, "01_data/rds/tuco_preprocessed.rds")
+    saveRDS(tuco, "01_data/activity_processed/tuco_preprocessed.rds")
     gc()
 }
