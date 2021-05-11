@@ -26,7 +26,7 @@ library(egg)
 library(ggridges)
 
 dir = "/home/jeff/Documents/[TESE]"
-tuco = readRDS(paste0(dir,"/01_data/rds/tuco_preprocessed.rds"))
+tuco = readRDS(paste0(dir,"/01_data/activity_processed/tuco_preprocessed.rds"))
 tuco.metadata = fread(paste0(dir,"/01_data/animals/animal_metadata.csv"))
 ```
 
