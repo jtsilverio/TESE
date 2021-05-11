@@ -1,7 +1,10 @@
 library(momentuHMM)
 library(data.table)
-vedba_Par0 = readRDS("01_data/models/vedbaPar0.rds")
-tuco = readRDS("01_data/rds/tuco_preprocessed.rds")
+library(dplyr)
+library(ggplot2)
+
+vedba_Par0 = readRDS("01_data/hmm/vedbaPar0.rds")
+tuco = readRDS("01_data/activity_processed/tuco_preprocessed.rds")
 
 # Create a named list from the dataframe and prep HMM data -----------------
 tuco = tuco %>% 
@@ -23,7 +26,7 @@ vedba_Par0 = lapply(vedba_Par0, function(x){
 })
 
 # Fit Models --------------------------------------------------------------
-stateNames <- c("rest","medium", "high")
+stateNames <- c("rest","medium","high")
 fitHMM_list= function(index){
     tryCatch(
         {m = fitHMM(data = tuco[[index]], 
@@ -34,11 +37,22 @@ fitHMM_list= function(index){
                     stateNames =  stateNames)},
         error = function(e){return(e)})
 }
-m = lapply(names(vedba_Par0), fitHMM_list)
+tuco_hmm = lapply(names(vedba_Par0), fitHMM_list)
+saveRDS(tuco_hmm, "01_data/hmm/tuco_hmm.rds")
+
+# plot estimated means ----------------------------------------------------
+dist_means = lapply(tuco_hmm, function(m){as.data.table(sort(m$mle$vedba["mean",]), keep.rownames = "mean")})
+names(dist_means) = names(tuco)
+dist_means = rbindlist(dist_means, idcol = "ID")
+names(dist_means) = c("ID","state","mean")
+
+ggplot(data = dist_means) +
+    geom_histogram(aes(mean, fill = state), binwidth = 0.01) +
+    facet_wrap(vars(state), scales = "free_x")
 
 # Global Decoding ---------------------------------------------------------
-states = lapply(m, viterbi)
+states = lapply(tuco_hmm, viterbi)
 tuco_decoded = rbindlist(lapply(seq_along(tuco), function(i){as.data.table(cbind(tuco[[i]][c("ID","datetime")], state = states[[i]]))}))
 tuco_decoded[,state := as.factor(state)]
 
-saveRDS(tuco_decoded, "01_data/rds/tuco_decoded.rds")
+saveRDS(tuco_decoded, "01_data/activity_processed/tuco_states.rds")

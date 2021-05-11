@@ -10,9 +10,9 @@ library(parallel)
 
 start_script = Sys.time()
 tuco = readRDS("01_data/rds/tuco_preprocessed.rds")
-niter = 1
-retryfits = 0
-# tuco$vedba[tuco$vedba >= 0 & tuco$vedba <= 0.000001] = 0.00001
+set.seed(53)
+niter = 100
+retryfits = 2
 
 # Delete unused columns
 tuco$datetime = NULL
@@ -27,9 +27,9 @@ stateNames <- c("rest","medium", "high")
 tuco = tuco %>% 
     split(.$ID) %>% 
     lapply(., function(x){
-    prepData(x, 
-             coordNames = NULL, 
-             covNames = c("sex","season"))})
+        prepData(x, 
+                 coordNames = NULL, 
+                 covNames = c("sex","season"))})
 
 apply_fitHMM = function(animal_data){
     message(c("ID:",levels(animal_data$ID)[1]))
@@ -92,7 +92,7 @@ get_bestmodel = function(model_list){
 
 best_models = lapply(models, get_bestmodel)
 vedba_par0 = lapply(best_models, function(m){m$mle$vedba})
-saveRDS(vedba_par0, "01_data/vedba_par0/vedbaPar0.rds")
+saveRDS(vedba_par0, "01_data/hmm/vedbaPar0.rds")
 
 # Check Plots
 # lapply(best_models, function(m){plot(m)})
