@@ -3,19 +3,38 @@
 
 # Anillaco's Plant Community
 
-Following methods similar to @aranda-rickertExtrafloralNectarFuels2014 a non-extensive survey of the plant community was done in May 2019. Three perpendicular 50m transects were defined near the study site (COORDINATES). A point-intercept method was used to record plant species present in the transects, species right below the sampling points were registered in the data. Sampling points were defined every 1m along the 50m transects. Plant species were identified in the field by a Botanist, except for a few members of the Poaceae family.
+Following methods similar to REFaranda-rickertExtrafloralNectarFuels2014 a non-extensive survey of the plant community was done in May 2019. Three perpendicular 50m transects were defined near the study site (COORDINATES). A point-intercept method was used to record plant species present in the transects, species right below the sampling points were registered in the data. Sampling points were defined every 1m along the 50m transects. Plant species were identified in the field by a Botanist, except for a few members of the Poaceae family.
 
-The results for the plant survey is in line with what has been described in the literature for the region [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. The results show a dominance of Zygolhyllaceae, Poaceae and Fabaceae families. The relative frequency of plant families and species recorded in the area are shown in the graphs below (Fig. \@ref(fig:appendix-plants)).
+The results for the plant survey is in line with what has been described in the literature for the region [REFabrahamOverviewGeographyMonte2009; REFaranda-rickertExtrafloralNectarFuels2014; REFfracchiaDispersalArbuscularMycorrhizal2011]. The results show a dominance of Zygolhyllaceae, Poaceae and Fabaceae families. The relative frequency of plant families and species recorded in the area are shown in the graphs below (Fig. \@ref(fig:appendix-plants)).
 
 ```{r appendix-plants, out.width = "100%", fig.cap="Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)", echo=F}
 
-include_graphics("../04_figures/plants/plant_frequency.png")
+include_graphics("../04_figures/appendix/plot_plants.png")
 ```
 
-# Anillaco's Weather 
+# Anillaco's Weather
 
-```{r appendix-weather, out.width = "100%", fig.cap="", echo=F}
-
-include_graphics("../04_figures/weather/weather.png")
+```{r appendix-weather, out.width = "100%", fig.cap="Temperature  and Rainfall yearly trends in Anillaco, Argentina. Data was collected in the years 2017 and 2019 from a weather Station (Vantage Pro 2, Davis Instuments. USA.) maintened in CRILAR, aproximately 5km away from the study site.", echo=F}
+include_graphics("../04_figures/appendix/plot_weather.png")
 ```
 
+# Anillaco's Yearly Daylength Changes
+
+```{r appendix-daylenght,  out.width = "100%", fig.cap = "Changes in daytime changes across the year in Anillaco, La Rioja. Maximum duration of daytime, during summer, is 14 hours and 53 minutes. Mininum duration of daytime, during winter, is 11 hours and 10 minutes."}
+include_graphics("../04_figures/appendix/plot_daylength.png")
+```
+
+# Static Acceleration Smooth window Assessment
+
+Using 
+\newpage
+
+```{r appendix-smooth-window,  out.width = "100%", echo = FALSE}
+include_graphics("../04_figures/appendix/plot_smoothing_window.png")
+```
+
+# Exploratory VeDBA data Analysis
+
+```{r echo = FALSE, child = "../03_analysis/eda/eda.Rmd"}
+
+```

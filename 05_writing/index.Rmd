@@ -1,39 +1,38 @@
 ---
 doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
-classoption: a4paper
-english: false 
+english: true 
 title:  'Titulo de Tese'
 foreigntitle: "Thesis' Title"
 department: 'IB'
-date_month: '03'
-date_year: '2021'
-keyword: [Primeira palavra-chave, Segunda palavra-chave]
+date_month: "`r format(Sys.time(), '%m')`"
+date_year: "`r format(Sys.time(), '%Y')`"
+keyword: [Primeira palavra-chave, biologging]
 author:
-- name: Jefferson
-  surname: T. Silvério
+  - name: Jefferson T.
+    surname: Silvério
 advisor:
-- title: Prof.
-  name: Gisele
-  surname: A. Oda
-  degree: D.Sc.
-- title: Prof.
-  name: Verónica
-  surname: Valentinuzzi
-  degree: Ph.D
-- title: Prof.
-  name: Patricia
-  surname: Tachinardi
-  degree: Ph.D
+  - title: Prof.
+    name: Gisele A.
+    surname: Oda
+    degree: D.Sc.
+  - title: Prof.
+    name: Verónica
+    surname: Valentinuzzi
+    degree: Ph.D
+  - title: Prof.
+    name: Patricia
+    surname: Tachinardi
+    degree: Ph.D
 examiner:
-- title: Prof.
-  name: Nome Completo do Primeiro Examinador
-  degree: D.Sc.
-- title: Prof.
-  name: Nome Completo do Segundo Examinador
-  degree: Ph.D
-- title: Prof.
-  name: Nome Completo do Terceiro Examinador
-  degree: Ph.D
+  - title: Prof.
+    name: Nome Completo do Primeiro Examinador
+    degree: D.Sc.
+  - title: Prof.
+    name: Nome Completo do Segundo Examinador
+    degree: Ph.D
+  - title: Prof.
+    name: Nome Completo do Terceiro Examinador
+    degree: Ph.D
 listoftables: true
 listoffigures: true
 dedication: |
@@ -46,19 +45,15 @@ abstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), 
 foreignabstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = "\n  ")`'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
-bibliography: bib/thesis.bib
-biblio-style: "csl/coppe-unsrt"
+biblio-style: "csl/apa.csl"
 link-citations: true
+bibliography: references.bib
 output: 
-    coppedown::thesis_pdf: default
-#  coppedown::thesis_gitbook: default
-#  coppedown::thesis_word: default
-#    reference_docx: template_docx.docx
-#  coppedown::thesis_epub: default
-
-# If you prefer blank lines between paragraphs, un-silence lines  40-41 (this requires package tikz)
-#header-includes:
-#- \usepackage{tikz}
+  #coppedown::thesis_pdf: default
+  #coppedown::thesis_gitbook: default
+  coppedown::thesis_word: 
+    reference_docx: template.docx
+  coppedown::thesis_epub: default
 ---
 
 <!--
@@ -73,6 +68,7 @@ If you'd like to include a comment that won't be produced in your resulting file
 If you receive a duplicate label error after knitting, make sure to delete the index.Rmd file and then knit again.
 -->
 
+
 ```{r include_packages, include = FALSE}
 # This chunk ensures that the coppedown package is
 # installed and loaded. This coppedown package includes
@@ -81,7 +77,50 @@ if(!require(devtools))
   install.packages("devtools", repos = "http://cran.rstudio.com")
 if(!require(coppedown))
   devtools::install_github("COPPE-UFRJ/coppedown")
+
+# Packages Used Along the Thesis
 library(coppedown)
+library(knitr)
+library(ggplot2)
+library(patchwork)
+library(data.table)
+library(dplyr)
+library(momentuHMM)
+library(maptools)
+
+source(file = "../03_analysis/tuco_theme.R") # Set Theme and Color Pallete
+
+# Set LaTeX tables styling
+if(knitr::is_latex_output()){
+  library(kableExtra)
+  kable = function(data, caption = NULL){
+    knitr::kable(data,
+                 booktabs = TRUE,
+                 digits = 3,
+                 align = "c",
+                 caption = caption) %>% 
+    kable_styling(position = "center", 
+            latex_options = "hold_position")
+  }
+}else{
+    library("magick")
+    library("webshot")
+    library(flextable)
+    kable = function(data, caption = "NULL"){
+      flextable::flextable(data) %>% 
+        flextable::set_caption(caption) %>% 
+        colformat_double(digits = 2) %>% 
+        plot(zoom = 2, expand = 10)
+    }
+}
+
+# Set Global Chunk Options
+knitr::opts_chunk$set(
+    fig.align = "center",
+    echo = FALSE, 
+    message = FALSE,
+    warning = FALSE
+    )
 ```
 
 <!-- On ordering the chapter files:

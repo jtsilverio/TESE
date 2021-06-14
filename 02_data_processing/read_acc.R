@@ -6,7 +6,7 @@ options(digits.secs=5)
 ### 1. READ ACCELEROMETER DATA FROM FOLDERS ####
 ################################################
 # Set data folder
-dir.data = paste0(getwd(),"/01_data/activity/")
+dir.data = paste0(getwd(),"/01_data/activity_raw")
 # Get all files in data folder
 files = list.files(path = dir.data, pattern = "*\\.csv$", full.names = F)
 # Disconsider animal OCT02 - It was predated and collar found 1km from the tunnel

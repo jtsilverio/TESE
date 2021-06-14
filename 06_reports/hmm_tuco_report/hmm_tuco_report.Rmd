@@ -1,0 +1,486 @@
+---
+title: "HMMs Tuco"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    echo = FALSE, 
+    dpi = 100, 
+    fig.align = "center", 
+    #fig.pos = 'H',
+    message = FALSE
+    )
+
+library(ggplot2)
+library(knitr)
+library(data.table)
+library(dplyr)
+library(cowplot)
+library(egg)
+library(ggridges)
+library(momentuHMM)
+
+dir = "/home/jeff/Documents/TESE"
+tuco = readRDS(paste0(dir,"/01_data/activity_processed/tuco_processed.rds"))
+tuco.metadata = fread(paste0(dir,"/01_data/animals/animal_metadata.csv"))
+color_pal = c(rest = "#DDAA33", medium = "#BB5566", high = "#004488")
+```
+
+# Número de Capturas
+
+Ao todo foram capturados 22 tucos. Desse número nem todos receberam acelerômetro e lightlogger. As tabelas abaixo mostram quantos animais foram capturados por campanha e quantos animais receberam acelerômetro ou lightloggers.
+
+```{r sample-size}
+# Numero Amostral com colar
+tuco.n = tuco.metadata %>%
+          group_by(Month = season) %>% 
+          summarise(n = length(ID), Accelerometer = sum(acc), Lightlogger = sum(lux)) %>% 
+          bind_rows(colSums(.[2:4]))
+tuco.n[which(is.na(tuco.n)),1] = "TOTAL"
+
+tuco.n
+```
+
+# Hidden Markov Models
+
+O HMM foi ajustado aos dados dos tucos usando o método de *no pooling*. Assumiu-se um número de 3 estados a priori de acordo com o conhecimento que temos dos tucos, da distribuição dos dados e do nosso objetivo de tentar separar os dados em mais categorias além de atividade/repouso. Dessa maneira assumimos que os animais compartilham os mesmo parâmetros para as 3 *state-dependent distribution*, que são as distribuições que fazem parte da mistura. A distribuição escolhida para o s ajustes foi a gamma.
+
+Construi 2 modelos diferentes de acordo com o que foi visto na análise exploratória. Essas modelos são: (i) um modelo nulo/vazio, que é um modelo sem nenhuma covariaveis explicatórias e (ii) um modelo com a covariável 'season'. Nesse segundo modelo os parâmetros dos *state-dependent distributions* é mantido constante e o que é livre são os probabilidades de transição. Isso quer dizer que estamos assumindo que os comportamentos não mudam entre os tucos mas que as probabilidades de transição entre um comportamente e outro podem mudar de acordo com a estação/mês do ano. 
+
+Essas dois modelos foram comparados usando o critério de Akaike e o modelo com 'estação como 'covariável' se sai melhor em explicar os dados.
+
+```{r echo=TRUE}
+m1 = readRDS(paste0(dir, "/03_analysis/hmm/m1.rds"))  # modelo vazio
+m2 = readRDS(paste0(dir, "/03_analysis/hmm/m2.rds")) # modelo com estação
+
+AIC(m1, m2)
+```
+
+Especificações do Modelo:
+
+```{r}
+m2
+```
+
+\newpage
+
+## Distribuições do HMM
+
+O gráfico abaixo mostra o histograma da distribuição dos valores de VeDBA sobreposto com as distribuições dos três estados identificados pelo HMM de acordo com os dados. Esse gráfico mostra que cada estado tem um range de valores distribuidos na forma das curvas especificadas pelos modelos.
+
+```{r echo=FALSE, fig.asp=0.6, fig.width=9, warning=FALSE}
+params = list()
+params[["mean"]] = unname(m2$mle$vedba[1,])
+params[["sd"]] = unname(m2$mle$vedba[2,])
+params[["weight"]] = as.numeric(momentuHMM::timeInStates(m2)[1,])
+
+# Plot Histogram + density curves. Gamma density curves are weighted by
+# the time spent in each viterbi state sequence.
+# This is is accordance with what is done in the plot function in the momentuHMM package
+ggplot(tuco, aes(x = vedba)) +
+  geom_histogram(data = tuco, aes(x = vedba, y = ..density..), alpha = 0.3, binwidth = 0.02, color = "white") +
+  mapply(
+    function(mean, sd, weight, color){
+      stat_function(
+        fun = function(x) {dgamma(x, shape = (mean/sd)^2, rate = mean/(sd^2)) * weight},
+        n = 1000,
+        aes(colour = color),
+        size = 0.9
+      )
+    }, 
+    mean   = params[[1]],
+    sd     = params[[2]],
+    weight = params[[3]],
+    color  = c("rest","medium","high")
+  ) +
+  scale_colour_manual(name = "States", values = color_pal) +
+  #scale_fill_manual(name = "States", values = color_pal) +
+  theme_article() +
+  xlab("VeDBA") +
+  ylab("Density") 
+
+  # stat_function(fun = function(x, shape, rate, delta){dgamma(x, shape, rate) * 0.46}, 
+  #               n = 500, geom = "area", alpha = 0.4,
+  #               aes(colour = "rest", fill = "rest"),
+  #               args = args[[1]]) +
+  # stat_function(fun = function(x, shape, rate, delta){dgamma(x, shape, rate) * 0.29}, 
+```
+
+# Mudança nas Probabilidades de Transição
+
+Como adicionamos a estação na formulação do modelo podemos verificar como a probabilidade de transição do repouso para atividade muda ao longo do ano
+
+```{r echo=FALSE}
+cov.index = 
+    c(which(tuco$season == "March")[1],
+      which(tuco$season == "July")[1],
+      which(tuco$season == "October")[1],
+      which(tuco$season == "February")[1])
+
+
+df = data.frame(
+    March = momentuHMM::getTrProbs(m2, covIndex = cov.index)[1,,1],
+    July = momentuHMM::getTrProbs(m2, covIndex = cov.index)[1,,2],
+    October = momentuHMM::getTrProbs(m2, covIndex = cov.index)[1,,3],
+    February = momentuHMM::getTrProbs(m2, covIndex = cov.index)[1,,4]
+)
+
+#df$to_state = row.names(df)
+df = tidyr::pivot_longer(df, 1:4, names_to = "season", values_to = "prob")
+df$to_state = rep(c("rest → rest","rest → medium","rest → high"), each = 4)
+df$season = factor(df$season, levels = c("March", "July", "October", "February"))
+
+a = ggplot(df %>% filter(to_state != "rest → rest")) +
+    geom_point(aes(x = season, y = prob, color = to_state, group = to_state), size = 2) +
+    geom_line(aes(x = season, y = prob, color = to_state, group = to_state)) +
+    scale_y_continuous(limits = c(0, 0.05)) +
+    theme_article() +
+    ylab("Prob(Transition)") +
+    scale_color_manual(values = unname(color_pal[3:2])) +
+    xlab("")
+
+b = ggplot(df %>% filter(to_state == "rest → rest")) +
+    geom_point(aes(x = season, y = prob, color = to_state, group = to_state), size = 2) +
+    geom_line(aes(x = season, y = prob, color = to_state, group = to_state)) +
+    scale_y_continuous(limits = c(0.945, 1), breaks = seq(from = 0.95, to = 1, by = 0.01)) +
+    theme_article() +
+    ylab("Prob(Transition)") +
+    scale_color_manual(values = unname(color_pal)) +
+    xlab("")
+
+library(patchwork)
+a / b
+```
+
+# Classificação dos Dados
+
+Com o modelo já feito agora podemos usá-lo para classificar os dados coletados nos três estados definido. Para isso é usado um algoritmo chamado de viterbi. Esse algoritmo classifica cada ponto de acordo tendo como referência o conjunto de dados de cada animal. A figura ilustra como é a classificação de cada ponto dentro da série temporal de quatro animais. 
+
+*Com os dados classificados agora podemos dividir as análises em duas partes:*
+
+- Atividade Geral:
+  - Timing da Atividade:
+    - Que horários cada estado acontece? Existe um padrão diário?
+    - Esse padrão temporal muda ao longo do ano?
+    - Qual o periodo dessa atividade?
+    - *Nesse momento estamos analisando só o timing de cada estado*
+
+  - Intensidade da Atividade:
+    - Existe diferença na proporção de tempo em que o animal passa em cada estados?
+    - Essa proporção muda ao longo do ano?
+    - *Com esse segundo passo saberemos também se a 'intensidade' é a mesma. P.e. se algum animal apresenta mais atividade intensa ou se essa proporção muda ao longo do ano.*
+  
+- Atividade de Superfície
+  - Timing da Atividade de superfície:
+    - Como as saídas à superfície estão organizadas no tempo? (O pico é maior no meio do dia no Inverno?)
+  
+  - Intensidade da atividade de superfície:
+    - Quais estados são mais frequentes na superfície?
+    
+```{r include=FALSE}
+decoded = viterbi(m2)
+tuco$state = factor(decoded, labels = c("rest","medium","high"))
+```
+
+```{r echo=FALSE, fig.asp=0.35, fig.width=15}
+ts_plot = tuco %>% filter(day_number < 5 & day_number > 1 & ID %in% c("MAR01", "JUL17", "OCT08", "FEV02"))
+
+ggplot(ts_plot) +
+  geom_point(aes(x = datetime, y = vedba, color = state)) +
+  facet_wrap(~ID, scales = "free_x", drop = T, ncol = 2) +
+  xlab("") +
+  theme(text = element_text(size=30), legend.position = "none") +
+  scale_color_manual(values = color_pal) +
+  theme_article() +
+  theme(panel.grid.major.y = element_line(color = "grey90")) 
+```
+
+---
+\newpage
+
+# Atividade Geral
+
+- Atividade Geral:
+  - Timing da Atividade:
+    - Que horários cada estado acontece? Existe um padrão diário?
+    - Esse padrão temporal muda ao longo do ano?
+    - Qual o periodo dessa atividade?
+    - *Nesse momento estamos analisando só o timing de cada estado*
+
+  - Intensidade da Atividade:
+    - Existe diferença na proporção de tempo em que o animal passa em cada estados?
+    - Essa proporção muda ao longo do ano?
+    - *Com esse segundo passo saberemos também se a 'intensidade' é a mesma. P.e. se algum animal apresenta mais atividade intensa ou se essa proporção muda ao longo do ano.*
+  
+## Padrão Diário
+
+Gráficos dos padrões temporais diários das atividades de média e alta intensidade.
+
+### Alta Intensidade
+
+A alta intensidade parece sim ter um padrão diário. Há uma concentração maior de episódios de alta intensidade durante o dia. Porém, ainda há muitos episódio de alta intensidade durante as noite. As curvas desses gráfico mostram o padrão temporal e são normalizadas entre os animais.
+
+```{r include=FALSE}
+# In order to investigate time patterns it is easier to create new boolean columns for each state.
+tuco = tuco %>% 
+  mutate(rest = ifelse(state == "rest", T, F),
+         medium = ifelse(state == "medium", T, F),
+         high = ifelse(state == "high", T, F),
+         above = ifelse(lux > 2, T, F),
+         time = lubridate::hour(datetime)*60 + lubridate::minute(datetime))
+```
+
+```{r echo=FALSE, fig.width=10, fig.asp=1.1, fig.cap="Curvas de densidade que mostram o padrão diário das atividades de alta intensidade por indivíduo."}
+ggplot(tuco[tuco$high,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, alpha = 0.2, color = "white") +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.8, bw = 60, kernel = "g", size = 0.7) +
+    geom_rug(aes(x = time, color = season), alpha = 0.05) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~ID, ncol = 3) +
+    geom_vline(xintercept = 1440/2, linetype = 3) +
+    scale_x_continuous(limits = c(0,1450), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_color_viridis_d() +
+    scale_fill_viridis_d() +
+    ggtitle("Alta Intensidade - Individual")
+```
+
+\newpage
+
+```{r echo=FALSE, fig.width=10, fig.asp=0.6, fig.cap="Curvas de densidade que mostram o padrão diário das atividades de alta intensidade por estação."}
+ggplot(tuco[tuco$high,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, alpha = 0.1, color = "white") +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.8, bw = 60, kernel = "g", size = 0.7) +
+    geom_rug(aes(x = time, color = season), alpha = 0.01) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~season, ncol = 2) +
+    geom_vline(xintercept = 1440/2, linetype = 2) +
+    scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_color_viridis_d() +
+    scale_fill_viridis_d()+
+      ggtitle("Alta Intensidade - Por Estação")
+```
+
+\newpage
+
+### Média Intensidade
+
+As curvas do padrão temporal para a atividade de média intensidade são espalhadas ao longo do dia e não possuem um padrão diário (de 24 horas).
+
+```{r echo=FALSE, fig.width=10, fig.asp=1.1, fig.cap = "Curvas de densidade para o padrão temporal das atividades de média intensidade por indivíduo."}
+ggplot(tuco[tuco$medium,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, alpha = 0.2, color = "white") +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.7, bw = 30, kernel = "g", size = 0.6) +
+    geom_rug(aes(x = time, color = season), alpha = 0.05) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~ID, ncol = 3) +
+    geom_vline(xintercept = 1440/2, linetype = 3) +
+    scale_x_continuous(limits = c(0,1450), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_fill_viridis_d() +
+      scale_color_viridis_d() +
+    ggtitle("Média Intensidade - Individual")
+
+```
+
+\newpage
+
+```{r echo=FALSE, fig.width=10, fig.asp=0.6, fig.cap="Curvas de densidade para o padrão temporal das atividades de média intensidade agrupadas por estação."}
+ggplot(tuco[tuco$medium,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, color = "white", alpha = 0.2) +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.8, bw = 30, kernel = "g", size = 0.7) +
+    geom_rug(aes(x = time, color = season), alpha = 0.01) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~season, ncol = 2) +
+    geom_vline(xintercept = 1440/2, linetype = 2) +
+    scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_fill_viridis_d() +
+    scale_color_viridis_d() +
+      ggtitle("Média Intensidade - Individual")
+
+```
+
+\newpage
+
+## Tempo em Cada Estado
+
+Com os dados classificados agor podemos calcular quanto tempo ou proporção do total de registros que cada animal passou nos diferentes estados. Vimos os episódios de alta intensidade estão mais concentrados durante o dia. Porém, a quantidade de episódios de alta intensidade varia ao longo do ano. Aparentemente os animais se movem mais em Outubro do que no inverno, por exemplo. Ou seja os animais passam mais tempo no estado de alta intensidade em outubro e menos no inverno.
+
+```{r include=FALSE}
+time_in_state_id = tuco %>% 
+group_by(ID) %>% 
+summarise(season = unique(season), 
+          rest = sum(state == "rest")/n(), 
+          medium = sum(state == "medium")/n(), 
+          high = sum(state == "high")/n())
+
+time_in_state_id = time_in_state_id %>% 
+  tidyr::pivot_longer(cols = c("rest","medium","high"), names_to = "state", values_to = "perc")
+time_in_state_id$state = factor(time_in_state_id$state, c("rest","medium", "high"))
+```
+
+```{r echo=FALSE, fig.width = 10, fig.asp=0.7, fig.cap = "Proporção do tempo de registro total que cada animal passou nos estados identificados pelo HMM."}
+ggplot(time_in_state_id, aes(perc, ID, fill = state)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = color_pal)+
+  theme_article() +
+  xlab("Time in State (%)") +
+  ylab("") +
+  theme(panel.grid.major.y = element_line(color = "grey90"))  +
+  scale_y_discrete(limits = rev, expand = c(0.05, 0)) +
+  scale_x_continuous(expand = c(0.02, 0)) +
+  geom_text(aes(label = round(perc, 2)), position = position_fill(vjust = 0.5), color = "white", size = 2.8)
+  #facet_wrap(~season, scales = "free_y")
+```
+
+```{r include=FALSE}
+time_in_state_season = tuco %>% 
+group_by(season) %>% 
+summarise(season = unique(season), rest = sum(state == "rest")/n(), medium = sum(state == "medium")/n(), high = sum(state == "high")/n())
+
+time_in_state_season = time_in_state_season %>% 
+  tidyr::pivot_longer(cols = c("rest","medium","high"), names_to = "state", values_to = "perc")
+time_in_state_season$state = factor(time_in_state_season$state, c("rest","medium", "high"))
+```
+
+```{r echo=FALSE, fig.asp=0.6, fig.width=10}
+ggplot(time_in_state_season, aes(perc, season, fill = state)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = color_pal)+
+  theme_article() +
+  xlab("Time in State (%)") +
+  ylab("") +
+  theme(panel.grid.major.y = element_line(color = "grey90"))
+  #scale_x_discrete(limits = rev, expand = c(0.20,0)) +
+  #scale_y_continuous(expand = c(0.02, 0))
+```
+
+--------------------------------------------------------------------------------
+\newpage
+
+# Ativadade de Superfície
+
+Visto como se comportam os dados da atividade geral agora vamos conferir os dados da atividade de superfície.
+
+- Timing da Atividade de superfície:
+  - Como as saídas à superfície estão organizadas no tempo? (O pico é maior no meio do dia no Inverno?)
+
+- Proporção da atividade de superfície:
+  - Quais estados são mais frequentes na superfície?
+  
+## Padrão Diário de Saídas
+
+Aqui estão coisas legais. Os dados de campo confirmar que os picos de saída estão mais concentrados no meio do dia em Julho do que em outras estações. Nas outras estções, porém, o segundo pico não é tão proeminente quanto o primeiro.
+
+```{r include=FALSE}
+lux_collar = c("JUL16","JUL17","JUL18","JUL20","JUL21","JUL23","OCT01","OCT10","FEV01", "FEV02", "FEV03", "FEV05","FEV06")
+
+tuco_lux = tuco %>% 
+  filter(ID %in% lux_collar) %>% 
+  filter(!is.na(lux))
+```
+
+```{r echo=FALSE, fig.asp=1.1, fig.width=10}
+ggplot(tuco_lux[tuco_lux$above,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, alpha = 0.2) +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.8, bw = 45, kernel = "g", size = 0.7) +
+    geom_rug(aes(x = time, color = season), alpha = 0.5) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~ID, ncol = 3) +
+    geom_vline(xintercept = 1440/2, linetype = 3) +
+    scale_x_continuous(limits = c(0,1450), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_color_viridis_d() +
+      scale_fill_viridis_d()
+```
+
+```{r fig.width=10, fig.asp=0.35}
+ggplot(tuco_lux[tuco_lux$above,]) +
+    geom_histogram(aes(x = time, y = ..density.., fill = season), 
+                   binwidth = 60, alpha = 0.3, color = "white") +
+    geom_density(aes(x = time, color = season), 
+                 alpha = 0.8, bw = 45, kernel = "g", size = 0.7) +
+    geom_rug(aes(x = time, color = season), alpha = 0.5) +
+    #stat_ecdf(aes(x = time, color = season)) +
+    #ggridges::geom_density_ridges(aes(x = time, y = season, fill = season), bandwidth = 45) +
+    facet_wrap(~season, ncol = 3) +
+    geom_vline(xintercept = 1440/2, linetype = 3) +
+    scale_x_continuous(limits = c(0,1450), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
+    theme_article() +
+    scale_color_viridis_d() +
+      scale_fill_viridis_d()
+```
+
+# Proporção dos Comportamentos que Acontecem na Superfície
+
+Com os dados classificados também podemos calcular a proporção dos estados que acontecem na superfície. Aqui os resultados parecem mostrar que quando estão na superfície os tucos estão mais ativos.
+
+```{r include=FALSE}
+tuco_lux_filled = tuco %>%
+  group_by(ID) %>% 
+  mutate(lux_filled = zoo::na.locf(lux, fromLast = T, na.rm = F))
+```
+
+```{r echo=FALSE}
+light_exp = 
+  tuco_lux_filled %>% 
+  group_by(ID) %>%
+  filter(lux_filled > 2) %>% 
+  summarise(season = unique(season), 
+            rest = sum(state == "rest")/n(), 
+            medium = sum(state == "medium")/n(), 
+            high = sum(state == "high")/n()) %>% 
+  tidyr::pivot_longer(cols = c("rest","medium","high"), names_to = "state", values_to = "perc")
+
+light_exp$state = factor(light_exp$state, c("rest","medium", "high"))
+
+ggplot(light_exp, aes(perc, ID, fill = state)) +
+  geom_bar(position = "stack", stat = "identity") +
+  scale_fill_manual(values = color_pal) +
+  theme_article() +
+  theme(panel.grid.major.y = element_line(color = "grey95"))
+```
+
+```{r}
+light_exp = 
+  tuco_lux_filled %>% 
+  group_by(season) %>%
+  filter(lux_filled > 2) %>% 
+  summarise(season = unique(season), 
+            rest = sum(state == "rest")/n(), 
+            medium = sum(state == "medium")/n(), 
+            high = sum(state == "high")/n()) %>% 
+  tidyr::pivot_longer(cols = c("rest","medium","high"), names_to = "state", values_to = "perc")
+
+light_exp$state = factor(light_exp$state, c("rest","medium", "high"))
+
+ggplot(light_exp, aes(season, perc, fill = state)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  scale_fill_manual(values = color_pal) +
+  theme_article() +
+  theme(panel.grid.major.y = element_line(color = "grey95"))
+```
+
+
+

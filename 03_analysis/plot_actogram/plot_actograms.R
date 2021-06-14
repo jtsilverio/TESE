@@ -6,11 +6,11 @@ library(data.table)
 library(scales)
 library(egg)
 library(data.table)
-source("03_analysis/functions/stat-bar-tile-etho.R") # From ggetho
-source("03_analysis/functions/stat-tile-etho.R") # From ggetho
+source("03_analysis/plot_actogram/stat-bar-tile-etho.R") # From ggetho
+source("03_analysis/plot_actogram/stat-tile-etho.R") # From ggetho
 
 # Read Data
-tuco = readRDS("01_data/rds/tuco_preprocessed.rds")
+tuco = readRDS("01_data/activity_processed/tuco_preprocessed.rds")
 
 # number of days to show on actogram
 ndays = 5
@@ -70,50 +70,47 @@ c_trans <- function(a, b, breaks = b$breaks, format = b$format) {
 rev_date <- c_trans("reverse", "date")
 
 # Actograms Activity Bar -------------------------------------------------------
-sexlabels = unique(na.omit(tuco %>% select(ID, sex)) %>% group_by(ID) %>% mutate(sex = if_else(sex == "m", "♂", "♀")))
-
 actograms =
     ggplot(data = tuco, aes(x = time, y = date)) +
     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
     scale_y_continuous(trans = rev_date) +
-    #geom_bar_tile(aes(height = lux), width = 5, fill = "orange", alpha = 0.9) +
-    #geom_bar_tile(aes(height = vedba, fill = season), width = 1) +
-    stat_bar_tile_etho(mapping = aes(z = lux), fill = "orange", alpha = 0.8, width = 5) +
-    stat_bar_tile_etho(mapping = aes(z = vedba), width = 1) +
+    geom_bar_tile(data = tuco, mapping = aes(height = lux), fill = "orange", alpha = 0.4, width = 5) +
+    geom_bar_tile(mapping = aes(height = vedba), width = 1) +    
     facet_wrap(~ID, scales = "free_y", ncol = 3) +
     xlab("") +
     ylab("") + 
     theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95"))
 
+sexlabels = unique(tuco %>% select(ID, sex)) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
 actograms = actograms + geom_text(x = Inf, y = Inf, 
-                                  aes(label = sex, color = sex), 
+                                  aes(label = sex), 
                                   data = sexlabels, vjust = 1.2, hjust = 1.2, 
-                                  fontface = "bold", size = 5, family = "Arial Unicode MS") + 
+                                  size = 3, family = "Arial Unicode MS") + 
     theme(legend.position = "none")
 
 
-ggsave(filename = "actograms.png", path = "04_figures/",plot = actograms, device = "png", dpi = 132, width = 210, height = 290, units = "mm")
+ggsave(filename = "04_figures/actograms/actograms.png",plot = actograms, device = "png", dpi = 132, width = 210, height = 290, units = "mm")
 
-# Actograms Activity Heatmap ---------------------------------------------------
-actograms_heatmap =
-    ggplot(data = tuco, aes(x = time, y = date)) +
-    scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
-    scale_y_continuous(trans = rev_date) +
-    stat_tile_etho(mapping = aes(z = vedba)) +
-    facet_wrap(facets = vars(ID), scales = "free_y", ncol = 3) +
-    xlab("VeDBA") +
-    ylab("") + 
-    theme_article() +
-    theme(panel.grid.major.y = element_line(color = "grey95")) +
-    theme(legend.position = "bottom")
-
-actograms_heatmap = actograms_heatmap + geom_text(x = Inf, y = Inf, 
-                                  aes(label = sex, color = sex), 
-                                  data = sexlabels, vjust = 1.2, hjust = 1.2, 
-                                  fontface = "bold", size = 5, family = "Arial Unicode MS")
-
-ggsave(filename = "actograms_heatmap.png", path = "04_figures/",plot = actograms_heatmap, device = "png", dpi = 132, width = 210, height = 290, units = "mm")
+# # Actograms Activity Heatmap ---------------------------------------------------
+# actograms_heatmap =
+#     ggplot(data = tuco, aes(x = time, y = date)) +
+#     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
+#     scale_y_continuous(trans = rev_date) +
+#     stat_tile_etho(mapping = aes(z = vedba)) +
+#     facet_wrap(facets = vars(ID), scales = "free_y", ncol = 3) +
+#     xlab("VeDBA") +
+#     ylab("") + 
+#     theme_article() +
+#     theme(panel.grid.major.y = element_line(color = "grey95")) +
+#     theme(legend.position = "bottom")
+# 
+# actograms_heatmap = actograms_heatmap + geom_text(x = Inf, y = Inf, 
+#                                   aes(label = sex, color = sex), 
+#                                   data = sexlabels, vjust = 1.2, hjust = 1.2, 
+#                                   fontface = "bold", size = 5, family = "Arial Unicode MS")
+# 
+# ggsave(filename = "actograms_heatmap.png", path = "04_figures/",plot = actograms_heatmap, device = "png", dpi = 132, width = 210, height = 290, units = "mm")
 
 # Actograms Collar Temp Heatmap -------------------------------------------------------
 

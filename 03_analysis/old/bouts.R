@@ -1,9 +1,10 @@
 bouts = function(data){
-	aboveground = ifelse(test = data$lux >= 2, yes = TRUE, no = FALSE)
-	number = integer()
+	#aboveground = ifelse(test = data$lux >= 2, yes = TRUE, no = FALSE)
+	aboveground = data
+    number = integer()
 	duration = integer()
 	
-	if (!anyNA(aboveground)){
+	if (!anyNA(data)){
 		n = 0 # counter for bout number
 		d = 0 # counter for bout duration
 		for (i in 1:length(aboveground)) {

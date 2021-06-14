@@ -6,13 +6,15 @@ library(data.table)
 library(scales)
 library(egg)
 library(data.table)
-source("03_analysis/functions/stat-bar-tile-etho.R") # From ggetho
-source("03_analysis/functions/stat-tile-etho.R") # From ggetho
+library(momentuHMM)
+source("03_analysis/plot_actogram/stat-bar-tile-etho.R") # From ggetho
+source("03_analysis/plot_actogram/stat-tile-etho.R") # From ggetho
 
 # Read Data
 tuco = readRDS("01_data/activity_processed/tuco_preprocessed.rds")
-tuco_states = readRDS("01_data/activity_processed/tuco_states.rds")
-tuco = merge.data.table(tuco, tuco_states, by = c("ID","datetime"))
+m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com estação
+decoded = viterbi(m2)
+tuco$state = factor(decoded, labels = c("rest","medium","high"))
 
 # number of days to show on actogram
 ndays = 5
@@ -73,17 +75,18 @@ rev_date <- c_trans("reverse", "date")
 
 # Actograms Activity Bar -------------------------------------------------------
 actograms =
-    ggplot(data = tuco[state %in% c("2","3")], aes(x = time, y = date)) +
+    ggplot(data = tuco[state %in% c("medium","high")], aes(x = time, y = date)) +
     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
     scale_y_continuous(trans = rev_date) +
     geom_bar_tile(data = tuco, mapping = aes(height = lux), fill = "orange", alpha = 0.4, width = 5) +
-    geom_bar_tile(mapping = aes(height = vedba, fill = state, colour = state), width = 1) +
+    geom_bar_tile(mapping = aes(height = vedba, color = state), width = 1) +
     facet_wrap(~ID, scales = "free_y", ncol = 3) +
     xlab("") +
     ylab("") + 
     theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95")) +
-    theme(legend.position = "none")
+    theme(legend.position = "none")+
+    scale_color_manual(values = color_pal)
 
 sexlabels = unique(tuco %>% select(ID, sex)) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
 actograms = actograms + geom_text(x = Inf, y = Inf, 
@@ -96,7 +99,7 @@ ggsave(filename = "actograms_states.png", path = "04_figures/actograms/",plot = 
 
 # Actograms Activity Bar Medium ------------------------------------------------
 actograms =
-    ggplot(data = tuco[state %in% c("2")], aes(x = time, y = date)) +
+    ggplot(data = tuco[state %in% c("medium")], aes(x = time, y = date)) +
     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
     scale_y_continuous(trans = rev_date) +
     geom_bar_tile(data = tuco, mapping = aes(height = lux), fill = "orange", alpha = 0.4, width = 5) +
@@ -107,7 +110,7 @@ actograms =
     theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95")) +
     theme(legend.position = "none") +
-    ggtitle("Atividade Média")
+    ggtitle("Medium Activity Only")
 
 sexlabels = unique(tuco %>% select(ID, sex)) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
 actograms = actograms + geom_text(x = Inf, y = Inf, 
@@ -120,7 +123,7 @@ ggsave(filename = "actograms_states_medium.png", path = "04_figures/actograms/",
 
 # Actograms Activity Bar HIGH --------------------------------------------------
 actograms =
-    ggplot(data = tuco[state %in% c("3")], aes(x = time, y = date)) +
+    ggplot(data = tuco[state %in% c("high")], aes(x = time, y = date)) +
     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
     scale_y_continuous(trans = rev_date) +
     geom_bar_tile(data = tuco, mapping = aes(height = lux), fill = "orange", alpha = 0.4, width = 5) +
@@ -131,7 +134,7 @@ actograms =
     theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95")) +
     theme(legend.position = "none") +
-    ggtitle("Atividade Alta")
+    ggtitle("High Activity Only")
 
 sexlabels = unique(tuco %>% select(ID, sex)) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
 actograms = actograms + geom_text(x = Inf, y = Inf, 
@@ -144,7 +147,7 @@ ggsave(filename = "actograms_states_high.png", path = "04_figures/actograms/",pl
 
 # Actograms Activity Bar REST --------------------------------------------------
 actograms =
-    ggplot(data = tuco[state %in% c("1")], aes(x = time, y = date)) +
+    ggplot(data = tuco[state %in% c("rest")], aes(x = time, y = date)) +
     scale_x_continuous(limits = c(0, 1440), breaks = c(0,360,720,1080,1440), labels = c(0,6,12,18,24)) +
     scale_y_continuous(trans = rev_date) +
     geom_bar_tile(data = tuco, mapping = aes(height = lux), fill = "orange", alpha = 0.4, width = 5) +
@@ -155,7 +158,7 @@ actograms =
     theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95")) +
     theme(legend.position = "none") +
-    ggtitle("Repouso")
+    ggtitle("Rest Bouts Only")
 
 sexlabels = unique(tuco %>% select(ID, sex)) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
 actograms = actograms + geom_text(x = Inf, y = Inf, 

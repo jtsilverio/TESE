@@ -1,4 +1,0 @@
-# Preparing to Run
-
-1. Copy data to folder 01_data
-2. Run 02_data_processing/preprocessing.R

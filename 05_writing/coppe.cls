@@ -58,11 +58,15 @@
 \RequirePackage{lastpage}
 \RequirePackage{ifthen}
 \RequirePackage{graphicx}
-\RequirePackage{setspace}
+\RequirePackage{setspace}[doublespacing]
 \RequirePackage{tabularx}
 \RequirePackage{eqparbox}
 \RequirePackage{ltxcmds}
+\RequirePackage{mathpazo} % added to change default font
+\RequirePackage[english,brazil]{babel}
+\RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
+
 \RequirePackage[a4paper,bindingoffset=0.0cm,vcentering=true,%
 top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 \def\CoppeTeX{{\rm C\kern-.05em{\sc o\kern-.025em p\kern-.025em
@@ -109,15 +113,15 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 \DeclareOption{numbers}{%
 	\PassOptionsToPackage{numbers}{natbib}
 }
-\onehalfspacing
-\DeclareOption{doublespacing}{%
+%\onehalfspacing
+%\DeclareOption{doublespacing}{%
 	\doublespacing
-}
+%}
 \ProcessOptions\relax
 \if@english
-\RequirePackage[english]{babel}
+%\RequirePackage[english]{babel}
 \else
-\RequirePackage[english,brazil]{babel}
+%\RequirePackage[english,brazil]{babel}
 \fi
 \addto{\captionsenglish}{%
 	\renewcommand{\bibname}{References}

@@ -1,53 +1,129 @@
-# Daily activity patterns in the Anillaco Tuco-tuco (_Ctenomys sp._)
+# Daily activity patterns in the Anillaco Tuco-tuco (*Ctenomys sp.*)
+
+```{r read-data, include=FALSE}
+tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
+tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
+```
+
+## Introduction
 
 ## Methods
 
-### Study site
+### Study Species
 
-Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area, with little human disturbance and no artificial light source. The area is surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (_Larrea cuneifolia_ Cav., _Tricomaria usillo_), Fabaceae (_Prosopis torquata_, _Senna aphylla_) and Cactaceae (_Trichocereus_ spp, _Tephrocactus_ spp) [@abrahamOverviewGeographyMonte2009; @aranda-rickertExtrafloralNectarFuels2014; @fracchiaDispersalArbuscularMycorrhizal2011]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (_Larrea cuneifolia_, _Tricomaria usillo_), Poaceae (_Microchloa indica_, _Aristida mendocina_) and Fabaceae (_Zuccagnia punctata_) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C [@fracchiaDispersalArbuscularMycorrhizal2011], with clear differences in the daily range and between summer and winter months [@abrahamOverviewGeographyMonte2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchiaDispersalArbuscularMycorrhizal2011].
+The studied Ctenomys population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amaya2016]. In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco [@amaya2016] and as *Ctenomys aff. knightii* [@tomotani2012] or *Ctenomys cf. knightii* [@valentinuzzi2009].
+
+### Study Site
+
+Field work was conducted at one site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area, with little human disturbance and no artificial light source. The area is surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (*Larrea cuneifolia* Cav., *Tricomaria usillo*), Fabaceae (*Prosopis torquata*, *Senna aphylla*) and Cactaceae (*Trichocereus* spp, *Tephrocactus* spp) [@abraham2009; @fracchia2011; @aranda-rickert2011a]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (*Larrea cuneifolia*, *Tricomaria usillo*), Poaceae (*Microchloa indica*, *Aristida mendocina*) and Fabaceae (*Zuccagnia punctata*) (see Appendix). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (see Appendix). The mean annual temperature is 16.6°C [@fracchia2011], with clear differences in the daily range and between summer and winter months [@abraham2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchia2011].
 
 ```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange icon) at the Monte Desert, approximately 5km away form the village of Anillaco, northwest of Argentina"}
 
 include_graphics("../04_figures/map/tuco_map.png")
 ```
- 
-### Study species
 
-The studied Ctenomys population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amayaFormFunctionLongrange2016]. In other studies this Ctenomys' species has been referred informally as the Anillaco tuco-tuco [@amayaDynamicSpatialOverlap2021] and as _Ctenomys aff. knightii_ [@tomotaniPosefeitosSincronizacaoEm2011] or _Ctenomys cf. knightii_ [@valentinuzziCircadianPatternWheel2009].
+### Animal Capture and Handling
 
-### Animal capture
+A total of 47 tucos were capture between 2019 and 2020. Out of these, **REF** were part of the present study and we were able to recaptured, and thus collect data, for 22 animals. Trapping was conducted in four different campaigns to the study site between 2019 and 2020. Three campaigns were done in 2019 during March-April, July and October. A fourth campaign was done in February 2020. A fifth campaign was planned to occur in April 2020 but had to be canceled due to the COVID outbreak. Tucos were captured using a custom made PVC tubing trap (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other. Before setting the trap the study site were scouted for active tuco's burrows. Active burrows could be identified by the presence of freshly excavated soil mounds. Once found burrows were excavated to open the access to the underground tunnels. Traps were placed at all active burrows found at the study site, limited to the number of traps available. Traps were placed horizontally at the burrow's entrance following the tunnel's orientation. Traps were set in the field during the morning and checked every 2 hours. At dusk traps were checked one last time and taken out, the exact time of the trap placement changed accordingly to the seasons. At every check traps were reset if they had been plugged with soil or if they had been activated without any tuco capture.
 
-Trapping was conducted in four different campaigns to the study site. Three campaigns were done in 2019 during March, July and October. A fourth campaign was done in February 2020. A fifth campaign was planned to occur in April 2020 but had to be canceled due to the COVID outbreak. Traps were placed at all active burrows found at the study site, limited to the number of traps available. Active burrows could be identified by the presence of freshly excavated soil mounds or by fresh soil plugging the burrow's entrance. Active plugged burrows were first excavated to open the access to the underground tunnels. Traps were placed horizontally at the burrow's entrance in the following the tunnel's orientation. Traps were set in the field during the morning and checked every 2 hours until the night when they were taken out, the exact time of the trap placement changed according to the season. Every check traps would be reset if they had been plugged with soil or had been activated without capturing any tuco. Our traps were custom made out of PVC tubing (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other.
+After capture, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive a collar. We used a clear plastic anesthesia chamber (318.5cm³) with a clip-on lid and a cotton ball inside. The cotton ball inside the chamber received approximately 0.5 mL of isoflurane (*REF*) before transferring the animal from the trap to the chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Anesthetized animal were weighted (CSseries, OHAUS, ± 1 g precision), sexed, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and fitted with biologging collar
 
-After capture, adult tucos (>120g) were first anesthetized in order to be carefully examined and receive a collar. We used a clear plastic anesthesia chamber (318.5cm³) with a clip-on lid and a cotton ball inside. We added approximately 0.5 mL of isoflurane (*REF*) to the cotton ball before transferring the animal from the trap to the plastic anesthesia chamber. While in the chamber tucos were observed for breathing, blinking and loss of righting reflex. Once the tucos could not right themselves they were removed from the chamber. Animals were then weighted, sexed, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and fitted with a collar with activity sensors and telemetry transmitter (SOM-2011. Wildlife Materials, Illinois, USA). The collar setup weighted approximately 6g. After receiving the collar, tucos were placed back in the trap and observed until fully recovered. They were released back in the same burrow they were captured. Marked animals were left in the field for 5-10 days before being recaptured for collar recovery. The telemetry transmitter were used to maximize the animals relocation thus avoiding the loss of the other devices. All animal captures, procedures and animal handling were authorized by the local authorities at _Dirección General de Ambiente y Desarrollo Sustentable – Secretaría de Ambiente del Ministerio de Producción y Desarollo Local_ – La Rioja, Argentina (#00501-17). All procedures were also approved by the Ethics Committee at the _Instituto de Biociências_ (#308-2018) and _Faculdade de Medicina Veterinária_ (#2045300519) of the _Universidade de São Paulo_. 
+Animals were released in the same burrow they were originally captured. They were left in the field for 5-18 days before being recaptured for collar recovery. The telemetry transmitter were used to maximize the animals relocation, thus avoiding the loss of the other devices. All animal captures, procedures and animal handling were authorized by the local authorities at *Dirección General de Ambiente y Desarrollo Sustentable -- Secretaría de Ambiente del Ministerio de Producción y Desarollo Local* -- La Rioja, Argentina (\#00501-17). All procedures were also approved by the Ethics Committee at the *Instituto de Biociências* (\#308-2018) and *Faculdade de Medicina Veterinária* (\#2045300519) of the *Universidade de São Paulo*.
 
-- apendice:
-    - fotos da armadilha ?
-    - foto do colar ?
-    - burrows
+-   Ao adicionar numero de animais tbm comentar da dificuldade em recapturar e em alguns casos capturar machos! Legal para futuras referencias. (Talvez nos resultados?)
 
-### Tuco's activity data
+### Activity Sensors
 
-The accelerometers attached to the animal's collar were configured to record at a 10 Hz sampling frequency with a 4G sensitivity. The lightloggers were set to record a sample every 5 minutes with light sensitivity ranging from 0.3 to 19000 lux.
+Accelerometer (Axy-4, TechnoSmart, Italy) and lightloggers (W65, Migrate Technology, UK) were used to record general motor activity and light exposure respectively. These biologgers were fixed to a collar made of a cable tie inserted through silicon tubing [@jannetti2019; @williams2014]. Out of the 22 captured animals, 13 received a collar containing an accelerometer, a lightlogger and a telemetry transmitter (SOM-2011. Wildlife Materials, USA). The remaining 9 animals received a collar containing only a telemetry transmitter and an accelerometer (Table \@ref(tab:sample-size)). The complete collar setup weighted approximately a total of 6g. Collars without the lightlogger weighted 5.3g. All accelerometers recorded tri-axial acceleration at a 10Hz sampling frequency with a 4G sensitivity. Lightloggers were set to sample light every minute but only recorded the maximum sampled value each 5 minutes.
 
-- Accelerometers are devices that continuously record the animal's movement in a three axis orthogonal system with a high sampling frequency (REF). 
-- a lightlogger (Migrate Technology, Cambridge, UK), a accelerometer (Axy3, Technosmart, Rome, Italy)
-- acelerometros
-- luximetros
+-   foto tuco com colar
 
+```{r sample-size, echo=FALSE}
+# Number of animals that received collars
+tuco.n = tuco.metadata %>%
+          group_by(Month = season) %>% 
+          summarise(n = length(ID), Accelerometer = sum(acc), Lightlogger = sum(lux)) %>% 
+          bind_rows(colSums(.[2:4]))
+tuco.n[which(is.na(tuco.n)),1] = "Total"
 
-### Data pre-processing
+kable(tuco.n, caption = "Total number of captured tucos and sensors deployed in the field.")
+```
 
-Vectorial Dynamic Body Acceleration [VeDBA, @qasemTriAxialDynamicAcceleration2012] was used as a proxy for the animal's activity level. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency (REF??). Generally, a 1 or 2-second moving average is used to calculated the static acceleration (REF??). However, in the case of the tucos we opted to use a 4-second moving average (40 data points) after following the method proposed by [@shepardDerivationBodyMotion2008, see Appendix]. (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axis, using:
+### Data Processing
+
+A total of 22 complete datasets were obtained from biologgers deployed in the field. Data were recorded onboard of the sensors and later downloaded and converted to raw text files. Accelerometer and lightlogger data were read and merged accordingly to date and time of recordings using purposely written R scripts. Time of recordings of accelerometers and lightloggers were not synchronized to the minute consequently we had to round the lightlogger recording times to the nearest 5 minutes in order to merge both data streams. We also removed the first and last days of each dataset, corresponding to the days of capturing and recapturing efforts, in order to minimize any effects that the capture, handling or recapture efforts could have in the animal's behavior.
+
+Acceleration data was used to measure the gross motor activity. The tri-axial acceleration data was first converted to one dimensional value using the Vectorial Dynamic Body Acceleration [VeDBA, @qasem2012]. VeDBA is commonly used as a proxy for the animal's activity level and energy expenditure (REFS). VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency. In the case of this study we opted to use a 4-second moving average after following the methodology proposed by [@shepard2008, see Appendix]. (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axis. Following VeDBA calculations the 1Hz acceleration data was downsampled by taking the median over a 1 minute non-overlapping sliding window.
 
 $$ VeDBA = \sqrt{Xd^2 + Yd^2 + Zd^2} $$
 
-- como dados foram resumidos
-- pq usamos esse tipo de resumo
+All VeDBA datapoints were classified as occuring during the daytime or nighttime based on the daylength od recording dates. Daytime activity was in turn classified as being above or underground. Daylength was calculated using the *maptools* package in R [@bivand2020], which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating Twilight times. We used Civil Twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occuring during the day or nighttime. Daylength change along the year can be seen in the Appendix.
 
-## Resultados
+Light exposure data was used to further classify data points as above or below ground during the daytime. The threshold for considering a data point as being aboveground was 2 lux, consistent with what has been done in [@jannetti2019]. All data processing and statistical analysis were conducted in R v4.0.2 [@rcoreteam2020] unless noted otherwise.
 
-- lista de animais
-- lista de pesos por sexo
-- lista de quanto tempo cada animal teve de registro
-- 
+### Hidden Markov Models
+
+Behavioral States were infered using Hidden Markov Models (HMMs). HMMs are type of dependent mixture models where the components of the mixture are selected by a underlying Markov Process. HMMs are composed of two time series: the observable *state-dependent process* ($X_t$) and a underlying, or hidden, *state process* ($S_t$). The underlying *state process* follow the Markov Property and take temporal dependency into account. The Markov property denotes that a state $S_t$ depends only on the previous state $S_{t-1}$. In the case of accelerometer and animal movement studies the states are representations of the animals' behavior and can take on finite number ($N$) of possible values. The number of states can be chosen *a priori* or based on model selection [@pohle2017]. The changes probabilities between states are also part of the of HMM formulation, summarized by a Transition Probability Matrix that gives the probability of transitioning from the current state to a possible future state. The *state process* is also what drives the observations and what we are interested in estimating.
+
+In the basic HMM formulation the observable *state-dependent process* comes from a mixture of $N$ distributions, one for each state. These distribution come from a common family (e.g. Normal, Weibull or Gamma) and each one have their own set of parameter values. The active distribution is determined by the state the system is in at a given time $t$. The observations therefore are a realization from one of these distributions. The distribution parameters, state transition probabilities and other model parameters can be estimated by numerical maximization of the Likelihood [@zucchini2016]. With the model parameters in hand, the most probable state sequence can be found by the Viterbi algorithm [@mcclintock2020; @zucchini2016].
+
+-   vantagem do HMM para modelar series temporais
+
+```{tikz, hmm, fig.caption = "Basic dependence structure for a Hidden Markov Model", fig.ext=if (knitr:::is_latex_output()) 'pdf' else 'svg', fig.width = 4, fig.height = 4, fig.align = 'center', echo = FALSE}
+  \usetikzlibrary{automata,positioning}
+  \begin{tikzpicture}
+  \tikzstyle{main}=[circle, minimum size = 5mm, thick, draw =black!80, node distance = 10mm]
+  \tikzstyle{connect}=[-latex, thick]
+  \tikzstyle{box}=[rectangle, draw=black!100]
+    \node[box,draw=white!100] (Observed) {\textbf{Observed}};
+    \node[main] (X1) [right=of Observed] {$X_1$};
+    \node[main] (X2) [right=of X1] {$X_2$};
+    \node[main] (X3) [right=of X2] {$X_3$};
+    \node[main] (Xt) [right=of X3] {$X_t$};
+    \node[box,draw=white!100] (Latent) [below=of Observed] {\textbf{Hidden}};
+    \node[main,fill=black!10] (S1) [right=of Observed,below=of X1] {$S_1$};
+    \node[main,fill=black!10] (S2) [right=of X1,below=of X2] {$S_2$};
+    \node[main,fill=black!10] (S3) [right=of X2,below=of X3] {$S_3$};
+    \node[main,fill=black!10] (St) [right=of X3,below=of Xt] {$S_t$};
+    \path (X3) -- node[auto=false]{\ldots} (Xt);
+    \path (S1) edge [connect] (S2)
+          (S2) edge [connect] (S3)
+          (S3) -- node[auto=false]{\ldots} (St);
+    \path (S1) edge [connect] (X1);
+    \path (S2) edge [connect] (X2);
+    \path (S3) edge [connect] (X3);
+    \path (St) edge [connect] (Xt);
+    \draw[dashed]  [below=of S1,above=of X1];
+  \end{tikzpicture}
+```
+
+### Model Formulation and State Classification
+
+In our models we have chosen VeDBA as our activity metric from which we want to infer the possible state sequences. We determined *a priori* that the hidden *state-process* could assume three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (see Appendix; Exploratory Data Analysis) and in the biological interpretability of the states. It is important to note that states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral modes (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to "Rest","Medium Intensity Activity" and "High Intensity Activity".
+
+HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute downsampled VeDBA data using a 'complete pooling' approach. Using this approach the *state-dependent* distribution parameters are common to all animals. This means that we assume that individuals are independent and behaviors do not change between animal and across the year. However, given that the season/month of the year seems to be a important feature influencing the VeDBA distribution (see Appendix; Exploratory Data Analysis) we included season as a covariate in the *state process*. Therefore, we let the probability of changing from one state to another vary in relation to the season/month of the year assuming that animals have the same **repertoire** of behaviors. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data [@burnham2002].
+
+Models were fitted using the momentuHMM package in R [@mcclintock2021]. We used the gamma distribution, parametrized with mean and standard deviation, to model VeDBA. The gamma distribution is a flexible distribution, usually used in movement studies (REFS), that accommodates positive right-skewed data. Appropriate starting values for likelihood maximization of the model's parameters were found by following procedures suggested by @michelot2019. Season was included as a categorical variable, its influence over the transition probabilities was summarized using stationary probabilities plots [@leosbarajas2017]. The most probable state sequence was decoded using the Viterbi algorhithm [@zucchini2016]. The decoded sequence was then used to conducted othet *post-hoc* analysis of rhythmicity and diurnality. We checked model assumptions and goodness of fit by visual inspection of the pseudo-residuals [@zucchini2016].
+
+-   michelot 2017 - Estimation and simulation of foraging trips in land-based marine predators. Ecology 98, 1932--1944. [doi.org/10.1002/ecy.1880](https://doi.org/10.1002/ecy.1880)
+
+### Rhythmicity and Diurnality Index
+
+## Results
+
+```{r}
+n_days = tuco %>% 
+    group_by(ID) %>% 
+    summarise(n_days = max(day_number))
+
+kable(n_days)
+```
+
+-   lista de animais
+-   lista de quanto tempo cada animal teve de registro
+-   tabela parametros estimados
+-   residuos, model fit
+
+## Discussion
+
+-   Optamos pelo tipo de modelos mais simples com outras a analises a posteriori. Existem outros métodos interessantes Patterson 2009. Extensions to out model could include (...)
