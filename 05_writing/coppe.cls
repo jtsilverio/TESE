@@ -63,7 +63,7 @@
 \RequirePackage{eqparbox}
 \RequirePackage{ltxcmds}
 \RequirePackage{mathpazo} % added to change default font
-\RequirePackage[english,brazil]{babel}
+\RequirePackage[english]{babel}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
 
@@ -808,6 +808,3 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 %% 
 %%
 %% End of file `coppe.cls'.
-
-
-

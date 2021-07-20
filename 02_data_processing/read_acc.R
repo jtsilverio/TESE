@@ -1,15 +1,15 @@
-library(data.table) # For speed instead of data.frames we are using data.tables
-library(lubridate)
-options(digits.secs=5)
-
 ################################################ 
 ### 1. READ ACCELEROMETER DATA FROM FOLDERS ####
 ################################################
+# This script reads all the raw csv files and merge them into one data set
+# It can be run standalone but it is already called in the data processing script (processing.R)
+library(data.table) # For speed instead of data.frames we are using data.tables
+library(lubridate)
 # Set data folder
 dir.data = paste0(getwd(),"/01_data/activity_raw")
 # Get all files in data folder
 files = list.files(path = dir.data, pattern = "*\\.csv$", full.names = F)
-# Disconsider animal OCT02 - It was predated and collar found 1km from the tunnel
+# Disconsider animal OCT02 - It was predated and collar found 1km from the tunnel malfunctiong.
 files = files[files != "OCT02.csv"]
 
 tuco_acc = vector("list", length(files)) # Initialize a empty list
@@ -17,8 +17,7 @@ for (i in 1:length(files)) {
     # 1. READ FILE
     message("\nReading file:", files[i], "...")
     tuco_acc[[i]] = fread(paste0(dir.data,"/",files[i]),
-                          header = T,   # ignore file's header
-                          #skip = 1 ,    # skip first line corresponding to header
+                          header = T,
                           sep = "auto", # set sep to auto. Some files use comma, others space
                           fill = T,
                           select = c("Timestamp","X","Y","Z","Temp. (?C)"),
@@ -34,7 +33,6 @@ for (i in 1:length(files)) {
     tuco_acc[[i]][, day_number := frank(as_date(datetime), ties.method = "dense")]
     tuco_acc[[i]] = tuco_acc[[i]][day_number > 1 & day_number < last(day_number)] 
     tuco_acc[[i]][, day_number := frank(as_date(datetime), ties.method = "dense")]
-    
     
     # DELETE PARTICULAR DATA
     # delete last 5 days of #FEV05 because it was brought to the lab and continued recording for a week
@@ -58,5 +56,5 @@ tuco_acc[,ID := factor(ID, levels = c("MAR01", "MAR02",
                                       "OCT01", "OCT08", "OCT09", "OCT10", "OCT13", "OCT14",
                                       "FEV01", "FEV02", "FEV03", "FEV05", "FEV06"))]
 
-# Save created data.frame as a .rds file
+#Save created data.frame as a .rds file
 #saveRDS(tuco_acc, "data_rds/activity/tuco_10hz_raw.rds")

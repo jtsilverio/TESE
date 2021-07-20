@@ -9,8 +9,6 @@ anillaco = matrix(c(-66.95, -28.8), nrow = 1)
 anillaco_seq <- seq(from=as.POSIXct("2019-01-01", tz="America/Argentina/La_Rioja"), length.out=400, by="days")
 
 # Calculate Sunrise and Sunset Times
-#sunrise = sunriset(anillaco, anillaco_seq, direction="sunrise", POSIXct.out=TRUE)$day_frac * 24
-#sunset  = sunriset(anillaco, anillaco_seq, direction="sunset", POSIXct.out=TRUE)$day_frac  * 24
 dawn    = crepuscule(crds = anillaco, dateTime = anillaco_seq,
                      solarDep = 6, direction = "dawn", POSIXct.out=TRUE)$day_frac  * 24
 dusk    = crepuscule(crds = anillaco, dateTime = anillaco_seq,

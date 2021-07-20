@@ -35,6 +35,8 @@ add_sex_season = function(data){
     animals[, weight_cap := NULL]
     animals[, acc := NULL]
     animals[, lux := NULL]
+    animals[, recaptured := NULL]
+    animals[, collar_recovered := NULL]
     animals[, sex := as.factor(sex)]
     animals[, season := as.factor(season)] 
     
@@ -48,18 +50,20 @@ downsample = function(data, window = 600, FUN = median){
     #' Downsample the 10Hz data to a lower frequency.
     #' 
     #' Get split data, aggregate VeDBA and Temp by FUN with a non-overlapping window
-    #' Return a new data frame with smaller size
+    #' Return a new data frame with a smaller size
 
     id_apply = function(df){
         endpoints = seq(window, length(df$vedba), by = window)
         vedba_aggregated = period.apply(df$vedba, endpoints, FUN, na.rm = T)
         temp_aggregated = period.apply(df$temp, endpoints, FUN, na.rm = T)
         
-        #endpoints = endpoints[1:(length(endpoints) - 1)]
         df = df[endpoints,]
         df[,vedba := vedba_aggregated]
         df[,temp := temp_aggregated]
-        df[,datetime := round_date(datetime, unit = )]
+        df[,datetime := round_date(datetime, unit = "minutes")]
+        df = df[1:(nrow(df) -1)] # Delete the last row of the dataframe. It always round up to midnight, so there is only one record on that day. If we delete it now it doesn't get in the way of plotting later.
+        df[,day_number := frank(as_date(datetime), ties.method = "dense")] # Because we rounded datetime we need to re rank the day_number
+        
         
         return(df)
     }
@@ -105,7 +109,7 @@ if (sys.nframe() == 0){
     tuco_acc[, c("Xd","Yd","Zd") := NULL]
 
     # Downsample --------------------------------------------------------------
-    tuco_acc = downsample(tuco_acc)
+    tuco_acc = downsample(tuco_acc, window = 300)
 
     # Join Acc and Lux --------------------------------------------------------
     source("02_data_processing/read_lux.R")
@@ -153,6 +157,6 @@ if (sys.nframe() == 0){
                         "temp", "vedba", "lux",
                         "lux_filled", "daytime", "aboveground"))
     
-    saveRDS(tuco, "01_data/activity_processed/tuco_processed.rds")
+    saveRDS(tuco, "01_data/activity_processed/tuco_processed_30s.rds")
     gc()
 }

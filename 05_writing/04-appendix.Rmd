@@ -1,7 +1,3 @@
----
-bibliography: references.bib
----
-
 `r if(knitr:::is_latex_output()) "\\appendix"` `r if(knitr:::is_latex_output()) "# Apêndice {-}"`
 
 # Anillaco's Plant Community
@@ -21,6 +17,8 @@ The results for the plant survey is in line with what has been described in the 
 ```
 
 # Anillaco's Yearly Daylength Changes
+
+- Adicionar tabela com duração do dia nas datas de coleta
 
 ```{r appendix-daylenght,  out.width = "100%", fig.cap = "Changes in daytime changes across the year in Anillaco, La Rioja. Maximum duration of daytime, during summer, is 14 hours and 53 minutes. Mininum duration of daytime, during winter, is 11 hours and 10 minutes."}
     include_graphics("../04_figures/appendix/plot_daylength.png")
@@ -43,7 +41,7 @@ The results for the plant survey is in line with what has been described in the 
 
 -   Adicionar o LL
 
-```{r echo=TRUE}
+```{r table-aic}
 #m1 = readRDS(paste0(dir, "/03_analysis/hmm/m1.rds"))  # Empty Model
 #m2 = readRDS(paste0(dir, "/03_analysis/hmm/m2.rds"))  # Model with season covariate
 
@@ -87,56 +85,59 @@ include_graphics("../04_figures/residuals/m2_PR.png")
 
 # VeDBA Actograms
 
-```{r out.width="95%"}
+```{r vedba-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_vedba.png")
 ```
 
 # High Activity Actograms
 
-```{r out.width="95%"}
+```{r high-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_high.png")
 ```
 
 # Medium Activity Actograms
 
-```{r out.width="95%"}
+```{r medium-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_medium.png")
 ```
 
 # Medium Activity Daily Patterns
 
-```{r diel-medium-density, fig.asp=0.6, fig.width=9, out.width="100%"}
-# plot_id = ggplot(tuco[tuco$medium]) +
-#     geom_histogram(aes(x = time, y = ..density.., fill = season), 
-#                    binwidth = 60, alpha = 0.5, color = "white") +
-#     #geom_vline(data = sunriset, aes(xintercept = dawn), linetype = 2, color = "grey70") +
-#     #geom_vline(data = sunriset, aes(xintercept = dusk), linetype = 2, color = "grey70") +
-#     geom_density(aes(x = time, color = season), 
-#                  alpha = 0.8, bw = 60, kernel = "g", size = 0.5) +
-#     facet_wrap(~ID, ncol = 3) +
-#     scale_x_continuous(limits = c(0,1450), breaks = c(0, 720, 1440), labels = c(0, 12, 24)) +
-#     scale_y_continuous(n.breaks = 2) +
-#     scale_color_viridis_d() +
-#     scale_fill_viridis_d() +
-#     theme(legend.position = "none",text = element_text(size = 11)) +
-#     ylab("") +
-#     xlab("")
-# 
-# 
-# plot_season = ggplot(tuco[tuco$medium,]) +
-#     geom_vline(data = sunriset_season, aes(xintercept = dawn), linetype = 2, color = "grey70") +
-#     geom_vline(data = sunriset_season, aes(xintercept = dusk), linetype = 2, color = "grey70") +
-#     geom_histogram(aes(x = time, y = ..density.., fill = season), 
-#                    binwidth = 60, alpha = 0.1, color = "white") +
-#     geom_density(aes(x = time, color = season), 
-#                  alpha = 0.8, bw = 60, kernel = "g", size = 0.7) +
-#     geom_rug(aes(x = time, color = season), alpha = 0.01) +
-#     facet_wrap(~season, ncol = 2) +
-#     scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
-#     scale_color_viridis_d() +
-#     scale_fill_viridis_d() +
-#     ylab("") +
-#     theme(legend.position = "none")
-# 
-# plot_id + plot_season + plot_layout(widths = c(1,3))
+```{r setup-data-appendix}
+# Read Models
+m1 = readRDS("../03_analysis/hmm/m1.rds")  # modelo vazio
+m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com
+
+# Viterbi State Decoding
+decoded = viterbi(m2)
+tuco$state = factor(decoded, labels = c("rest","medium","high"))
+
+# Widen State Column, so its a little bit easier to index by state.
+tuco = tuco %>%
+    mutate(rest = ifelse(state == "rest", T, F),
+           medium = ifelse(state == "medium", T, F),
+           high = ifelse(state == "high", T, F))
+
+# Calculate Sunrise and Sunset Times
+anillaco = matrix(c(-66.95, -28.8), nrow = 1)
+sunriset = tuco %>% select(ID, season, datetime) %>%
+  group_by(ID, season) %>%
+  summarise(datetime = median(datetime))
+
+sunriset$dawn = maptools::crepuscule(crds = anillaco,
+                                    dateTime = sunriset$datetime,
+                                    solarDep = 6,
+                                    direction = "dawn",
+                                    POSIXct.out=TRUE)$day_frac  * 1440
+
+sunriset$dusk = maptools::crepuscule(crds = anillaco,
+                                    dateTime = sunriset$datetime,
+                                    solarDep = 6,
+                                    direction = "dusk",
+                                    POSIXct.out=TRUE)$day_frac  * 1440
+
+sunriset_season = sunriset %>%
+  group_by(season) %>%
+  summarise(dawn = median(dawn), dusk = median(dusk))
 ```
+
