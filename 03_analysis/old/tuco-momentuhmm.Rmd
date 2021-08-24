@@ -1,0 +1,213 @@
+---
+title: "Tuco-momentuHMM"
+author: "Jefferson"
+date: "12/16/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, cache = F)
+
+library(momentuHMM)
+library(data.table)
+library(zoo)
+library(maptools)
+library(cowplot)
+library(egg)
+library(ggplot2)
+source("functions/DBA.R")
+```
+
+```{r read-data}
+# Read Data
+#tuco = readRDS("data/activity/tuco_subset.rds")
+tuco = readRDS("data/activity/tuco_10hz_raw.rds")
+#tuco = readRDS("data/activity/tuco_subset_8animals_3days_season_sex.rds")
+names(tuco)[1] = "ID"
+```
+
+```{r calculate-vedba}
+# Calculate Dynamic acceleration
+tuco[, c("Xd", "Yd" , "Zd") := DBA(X, Y, Z), by = ID]
+tuco[, c("X","Y","Z") := NULL]
+# Calculate VeDBA
+tuco[, vedba := sqrt(Xd^2 + Yd^2 + Zd^2)]
+# Remove X,Y,Z Columns
+tuco[, c("Xd","Yd","Zd") := NULL]
+```
+
+```{r downsample-5s}
+# # Downsample with mean each 5sec
+# tuco = tucfo[, lapply(X = .SD, FUN = rollapply, width = 50, by = 50, mean), by = ID, .SDcols = c('vedba')]
+# tuco = na.omit(tuco)
+```
+
+```{r downsample-10s}
+# Downsample with mean each 5sec
+tuco[, vedba := rollapply(data = vedba, FUN = mean, width = 100, by = 100, fill = NA), by = ID]
+tuco = na.omit(tuco)
+```
+
+```{r prepare-data}
+# MomentumHMM Prepare data
+tuco.prep = momentuHMM::prepData(tuco, coordNames = NULL, dataNames = c("vedba"))
+#plot(tuco.prep, dataNames = "vedba")
+summary(tuco.prep, dataNames = "vedba")
+```
+
+```{r fit-hmm}
+# chute de alguns parametros iniciais
+# para acharmos os minimos globais ainda é necessário testar outros parâmetros inicias
+#par = c(0.1, 0.3, 0.8, 0.2, 0.5, 2, 0.0003, 0.0003, 0.0003)
+par = c(0.01, 0.1, 0.4, 0.01, 0.1, 0.5, 0.0003, 0.0003, 0.0003)
+
+(tuco.fit = fitHMM(data = tuco.prep, 
+       nbStates = 3, 
+       dist = list(vedba = "gamma"), 
+       Par0 = list(vedba = par)))
+```
+
+```{r}
+plot(tuco.fit, breaks = 100, plotCI = T, ask = F)
+```
+
+```{r decode-states, fig.height=30}
+# Decodificando os estados no dataframe original
+#tuco$state = as.factor(viterbi(tuco.fit))
+
+ggplot(tuco, aes(datetime, vedba, fill = state)) +
+        geom_col() +
+        scale_x_datetime() +
+        theme_article() +
+        theme(panel.grid.major.x = element_line(colour = "grey", linetype = "dotted")) +
+        xlab("") +
+        facet_wrap(vars(ID), scales = "free", ncol = 3)
+
+```
+
+```{r fig.width=12}
+library(dplyr)
+prop.state = tuco %>% 
+        group_by(ID) %>% 
+        summarise(prop = prop.table(table(state)))
+prop.state$state = as.factor(rep(1:3, length(unique(tuco$ID))))
+
+ggplot(prop.state, aes(y = prop, x = ID, fill = state)) +
+        geom_col(stat = "identity") +
+        scale_y_continuous(limits = c(0,1), breaks = c(0,0.25,0.5,0.75,1)) +
+        theme_article() +
+        theme(panel.grid.major.y = element_line(colour = "grey", linetype = "dotted"))
+```
+
+```{r}
+prop.state = data.table(prop.state)
+### SEASON ----------------------------
+prop.state[,season := factor()]
+
+prop.state[ID == "MAR01", season := "autumn"]
+prop.state[ID == "MAR02", season := "autumn"]
+
+prop.state[ID == "JUL15", season := "winter"]
+prop.state[ID == "JUL16", season := "winter"]
+prop.state[ID == "JUL17", season := "winter"]
+prop.state[ID == "JUL18", season := "winter"]
+prop.state[ID == "JUL19", season := "winter"]
+prop.state[ID == "JUL20", season := "winter"]
+prop.state[ID == "JUL21", season := "winter"]
+prop.state[ID == "JUL23", season := "winter"]
+
+prop.state[ID == "OCT01", season := "spring"]
+prop.state[ID == "OCT08", season := "spring"]
+prop.state[ID == "OCT09", season := "spring"]
+prop.state[ID == "OCT10", season := "spring"]
+prop.state[ID == "OCT13", season := "spring"]
+prop.state[ID == "OCT14", season := "spring"]
+
+prop.state[ID == "FEV01", season := "summer"]
+prop.state[ID == "FEV02", season := "summer"]
+prop.state[ID == "FEV03", season := "summer"]
+prop.state[ID == "FEV05", season := "summer"]
+prop.state[ID == "FEV06", season := "summer"]
+
+prop.state[,sex := factor()]
+
+prop.state[ID == "MAR01", sex := "f"]
+prop.state[ID == "MAR02", sex := "f"]
+
+prop.state[ID == "JUL15", sex := "f"]
+prop.state[ID == "JUL16", sex := "m"]
+prop.state[ID == "JUL17", sex := "f"]
+prop.state[ID == "JUL18", sex := "f"]
+prop.state[ID == "JUL19", sex := "m"]
+prop.state[ID == "JUL20", sex := "m"]
+prop.state[ID == "JUL21", sex := "f"]
+prop.state[ID == "JUL23", sex := "f"]
+
+prop.state[ID == "OCT01", sex := "f"]
+prop.state[ID == "OCT02", sex := "m"]
+prop.state[ID == "OCT08", sex := "m"]
+prop.state[ID == "OCT09", sex := "f"]
+prop.state[ID == "OCT10", sex := "f"]
+prop.state[ID == "OCT13", sex := "f"]
+prop.state[ID == "OCT14", sex := "f"]
+
+prop.state[ID == "FEV01", sex := "f"]
+prop.state[ID == "FEV02", sex := "f"]
+prop.state[ID == "FEV03", sex := "m"]
+prop.state[ID == "FEV05", sex := "m"]
+prop.state[ID == "FEV06", sex := "f"]
+```
+
+```{r}
+ggplot(prop.state, aes(season, prop.N, fill = state)) +
+        geom_point() +
+        geom_boxplot() 
+```
+
+```{r}
+days = tuco %>% 
+        group_by(ID) %>% 
+        summarise(days = max(day_number))
+
+prop.state = left_join(prop.state, days, by = "ID")
+prop.mean = prop.state %>% 
+        group_by(season, sex, state) %>% 
+        summarise(mean = weighted.mean(prop.N, days))
+
+ggplot(prop.mean, aes(state, mean, fill = state)) +
+        geom_col(position = "dodge", stat = "identity") +
+        facet_wrap(vars(season)) +
+        theme_article() +
+        theme(panel.grid.major.y = element_line(colour = "grey", linetype = "dotted"))
+```
+
+
+```{r, fig.height=50, fig.width=10}
+source("functions/stat-bar-tile-etho.R")
+
+tuco[,time := data.table::hour(datetime) + data.table::minute(datetime)/60 + data.table::second(datetime)/3600]
+tuco[,date := lubridate::date(datetime)]
+
+ggplot(data = tuco, aes(x = time, y = reorder(date, desc(date), tz = "America/Argentina/La_Rioja"))) +
+        scale_x_continuous(limits = c(0,24), breaks = c(0,6,12,18,24)) +
+        #scale_y_date(date_labels = "%d") +
+        geom_bar_tile(aes(height = vedba), width = 0.04) +
+        facet_wrap(facets = vars(ID, state), scales = "free_y", ncol = 3) +
+        xlab("") +
+        ylab("") + 
+        theme_bw()
+```
+
+```{r fig.width=10, fig.height=4}
+ggplot(data = tuco[ID %in% c("JUL20")], aes(x = time, y = reorder(date, desc(date), tz = "America/Argentina/La_Rioja"))) +
+        scale_x_continuous(limits = c(0,24), breaks = c(0,6,12,18,24)) +
+        #scale_y_date(date_labels = "%d") +
+        geom_bar_tile(aes(height = vedba), width = 0.04) +
+        facet_wrap(facets = vars(ID, state), scales = "free_y", ncol = 3) +
+        xlab("") +
+        ylab("") + 
+        theme_bw()
+```
+
+
+

@@ -1,9 +1,17 @@
-tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
+library(dplyr)
+library(ggplot2)
+library(momentuHMM)
 
-# Viterbi State Decoding
+tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
+
+# Read Models ------------------------------------------------------------------
+m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com 
+
+# Viterbi Decoding -------------------------------------------------------------
 decoded = viterbi(m2)
 tuco$state = factor(decoded, labels = c("rest","medium","high"))
 
+# Calculate Daylenght ----------------------------------------------------------
 anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
 daylength = tuco[, .(datetime = median(datetime)), by = ID]
 
@@ -22,6 +30,7 @@ daylength$dusk = maptools::crepuscule(crds = anillaco,
 daylength = daylength[, .(daylength = dusk - dawn), by = ID]
 tuco = left_join(tuco, daylength, by = "ID")
 
+# Calculate Time in States -----------------------------------------------------
 time_in_state = tuco %>% 
     group_by(ID, season, daylength, daytime, state) %>% 
     summarise(n = n()) %>% 
@@ -31,19 +40,21 @@ time_in_state = tuco %>%
     unique() %>% 
     ungroup()
 
-# AOV HIGH ---------------------------------------------------------------------
+# ANOVA TESTS ------------------------------------------------------------------
+
+# AOV HIGH
 aov_high = aov(data = time_in_state %>% filter(state == "high"), formula = diurnality~season)
 summary(aov_high)
 #plot(aov_high)
 TukeyHSD(aov_high)
 
-# AOV MEDIUM -------------------------------------------------------------------
+# AOV MEDIUM
 aov_medium = aov(data = time_in_state %>% filter(state == "medium"), formula = diurnality~season)
 summary(aov_medium)
 #plot(aov_medium)
 TukeyHSD(aov_medium)
 
-# AOV REST ---------------------------------------------------------------------
+# AOV REST
 aov_rest = aov(data = time_in_state %>% filter(state == "rest"), formula = diurnality~season)
 summary(aov_rest)
 #plot(aov_rest)
