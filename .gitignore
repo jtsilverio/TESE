@@ -4,5 +4,7 @@
 .Ruserdata
 00_workspaces/
 01_data/activity_raw/
+01_data/activity_processed/
+01_data/activity_processed/tuco_10hz_smooth_subset.rds
 01_data/lux_raw/
 07_models_rds/
