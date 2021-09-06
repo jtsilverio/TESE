@@ -35,7 +35,7 @@ daily_budget_id = daily_budget_id %>%
 
 # ANOVA TESTS ------------------------------------------------------------------
 # AOV HIGH
-aov_high = aov(data = daily_budget_id %>% filter(state == "High"), formula = perc~season)
+aov_high = aov(data = daily_budget_id, formula = perc~season+state)
 summary(aov_high)
 #plot(aov_high)
 TukeyHSD(aov_high)

@@ -69,7 +69,7 @@ acfs$ID = factor(acfs$ID, levels = c("MAR01", "MAR02", "JUL15",
                                   "OCT14", "FEV01", "FEV02",
                                   "FEV03", "FEV05", "FEV06"))
 
-# Find ACF Peaks ----------------------------------------------------------
+# Find ACF Peaks (RI) ----------------------------------------------------------
 peaks_acf = acfs %>% 
     group_by(ID, state) %>% 
     summarise(data.frame(pracma::findpeaks(acf, minpeakdistance = 1100, npeaks = 3))) %>%
@@ -112,7 +112,7 @@ acf_plot = ggplot(data = acfs, mapping = aes(x = lag, y = acf)) +
           text = element_text(size = 9.5))
 
 # Save Data and Plot --------------------------------------------------------
-saveRDS(peaks_acf, "03_analysis/ACF/peaks_acf.rds")
+saveRDS(peaks_acf, "03_analysis/ACF/RI.rds")
 
 ggsave("04_figures/ACF/acf_plot.png", 
        acf_plot, "png", bg = "white",

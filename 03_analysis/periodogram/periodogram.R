@@ -140,7 +140,7 @@ ggsave("04_figures/periodogram/periodogram.png",
 peaks_period = left_join(peaks_period, tuco.metadata)
 peaks_period$season = factor(peaks_period$season, levels = c("March","July","October","February"))
 
-bx_plot = ggplot(peaks_period, aes(x = season, y = peak/60, color = season)) +
+period_distribution = ggplot(peaks_period, aes(x = season, y = peak/60, color = season)) +
     facet_grid(~state) +
     gghalves::geom_half_boxplot() +
     gghalves::geom_half_point() +
@@ -148,4 +148,14 @@ bx_plot = ggplot(peaks_period, aes(x = season, y = peak/60, color = season)) +
     scale_x_discrete(label = c("Mar","Jul","Oct","Feb")) +
     ylab("Period (h)") +
     xlab("")
+
+ggsave("04_figures/periodogram/period_distribution.png", 
+       period_distribution,
+       "png",
+       bg = "white",
+       width = 210,
+       height = 290,
+       units = "mm",
+       dpi = 200)
+
 
