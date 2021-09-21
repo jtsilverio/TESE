@@ -8,28 +8,28 @@ library(patchwork)
 source("05_writing/tuco_theme.R")
  
 # Read Data ---------------------------------------------------------------
-tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
-tuco.metadata = fread("01_data/animals/animal_metadata.csv")
+tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
+tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
 
 
 # Read Model --------------------------------------------------------------
-m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com 
+m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com 
 
 # Viterbi State Decoding --------------------------------------------------
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("rest","medium","high"))
+tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
 
 # Widen State Column
 tuco = tuco %>% 
-    mutate(rest = ifelse(state == "rest", T, F),
-           medium = ifelse(state == "medium", T, F),
-           high = ifelse(state == "high", T, F))
+    mutate(Rest = ifelse(state == "Rest", T, F),
+           Medium = ifelse(state == "Medium", T, F),
+           High = ifelse(state == "High", T, F))
 
 # ACFs -------------------------------------------------------------------------
 # Calculate ACF for each state and then find the third peak in the timeseries
 tuco_split = split(tuco, tuco$ID)
 
-for (state in c("rest","medium","high","vedba")) {
+for (state in c("Rest","Medium","High","vedba")) {
     
     state_acf = lapply(tuco_split, function(x) as.numeric(x[[state]]))
     state_acf = lapply(state_acf, dplR::pass.filt,
@@ -40,7 +40,7 @@ for (state in c("rest","medium","high","vedba")) {
     state_acf = lapply(state_acf, acf, lag.max = 4000, plot = F)
     state_acf = data.table::rbindlist(state_acf, idcol = "ID", fill = T)
     
-    if(state == "rest"){
+    if(state == "Rest"){
         names(state_acf)[names(state_acf) == "acf"] = state
         acfs = state_acf
     }else{
@@ -50,15 +50,15 @@ for (state in c("rest","medium","high","vedba")) {
 
 # Calculate CI for ACF and merge season data
 acfs = acfs %>% 
-    dplyr::select(ID, lag, n.used, rest, medium, high, vedba) %>% 
+    dplyr::select(ID, lag, n.used, Rest, Medium, High, vedba) %>% 
     group_by(ID) %>% 
     mutate(acp_region = qnorm((1 + 0.9)/2) / sqrt(n.used)) %>% 
-    tidyr::pivot_longer(cols = c("rest","medium", "high","vedba"), names_to = "state", values_to = "acf") %>% 
+    tidyr::pivot_longer(cols = c("Rest","Medium", "High","vedba"), names_to = "state", values_to = "acf") %>% 
     ungroup() %>% 
     left_join(tuco.metadata)
 
 acfs$state = factor(acfs$state,
-                    levels = c("rest", "medium", "high", "vedba"))
+                    levels = c("Rest", "Medium", "High", "vedba"))
 
 # Reorder IDs
 acfs$ID = factor(acfs$ID, levels = c("MAR01", "MAR02", "JUL15",
@@ -78,19 +78,24 @@ peaks_acf = acfs %>%
     slice_tail()
 
 # get CI for peaks
-peaks_acf = left_join(peaks_acf, acfs %>% dplyr::select(ID, season, state, lag, acp_region),
+peaks_acf = left_join(peaks_acf,
+                      acfs %>% dplyr::select(ID,
+                                             season,
+                                             state,
+                                             lag,
+                                             acp_region),
                   by = c("ID", "state", "lag"))
 
 peaks_acf = peaks_acf %>% 
             mutate(acp = ifelse(acf > acp_region, T, F))
 
 # reorder factors
-peaks_acf$state = factor(peaks_acf$state, levels = c("rest", "medium", "high", "vedba"))
+peaks_acf$state = factor(peaks_acf$state, levels = c("Rest", "Medium", "High", "vedba"))
 
 # ACF Plots -------------------------------------------------------------------
 
 # Visual Classification of autocorrelation plots based on ACF plots
-rhythmicity = readr::read_csv("03_analysis/ACF/rhythmicity_acf.csv", col_types = "ffl")
+rhythmicity = readr::read_csv("../03_analysis/ACF/rhythmicity_acf.csv", col_types = "ffl")
 peaks_acf = left_join(peaks_acf, rhythmicity)
 peaks_acf$acf = ifelse(peaks_acf$rhythmic == F, NA, peaks_acf$acf)
 peaks_acf$acf = ifelse(peaks_acf$acp == F, NA, peaks_acf$acf)
@@ -112,7 +117,7 @@ acf_plot = ggplot(data = acfs, mapping = aes(x = lag, y = acf)) +
           text = element_text(size = 9.5))
 
 # Save Data and Plot --------------------------------------------------------
-saveRDS(peaks_acf, "03_analysis/ACF/RI.rds")
+saveRDS(peaks_acf, "../03_analysis/ACF/acf_peaks.rds")
 
 ggsave("04_figures/ACF/acf_plot.png", 
        acf_plot, "png", bg = "white",

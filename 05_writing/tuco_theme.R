@@ -1,9 +1,7 @@
-tuco_pal = c(rest = "#DDAA33",
-             medium = "#BB5566",
-             high = "#004488",
-             Rest = "#DDAA33",
+tuco_pal = c(Rest = "#DDAA33",
              Medium = "#BB5566",
-             High = "#004488")
+             High = "#004488",
+             vedba = "#37474f")
 
 theme_tuco =
     egg::theme_article() +

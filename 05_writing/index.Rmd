@@ -84,13 +84,14 @@ source(file = "tuco_theme.R") # Set Theme and Color Pallete
 if(knitr::is_latex_output()){
   library(kableExtra)
   kable = function(data, caption = NULL){
-    knitr::kable(data,
+    knitr::kable(x = data,
                  booktabs = TRUE,
                  digits = 3,
                  align = "c",
-                 caption = caption) %>% 
-    kable_styling(position = "center", 
-            latex_options = "hold_position")
+                 caption = caption,
+                 format = "latex") %>% 
+    kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
+    print()
   }
 }else{
     library("magick")
