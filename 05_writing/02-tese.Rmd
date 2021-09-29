@@ -14,11 +14,34 @@ library(data.table)
 library(dplyr)
 library(momentuHMM)
 library(maptools)
+
+# Set Global Chunk Options
+knitr::opts_chunk$set(
+    fig.align = "center",
+    echo = FALSE, 
+    message = FALSE,
+    warning = FALSE
+    )
+```
+
+```{r set-theme}
+tuco_pal = c(Rest = "#DDAA33",
+             Medium = "#BB5566",
+             High = "#004488",
+             vedba = "#37474f")
+
+theme_tuco =
+    egg::theme_article() +
+    theme(text = element_text(size = 14) 
+          #axis.title = element_text(size = 12),
+          #legend.text = element_text(size = 10),
+          #legend.title = element_text(size = 12)
+        )
+
+theme_set(theme_tuco)
 ```
 
 ```{r review-only, include=FALSE}
-source(file = "tuco_theme.R") # Set Theme and Color Pallete
-
 # Set LaTeX tables styling
 if(knitr::is_latex_output()){
   library(kableExtra)
@@ -42,14 +65,6 @@ if(knitr::is_latex_output()){
         plot(zoom = 2, expand = 10)
     }
 }
-
-# Set Global Chunk Options
-knitr::opts_chunk$set(
-    fig.align = "center",
-    echo = FALSE, 
-    message = FALSE,
-    warning = FALSE
-    )
 ```
 
 ```{r read-data}
@@ -114,28 +129,28 @@ objetivos: - tbm testar a necessidade de classificar para ritmicidade
 
 ### Study Species
 
-The studied *Ctenomys* population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amaya2016]. In other studies this *Ctenomys'* species has been referred informally as the Anillaco tuco-tuco [@amaya2016] and as *Ctenomys* aff. *knightii* [@tomotani2012] or *Ctenomys* cf. *knightii* [@valentinuzzi2009].
+The studied *Ctenomys* population lacks a formal phylogenetic and taxonomic classification but there are some lines of evidence suggesting that the study area is occupied by a single unidentified species [@amaya2016]. In other studies, the studied *Ctenomys'* species has been referred informally as the Anillaco tuco-tuco [@amaya2016] and as *Ctenomys* aff. *knightii* [@tomotani2012] or *Ctenomys* cf. *knightii* [@valentinuzzi2009].
 
 ### Study Site
 
-Field work was conducted at a site located approximately 5km away from the village of Anillaco, in the province of La Rioja, northwest of Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area, with little human disturbance and no artificial light source. The area is surrounded by the Sierra de Velasco moutain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (*Larrea cuneifolia* Cav., *Tricomaria usillo*), Fabaceae (*Prosopis torquata*, *Senna aphylla*) and Cactaceae (*Trichocereus* spp, *Tephrocactus* spp) [@abraham2009; @fracchia2011; @aranda-rickert2011a]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (*Larrea cuneifolia*, *Tricomaria usillo*), Poaceae (*Microchloa indica*, *Aristida mendocina*) and Fabaceae (*Zuccagnia punctata*) (Fig. \@ref(fig:appendix-plants)). The climate is arid with marked daily cycle and seasonality in temperature and rainfall (Fig. \@ref(fig:appendix-weather)). The mean annual temperature is 16.6°C [@fracchia2011], with clear differences in the daily range and between summer and winter months [@abraham2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchia2011].
+Field work was conducted at a site located approximately 5km away from the village of Anillaco, in the province of La Rioja, Northwest Argentina. The study site (-66.95°, -028.80, 1325m; Fig. \@ref(fig:methods-map)) is a relatively undisturbed natural area, with little human disturbance and no artificial light source. The area is surrounded by the Sierra de Velasco mountain range, located within the Monte Desert biome. The Monte Desert is characterized as an open shrubland dominated by Zygophyllaceae (*Larrea cuneifolia* Cav., *Tricomaria usillo*), Fabaceae (*Prosopis torquata*, *Senna aphylla*) and Cactaceae (*Trichocereus* spp, *Tephrocactus* spp) [@abraham2009; @fracchia2011; @aranda-rickert2011a]. At the study site a non-extensive survey of the plant community divided in three transects showed a dominance of the families Zygophyllaceae (*Larrea cuneifolia*, *Tricomaria usillo*), Poaceae (*Microchloa indica*, *Aristida mendocina*) and Fabaceae (*Zuccagnia punctata*) (Fig. \@ref(fig:appendix-plants)). The climate is arid with marked daily and seasonal cycles in temperature and rainfall (Fig. \@ref(fig:appendix-weather)). The mean annual temperature is 16.6°C [@fracchia2011], with clear differences in the daily range and between summer and winter months [@abraham2009]. The mean annual rainfall ranges from 145 to 380mm concentrated almost exclusively in the summer months [@fracchia2011].
 
-```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange icon) at the Monte Desert, approximately 5km away form the village of Anillaco, northwest of Argentina"}
+```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange icon) at the Monte Desert, approximately 5km away from the village of Anillaco, northwest of Argentina"}
 
 include_graphics("../04_figures/map/tuco_map.png")
 ```
 
 ### Animal Capture and Handling
 
-A total of 47 tuco-tucos were captured between March 2019 and March 2020. Out of these, 30 were part of the present study. Trapping was conducted in four different campaigns to the study site. Three campaigns were done in 2019 during March-April, July and October. A fourth campaign was done in February 2020. A fifth campaign was planned to occur in May 2020 but had to be canceled due to the COVID outbreak. Tuco-tucos were captured using a custom-made PVC tubing trap (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other. Before setting the traps the study site was scouted for active tuco-tuco's burrows. Active burrows could be identified by the presence of freshly excavated soil mounds at the burrow's entrance. Once found burrows were excavated to open the access to the underground tunnels and a trap was placed horizontally at the burrow's entrance following the tunnel's orientation. Traps were placed at all active burrows found at the study site, limited to a max of 20 traps available. Traps were set in the field during the morning and checked every 2 hours, when they were reset if they had been plugged with soil or if they had been activated without any tuco-tuco capture. Traps were checked for a last time at dusk and then taken out if no animal had been caught.
+A total of 47 tuco-tucos were captured between March 2019 and March 2020. Out of these, 30 were part of the present study. Trapping was conducted in four different campaigns to the study site. Three campaigns were done in 2019 during March-April (Autumn), July (Winter) and October (Spring). A fourth campaign was done in February 2020 (Summer). A fifth campaign was planned to occur in May 2020 but had to be canceled due to the COVID-19 outbreak. Tuco-tucos were captured using a custom-made PVC pipe trap (35cm length, 10cm diameter) with a spring-loaded aluminum door at one end and a cul-de-sac at the other. Before setting the traps, the study site was scouted for active tuco-tuco's burrows. Active burrows could be identified by the presence of freshly excavated soil mounds at the burrow's entrance. Once found, burrows were excavated to open the access to the underground tunnels and a trap was placed horizontally at the burrow's entrance following the tunnel's orientation. Traps were placed at all active burrows found at the study site, limited to a max of 20 traps available. Traps were set in the field during the morning and checked every 2 hours, when they were reset if they had been plugged with soil or if they had been activated without any tuco-tuco capture. Traps were checked for a last time at dusk and then taken out if no animal had been caught.
 
-After capture, adult tucos (\>120g) were first lightly anesthetized in order to be carefully examined and receive a biologging collar. We used a clear plastic anesthesia chamber (318.5cm³) with a clip-on lid and a cotton ball inside. The cotton ball received approximately 0.5 mL of isoflurane (***REF***) before transferring the animal from the trap to the chamber. While in the chamber animals were observed for breathing, blinking and loss of righting reflex. Once the tuco-tucos could not right themselves they were removed from the chamber. Anesthetized animals were weighted (CSseries, OHAUS, ± 1 g precision), sexed, assesed for reproductive status, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and fitted with a collar bearing biologgers (See Activity Sensors).
+After capture, adult tuco-tucos (\>120g) were lightly anesthetized in order to be carefully examined and receive a biologging collar. We used a clear plastic anesthesia chamber (318.5cm³) with a clip-on lid and a cotton ball affixed inside of the chamber, out of the animal’s reach. The cotton ball received approximately 0.5 mL of isoflurane before transferring the animal from the trap to the chamber. While in the chamber animals were observed for breathing, blinking and loss of righting reflex. Once the tuco-tucos could not right themselves they were removed from the chamber. Anesthetized animals were weighted (CSseries, OHAUS, ± 1 g precision), sexed, assessed for reproductive status, marked with a subcutaneous identification PITTag (Passive Integrative Transponder. Allflex, Brasil) and fitted with a collar bearing biologgers (See Activity Sensors).
 
-Animals were released in the same burrow they were originally captured. They were left in the field for 5-18 days before being recaptured for collar recovery. The telemetry transmitter were used to maximize the animals relocation, thus avoiding the loss of the other devices. All animal captures, procedures and animal handling were authorized by the local authorities at *Dirección General de Ambiente y Desarrollo Sustentable -- Secretaría de Ambiente del Ministerio de Producción y Desarollo Local* -- La Rioja, Argentina (\#00501-17). All procedures were also approved by the Ethics Committee at the *Instituto de Biociências* (\#308-2018) and *Faculdade de Medicina Veterinária* (\#2045300519) of the *Universidade de São Paulo*.
+Animals were released in the same burrow they were originally captured. They were left in the field for 5-18 days before being recaptured for collar recovery. The telemetry transmitter was used to maximize animal localization, thus avoiding the loss of the other devices. All animal captures, procedures and animal handling were authorized by the local authorities at *Dirección General de Ambiente y Desarrollo Sustentable -- Secretaría de Ambiente del Ministerio de Producción y Desarollo Local* -- La Rioja, Argentina (\#00501-17). All procedures were also approved by the Ethics Committee at the *Instituto de Biociências* (\#308-2018) and *Faculdade de Medicina Veterinária* (\#2045300519) of the *Universidade de São Paulo*.
 
-### Activity Sensors
+### Biologgers
 
-Accelerometers (Axy-4, TechnoSmart, Italy) and lightloggers (W65, Migrate Technology, UK) were used to record general motor activity and light exposure, respectively. These biologgers were attached to a collar made of a cable tie inserted through silicon tubing [@jannetti2019; @williams2014]. A telemetry transmitter (SOM-2011. Wildlife Materials, USA) was also attached to the collar to assist in animal location during recapture and minimize sensor's loss. The complete collar setup (accelerometer, lightlogger and telemetry) weighted approximately a total of 6g. Collars without the lightlogger weighted 5.3g. All accelerometers recorded tri-axial acceleration at a 10Hz sampling frequency with a 4G sensitivity. Lightloggers were set to sample light every minute but only recorded the maximum sampled value each 5 minutes.
+Accelerometers (Axy-4, TechnoSmart, Italy) and lightloggers (W65, Migrate Technology, UK) were used to record general motor activity and light exposure, respectively. These biologgers were attached to a collar made of a cable tie inserted through silicon tubing [@jannetti2019; @williams2014; Fig. \@ref(fig:methods-collar)]. A telemetry transmitter (SOM-2011. Wildlife Materials, USA) was also attached to the collar to assist in animal location during recapture and minimize sensor's loss. The complete collar setup (accelerometer, lightlogger and telemetry) weighted approximately a total of 6g. Collars without the lightlogger weighted 5.3g. All accelerometers recorded tri-axial acceleration at a 10Hz sampling frequency and 4G sensitivity. Lightloggers were set to sample illuminance every minute but only recorded the maximum sampled value each 5 minutes. The lighlogger possible recording range was 1-19000 lux.
 
 ```{r methods-collar, echo=F, out.width = "100%", fig.cap="Collar setup and example of field deployment. Upper photo shows the complete collar setup with accelerometer, lightlogger and the telemetry transmitter. Bottom photo shows a tuco-tuco wearing a collar. In the bottom photo it is possible to see the acceleromer and the lightlogger attached to the collar."}
 
@@ -144,25 +159,25 @@ include_graphics("../04_figures/collar/collar_tuco.png")
 
 ### Data Processing
 
-Data were recorded on board of the sensors and later downloaded and converted to raw text files using the software provided by the logger manufacturers. Acceleration data was used to measure gross motor activity. Tri-axial acceleration data was first reduced to one dimension using the Vectorial Dynamic Body Acceleration [VeDBA, @qasem2012]. VeDBA is commonly used as a proxy for the animal's activity level and energy expenditure (**REFS**). VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency. In this study we used a 4-second moving average after following the methodology proposed by [@shepard2008, Fig. \@ref(fig:appendix-smooth-window)]. (ii) Calculating the acceleration correspondent to the animal's movement, also know as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axes.
+Data were recorded on board of the sensors and later downloaded and converted to raw text files using the software provided by the device's manufacturers. Acceleration data was used to measure gross motor activity. Tri-axial acceleration data was first reduced to one dimension using the Vectorial Dynamic Body Acceleration [VeDBA, @qasem2012]. VeDBA is commonly used as a proxy for the animal's activity level and energy expenditure (**REFS**). VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency. In this study we used a 4-second moving average after following the methodology proposed by [@shepard2008, Fig. \@ref(fig:appendix-smooth-window)]. (ii) Calculating the acceleration correspondent to the animal's movement, also known as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axes.
 
 $$ VeDBA = \sqrt{Xd^2 + Yd^2 + Zd^2} $$
 
-Once VeDBA was calculated, the 1Hz acceleration data was downsampled by taking the median over a 1 minute non-overlapping sliding window. All VeDBA datapoints were classified as occuring during the daytime or nighttime based on the daylength of recording dates. Daylength was calculated using the *maptools* package in R [@bivand2020], which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating Twilight times. We used Civil Twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occuring during the day or nighttime. Daylength change along the year can be seen in the Appendix (\@ref(fig:appendix-daylenght)).
+Once VeDBA was calculated, the 1Hz acceleration data was downsampled by taking the median over a 1-minute non-overlapping sliding window. All VeDBA datapoints were classified as occurring during the daytime or nighttime based on the daylength of the recording dates. Daylength was calculated using the *maptools* package in R [@bivand2020], which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating twilight times. We used civil twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occurring during the day or nighttime. Daylength change along the year at the study site can be seen in the Appendix (Fig. \@ref(fig:appendix-daylenght)).
 
 Light exposure data was used to further classify VeDBA data points as above or below ground. The threshold for considering a data point as being aboveground was 2 lux, consistent with what has been done in @jannetti2019.
 
-Accelerometer and lightlogger data were merged accordingly to the date and times of recordings using purposely written R scripts [@rcoreteam2020]. Time of recordings between both devices were not synchronized to the minute. Consequently, we had to round lightlogger recording times to the nearest 5 minutes in order to merge both data streams.
+Accelerometer and lightlogger data were merged accordingly to the date and times of recordings using purposely written R scripts [@rcoreteam2020]. Time of recordings between both devices were not synchronized to the minute. Consequently, we had to round lightlogger recording times to the nearest 5 minutes to merge both data streams.
 
-In order exclude any effects that capture and recapture can have in the first days of recordings we removed the first and last days of all dataset. In cases where the recapture took longer than one day we also excluded these days. This corresponds to the last 5 days of two animals in February (FEV05 and JUL16); and the last 2 days of one animal in July (JUL23).
+In order to exclude any effects that capture and recapture can have in the animal's activity we removed the first and last days of all dataset. We also excluded the data corresponding to any days that exceed one day of recapturing, in cases where the recapture took longer than one day. This corresponds to the last 5 days of two animals in February (ID:FEV05 and ID:JUL16); and the last 2 days of one animal in July (ID:JUL23).
 
 ### Hidden Markov Models
 
-In order to further analyze and classify the 1-minute VeDBA data we used Hidden Markov Models (HMMs). HMMs are a type of time series model, therefore, they take into account the temporal dependency of the observations [@leosbarajas2017]. Consequently HMMs are well suited to model accelerometer data given their natural temporal dependency [@leosbarajas2017; @patterson2019]. HMMs are composed of two time series: the observable *state-dependent process* ($X_t$), VeDBA in our case, and an underlying, or hidden, *state process* ($S_t$). The *state process* is what drives the observations and what we are interested in estimating, which roughly corresponds to behavioral states (Fig. \@ref(fig:hmm-formulation)). We determined *a priori* a possible number of three different states. This decision was made based on our research question, in the VeDBA distributions (Fig. \@ref(fig:appendix-eda)) and in the biological interpretability of the states.
+We used Hidden Markov Models (HMMs) to further analyze and classify the 1-minute VeDBA data. HMMs are a type of time series model, therefore, they take into account the temporal dependency of the observations [@leosbarajas2017]. Consequently, HMMs are well suited to model accelerometer data given their intrinsic temporal dependency [@leosbarajas2017; @patterson2019]. HMMs are composed of two time series: the observable *state-dependent process* ($X_t$), VeDBA in our case, and an underlying, or hidden, *state process* ($S_t$). The *state process* is what drives the observations and what we are interested in estimating, which roughly corresponds to behavioral states (Fig. \@ref(fig:hmm-formulation)).
 
 The *state process* follows the Markov Property and take temporal dependency into account [@zucchini2016]. The Markov property denotes that a state $S_t$ depends only on the previous state $S_{t-1}$ [@zucchini2016]. In the case of accelerometer and animal movement studies the states are representations of the animals' behavior and can take on finite number ($N$) of possible values. The number of states can be chosen *a priori* or based on model selection [@pohle2017]. The changes in probabilities between states are also part of the of HMM formulation, summarized by a Transition Probability Matrix that gives the probability of transitioning from the current state to a possible future state.
 
-In the basic HMM formulation the observable *state-dependent process* comes from a mixture of $N$ distributions, one for each state. These distributions come from a common family (e.g. Normal, Weibull or Gamma) and each one have their own set of parameter values. The active distribution is determined by the state the system is in at a given time $t$. The observations therefore are a realization from one of these distributions. The distribution parameters, state transition probabilities and other model parameters can be estimated by numerical maximization of the Likelihood [@zucchini2016]. With the model parameters in hand, the most probable state sequence can be found by the Viterbi algorithm [@mcclintock2020; @zucchini2016].
+In the basic HMM formulation the observable *state-dependent process* comes from a mixture of $N$ distributions, one for each state. These distributions come from a common family (e.g. Normal, Weibull or Gamma) and each one have their own set of parameter values. The active distribution is determined by the state the system is in at a given time $t$. Therefore, the observations are a realization from one of these distributions. The distribution parameters, state transition probabilities and other model parameters can be estimated by numerical maximization of the Likelihood [@zucchini2016]. With the model parameters in hand, the most probable state sequence can be found by the Viterbi algorithm [@mcclintock2020; @zucchini2016].
 
 ```{tikz, hmm-formulation, fig.cap = "Basic dependence structure for a Hidden Markov Model", fig.ext = "pdf", fig.width = 4, fig.height = 4, fig.align = 'center', echo = FALSE}
   \usetikzlibrary{automata,positioning}
@@ -194,9 +209,9 @@ In the basic HMM formulation the observable *state-dependent process* comes from
 
 ### Model Formulation and State Classification
 
-In our models we have chosen VeDBA as our activity metric. To model the VeDBA we determined *a priori* that the hidden *state-process* could assume three different states ($N=3$). It is important to note that states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral states (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to "Rest","Medium Intensity Activity" and "High Intensity Activity".
+In our models we have chosen VeDBA as our activity metric. We determined *a priori* a possible number of three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (REF Fig. \@ref(fig:appendix-eda)) and in the biological interpretability of the states. It is important to note, however, that the states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral states (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to "Rest", "Medium Intensity Activity" and "High Intensity Activity".
 
-HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute VeDBA data using a 'complete pooling' approach. This means that the *state-dependent* distribution parameters are common to all animals. Therefore we assume that individuals are independent and behaviors are the same to all individuals and across the year. However, given that the season/month of the year seems to be an important feature influencing the VeDBA distribution (Fig. \@ref(fig:appendix-eda)) we included season as a covariate in the *state process*. Hence we let the probability of changing from one state to another vary in relation to the season/month of the year. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data [@burnham2002].
+HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute VeDBA data using a 'complete pooling' approach. This means that the *state-dependent* distribution parameters are common to all animals. Therefore, we assume that individuals are independent and behaviors are the same to all individuals and across the year. However, given that the season/month of the year seems to be an important feature influencing the VeDBA distribution (Fig. \@ref(fig:appendix-eda)) we included season as a covariate in the *state process*. Hence, nãwe let the probability of changing from one state to another vary in relation to the season/month of the year. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data [@burnham2002].
 
 Models were fitted using the momentuHMM package in R [@mcclintock2021]. We used the gamma distribution, parametrized with mean and standard deviation, to model VeDBA. The gamma distribution is a flexible distribution, usually used in movement studies (**REFS**), that accommodates positive right-skewed data. Appropriate starting values for likelihood maximization of model's parameters were found by following procedures suggested by @michelot2019. Season was included as a categorical variable, its influence over the transition probabilities was summarized using stationary probabilities plots [@leosbarajas2017]. The most probable state sequence was decoded using the Viterbi algorithm [@zucchini2016]. The decoded sequence was then used to conducted other *post-hoc* analysis of diurnality and rhythmicity. We checked model assumptions and goodness of fit by visual inspection of the pseudo-residuals [@zucchini2016].
 
@@ -204,35 +219,39 @@ Models were fitted using the momentuHMM package in R [@mcclintock2021]. We used 
 
 ### Diurnality Index
 
-We defined diurnality as the percentage of daytime the animals spent in one of the states in relation to the total time spent in the same state during both daytime and night-time. This is also corrected by the daylength of each season following @activity2000 and @jannetti2019. The formula for the calculation of diurnality is shown below, where $ts_day$ and $ts_night$ are the time spent in the state during the day and night respectively. $D_L$ and $N_L$ are the daylength and night-length, determined by the civil twilight.
+We defined diurnality index (DI) as the percentage of daytime the animals spent in one of the states in relation to the total time spent in the same state during both daytime and night-time, corrected by the daylength of each season [@activity2000 and @jannetti2019]. The DI ranges from 0 to 1, with 0 meaning that all activity happens during the night and 1 the opposite, that all activity happens during the day. 
+
+The equation for the diurnality is shown below, where $ts_{day}$ and $ts_{night}$ are the time spent in the state during the day and night respectively. $L_{day}$ and $L_{night}$ are the daylength and night-length, determined by the civil twilight.
 
 $$
-Diurnality = \frac{ts_{day}/D_L}{ts_{day}/D_L + ts_{night}/N_L}
+Diurnality = \frac{ts_{day}/L_{day}}{ts_{day}/L_{day} + ts_{night}/L_{night}}
 $$
 
 ### Circadian Rhythmicity and Period Estimation
 
-We used autocorrelation analysis [@levine2002; @dowse2009] and Lomb-Scargle periodograms to asses the strength and periodicity of activity rhythms. The autocorellation was calculated by comparing the data to itself lagged by a unit of time. The autocorrelation coefficient ranges from 0 to 1 and it is higher as the two time series are more similar to each other. When visually analyzing the autocorrelation plot, recurring peaks indicates that the data is periodic. The height of the peak shows how robust the rhythms is [@dowse2009]. The robustness of the rhythm, also referred as the Rhythmicity Index (RI), is defined as the autocorrelation coefficient at the third peak of the autocorrelation plot (i.e. the height of the third peak).
+We used autocorrelation analysis [@levine2002; @dowse2009] and Lomb-Scargle periodograms to assess the robustness and periodicity of activity rhythms. The autocorelation was calculated by comparing the data to itself lagged by a unit of time. The autocorrelation coefficient ranges from 0 to 1 and it is higher as the two time series are more similar to each other. When visually analyzing the autocorrelation plot, recurring peaks indicates that the data is periodic. The height of the peak shows how robust the rhythms is [@dowse2009]. The robustness of the rhythm, also referred as the Rhythmicity Index (RI), is defined as the autocorrelation coefficient at the third peak of the autocorrelation plot (i.e. the height of the third peak).
 
-We calculated the RI for the for the medium and high state-labelled data. For comparison we also calculated the RI for the unlabelled VeDBA data.
+Before estimating the RI, we applied a 3-hour low-pass Butterworth filter to remove periodicity lower than 3 hours in the data. Autocorrelation plots were first visually analyzed, if they showed recurring peaks in the 24-hour range were labeled as rhythmic. Animals that showed no recurring peaks were classified as arhythmic in the circadian range. Next, we estimated the period of each behavioral state, for animals that were classified as rhythmic, using the Lomb-Scargle periodogram [@leise2017]. 
 
-Before estimating the RI, we applied a 3-hour low-pass Butterworth filter to remove periodicity lower than 3 hour in the data. Autocorrelation plots were first visually analysed. Plots that showed recurring peaks in the 24-hour range were labeled as rhythmic. Animals that showed no recurring peaks were classified as arhythmic in the circadian range. Next, we estimated the period of each behavioral state, for animals that were classified as rhythmic, using the Lomb-Scargle periodogram [@leise2017].
+<!-- We calculated the RI for the for the medium and high state-labelled data. For comparison we also calculated the RI for the unlabelled VeDBA data. -->
 
 All analysis were done in R [@rcoreteam2020]. Butterworth filtering was done using the the *dlpR* package [@bunn2008]. Autocorrelation function and plots were done in base R. The peaks in the autocorrelation plots were found using the *pracma* package [@hansw.borchers2019]. Lomb-Scargle periodograms were calculated using the *lomb* package [@ruf1999].
 
 ### Statistical Analysis
 
-All analysis were done in R using the base packages [@rcoreteam2020]. We tested for seasonal differences in mean daily VeDBA, time spent in each state and diurnality using ANOVA followed by post-hoc Tukey-Kramer's test. Daily Activity patterns were visualized using Gaussian kernel density estimates.
+We tested for seasonal differences in mean daily VeDBA, time spent in each state and diurnality using ANOVA followed by post-hoc Tukey-Kramer's test. Daily Activity patterns were visualized using Gaussian kernel density estimates.
 
-The percentage of animals classified as Rhythmic and the values for RI were compared between states only, no seasonal analysis was done for these data. Given that some animals were classified as arrhythmic the sample number for each season was too low to perform any meaningful statistical analysis.
+The percentage of animals classified as Rhythmic and the values for RI were compared between states only, no seasonal analysis was done for these data. Given that some animals were classified as arrhythmic the sample number for each season was too low to perform a meaningful statistical analysis.
+
+All analysis were done in R using the base packages [@rcoreteam2020]. 
 
 \newpage
 
 ## Results
 
--   Ao adicionar numero de animais tbm comentar da dificuldade em recapturar e em alguns casos capturar machos! Legal para futuras referencias. (Talvez nos resultados?)
+- Ao adicionar numero de animais tbm comentar da dificuldade em recapturar e em alguns casos capturar machos! Legal para futuras referencias. (Talvez nos resultados?)
 
-During 2019-2020, we captured 30 tuco-tucos, 20 females and 10 males. Each tuco-tuco received a biologging collar, mostly containing an accelerometer and a lightlogger. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)). One collar was foung malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco's neck between the time of capture and recapture. All 21 animals that were recapture received a collar containing an accelerometer. However, only 13 also received a lightlogger (Table \@ref(tab:table-captures)). In total, we have 13 complete datasets, with acceleration and light exposure data, and 8 datasets with acceleration only.
+We captured and deployed collars to 20 females and 10 males. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)). One collar was found malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco-tuco's neck between the time of capture and recapture. All 21 animals that were recaptured received a collar containing an accelerometer. However, only 13 also received a lightlogger (Table \@ref(tab:table-captures)). In total, we have 13 complete datasets, with acceleration and light exposure data, and 8 datasets with acceleration only.
 
 ```{r calculate-captures, include=FALSE}
 # Since the tables have nested columns I couldn't generate them using R and opt to generated in LaTeX.
@@ -252,7 +271,7 @@ tuco.metadata %>%
                     Lightloggers = sum(lux & collar_recovered))
 ```
 
-```{=tex}
+```{tex table-captures}
 \begin{table}[h]
 \centering
 \caption{Number of captured animals and sensors deployed in the field. There was a higher number of females captured independent of the season. Recapture rates in February 2021 are lower because field work had to be interrupted due to the covid outbreak. Not all recaptured tucos still had their collars. Some collar were taken out by the animals between the time of captured and recaptured. One tuco was predated and the collar was found 1km away from the initial capture burrow malfunctioning.}
@@ -273,13 +292,14 @@ October  & 3                         & 6                           & 1          
 }
 \end{table}
 ```
+
 ### Daily Activity Levels
 
-Tuco-tuco's daily activity levels (24-hour average), measured by VeDBA, are significantly different across the year (ANOVA; F = 7.182, p \< 0.01; Fig. \@ref(fig:vedba-boxplot)). Post hoc comparisons using Tukey-Kramer's Test shows significant group differences between July-October and July-February (p \< 0.05). In both pairwise comparisons daily VeDBA levels in July are lower, showing a difference in means of 0.029 g and 0.019 g in comparison to October and February, respectively. In sum, daily VeDBA activity levels are lower in July in comparison to October and February (Fig \@ref(fig:vedba-boxplot)).
+Tuco-tuco's daily activity levels (24-hour average), measured by VeDBA, are significantly different across the year (ANOVA; F = 7.182, p \< 0.01; Fig. \@ref(fig:vedba-boxplot)). Post hoc comparisons using Tukey-Kramer's Test shows significant group differences between July-October and July-February (p \< 0.05). In both pairwise comparisons daily VeDBA levels in July are lower, showing a difference in means of 0.029 g in comparison to October and 0.019 g in comparison to February. In sum, daily VeDBA activity levels are lower in July in comparison to October and February (Fig \@ref(fig:vedba-boxplot)).
 
-The daytime VeDBA (Light Phase Average) is also significantly different between Months (ANOVA; F = 7.282, p \< 0.001). Post hoc comparisons using Tukey-Kramer's Test shows a difference in mean of 0.035 between October-July (p \< 0.05). However, daytime activity levels are only significantly different between July and October. (*REF ------------ Tirar?*)
+The daytime VeDBA (Light Phase Average) is also significantly different between Months (ANOVA; F = 7.282, p \< 0.001). Post hoc comparisons using Tukey-Kramer's Test shows a difference in mean of 0.035 between October-July only (p \< 0.05).
 
-```{r vedba-boxplot, fig.width=10, fig.asp = 0.4, out.width="100%", fig.cap="Tuco-tuco's Daily VeDBA levels. (A) VeDBA was binned by hour (0-23). Background lines show data for individual animals. Thick lines show mean hourly VeDBA. (B) Points show daily (24h) VeDBA mean for each animal. In July Tuco-tuco's exhibited lower Daily VeDBA than October and February. Dashed lines in Panel A shows time of civil dawn and dusk."}
+```{r vedba-boxplot, fig.width=10, fig.asp = 0.4, out.width="100%", fig.cap="Tuco-tuco's Daily VeDBA levels. (A) VeDBA was binned by hour (0-23). Background lines show data for individual animals. Thick lines show mean hourly VeDBA. (B) Points show daily (24h) mean VeDBA for each animal. In July Tuco-tuco's exhibited lower Daily VeDBA than October and February. Dashed lines in Panel A shows time of civil dawn and dusk. Asterisks shows significant statistical difference between groups in an ANOVA followed by Tukey-Kramer's Test."}
 
 # BOXPLOT -----------------------------------
 vedba_daily = tuco %>% 
@@ -364,9 +384,9 @@ graph_hourly + vedba_boxplot +
 
 ### Activity State Classification
 
-We modeled and classified VeDBA into three distinct behavioral states using Hidden Markov Models (HMMs). We fitted two different models, one empty model, with no covariates, and a second one with *'season'* as a covariate in the transition probability matrix. The second model was selected based on informational criterion ($\Delta$AIC \> 2; REF Tabela AIC nos supps).
+We fitted two different HMMs to VeDBA data, one empty model, with no covariates, and a second one with *'season'* as a covariate in the transition probability matrix. The second model was selected based on informational criterion ($\Delta$AIC \> 2; REF Tabela AIC nos supps).
 
-The estimated state-dependent distributions are shown in Figure \@ref(fig:hmm-plot). We interpreted and labelled these states as 'Rest', 'Medium intensity activity', and 'High intensity activity' corresponding to low, intermediate and high VeDBA values respectively. The marginal distribution (Fig. \@ref(fig:hmm-plot); dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Fig. \@ref(fig:appendix-residuals)) show that the residuals deviates from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \@ref(tab:appendix-parameters)).
+The estimated state-dependent distributions are shown in Figure \@ref(fig:hmm-plot). We interpreted and labelled these states as 'Rest', 'Medium intensity activity', and 'High intensity activity' corresponding to low, intermediate, and high VeDBA values respectively. The marginal distribution (Fig. \@ref(fig:hmm-plot); dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Fig. \@ref(fig:appendix-residuals)) shows that the residuals deviate from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \@ref(tab:appendix-parameters)).
 
 ```{r hmm-plot, echo=FALSE, fig.asp=0.6, fig.width=9, out.width="100%",warning=FALSE, fig.cap="State-dependent distributions of the selected Hidden Markov model fitted to the VeDBA acceleration metric. Histogram, in grey, shows the Vectorial Dynamic Body Acceleration (VeDBA) from the data of 21 Anillaco's tuco-tuco. State-dependent gamma distributions are shown above the histograms. These distributions are weighted accordingly to the proportion of observations assigned to each state."}
 params = list()
@@ -412,11 +432,11 @@ ggplot(tuco, aes(x = vedba)) +
     geom_line(data = d[d$state == "Marginal",], aes(x = x, y = density, color = state), size = 0.5, linetype = "dashed")
 ```
 
-We labelled VeDBA data using the Viterbi algorithm [@zucchini2016]. With the state-labeled data we were able to dissociate and visualize the daily patterns of each different state. Actograms and time series plot shows how the different states are related to the calculated VeDBA (Fig. \@ref(fig:actograms-results)). Visual analysis of diel rhythms in VeDBA and in the state-labelled data indicates the daily rhythm is more robust in the High Activity state in comparison to Medium Activity.
+With the state-labeled data we were able to dissociate and visualize the daily patterns of each different state. Actograms and time series plots show how the different states are related to the calculated VeDBA (Fig. \@ref(fig:actograms-results)). Visual analysis of diel rhythms in VeDBA and in the state-labelled data indicates the daily rhythm is more robust in the High Activity state in comparison to Medium Activity.
 
-However, despite being more concentrated during the daylight hours, High Activity episodes also occur sporadically during the night. Medium Activity, in turn, seems to be more disperse throughout the day with no clear daily rhythm. Individual Actograms for VeDBA and state-labelled data are presented in the Appendix (Figure \@ref(fig:vedba-actograms)).
+However, despite being more concentrated during the daylight hours, High Activity episodes also occur sporadically during the night. Medium Activity, in turn, seems to be more spread throughout the day with no clear 24-hour rhythm. Individual Actograms for VeDBA and state-labelled data are presented in the Appendix (Figure \@ref(fig:vedba-actograms)).
 
-```{r actograms-results, out.width = "100%", fig.cap = "Actograms and Time Series Plot of VeDBA and state-labelled data of a representative animal (ID:OCT09). The actograms shows daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C). Medium Activity State shows no clear pattern of a daily rhythm. High Activity is disperse throughout the day with a higher concentration during daylight hours. The time series (D) shows state-labelled VeDBA data. Dashed lines shows time of dawn and dusk."}
+```{r actograms-results, out.width = "100%", fig.cap = "Actograms and Time Series Plot of VeDBA and state-labelled data of a representative animal (ID:OCT09). The actograms shows daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C). Medium Activity State shows no clear pattern of a daily rhythm. High Activity is spread throughout the day with a higher concentration during daylight hours. The time series (D) shows state-labelled VeDBA data. Dashed lines shows time of dawn and dusk."}
   include_graphics("../04_figures/actograms/actograms_results.png")
 ```
 
@@ -424,7 +444,7 @@ However, despite being more concentrated during the daylight hours, High Activit
 
 ### Daily Activity Patterns
 
-Daily activity rhythms for each behavioral state are shown in Figure \@ref(fig:plot-patterns). These plots show that, qualitatively, the timing of occurrence of High Activity and Light Exposure episodes follow a diurnal pattern. Medium Activity, however, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year. In all four Months the peak of High Activity seems to be around 14:00. In turn, Light Exposure patterns changes along the year. In July, the peak of episodes of light exposure is more concentrated in the middle of the day. In other seasons the peak of Light Exposure episodes appears to be bimodal, with a higher peak in the first hours of daylight and a much smaller peak at the end of daylight.
+Daily activity rhythms for each behavioral state are shown in Figure \@ref(fig:plot-patterns). These plots show that, qualitatively, the timing of occurrence of High Activity and Light Exposure episodes follow a diurnal pattern. Medium Activity, however, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year. In all four Months the peak of High Activity is around 14:00. In turn, Light Exposure patterns changes along the year. In July, the peak of episodes of light exposure is more concentrated in the middle of the day. In other seasons the peak of Light Exposure episodes appears to be bimodal, with a higher peak in the first hours of daylight and a much smaller peak at the end of daylight.
 
 -   REF calculate peak
 -   REF adicionar linha do meio dia solar
@@ -461,7 +481,8 @@ plot_season = ggplot(tuco[tuco$high,]) +
     scale_fill_viridis_d() +
     ylab("") +
     theme(legend.position = "none") +
-    xlab("") + plot_layout(tag_level = "new")
+    xlab("Hour of the day") +
+    plot_layout(tag_level = "new")
 
 plot_high = wrap_plots(plot_id, plot_season, widths = c(1,3))
 ```
@@ -476,7 +497,7 @@ plot_id = ggplot(tuco[tuco$medium]) +
     scale_color_viridis_d() +
     scale_fill_viridis_d() +
     theme(legend.position = "none",text = element_text(size = 11)) +
-    ylab("") +
+    xlab("Hour of the day") +
     xlab("") +
     ggtitle("Medium Activity")
 
@@ -501,8 +522,6 @@ plot_medium = wrap_plots(plot_id, plot_season, widths = c(1,3))
 plot_id = ggplot(tuco[tuco$aboveground]) +
     geom_histogram(aes(x = time, y = ..density.., fill = season), 
                    binwidth = 60, alpha = 0.2) +
-    geom_vline(data = sunriset, aes(xintercept = dawn), linetype = 2, color = "grey70") +
-    geom_vline(data = sunriset, aes(xintercept = dusk), linetype = 2, color = "grey70") +
     geom_density(aes(x = time, 
                      color = season), 
                  alpha = 0.8,
@@ -518,8 +537,8 @@ plot_id = ggplot(tuco[tuco$aboveground]) +
     scale_fill_viridis_d() +
     theme(legend.position = "none",text = element_text(size = 11)) +
     ylab("") +
-    xlab("") + 
-  ggtitle("Light Exposure")
+    xlab("Hour of the day") + 
+    ggtitle("Light Exposure")
 
 
 plot_season = ggplot(tuco[tuco$aboveground,]) +
@@ -541,7 +560,7 @@ plot_season = ggplot(tuco[tuco$aboveground,]) +
 plot_light = wrap_plots(plot_id, plot_season, widths = c(1,3))
 ```
 
-```{r plot-patterns, fig.height = 15, fig.width=9, out.width="88%", fig.cap="Density estimate of daily activity patterns of tuco-tucos' behavioral states. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. Rug lines above the x-axis shows individual occurrences. Dotted vertical lines show time of civil twilights. (A) High Activity State shows a diurnal pattern independent of the time of the year. (B) Medium Activity State shows no daily pattern. (C) Light Exposure shows a diurnal rhythm that changes according to the season."}
+```{r plot-patterns, fig.height = 15, fig.width=9, out.width="88%", fig.cap="Density estimates of daily activity patterns of tuco-tucos' behavioral states. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. The x-axis is hour of the day in Anillaco, La Rioja (UTC-3). Rug lines above the x-axis shows individual occurrences. Dotted vertical lines show time of civil twilights. (A) High Activity State shows a diurnal pattern independent of the time of the year. (B) Medium Activity State shows no daily pattern. (C) Daily pattern of light exposure changes according to the season."}
 (plot_high / plot_medium / plot_light) + plot_annotation(tag_levels = "A")
 ```
 
@@ -549,12 +568,12 @@ plot_light = wrap_plots(plot_id, plot_season, widths = c(1,3))
 
 ### Daily Time-Activity Budgets
 
-On average tuco-tucos spent between 45-50% of the 24 hours in the Rest state, depending on the month. ANOVA test shows no statistical difference between the percentage of time spent resting between seasons (ANOVA; F = 1.93, p = 0.163). The remaining time is spent in an active state, either Medium or High Activity State (Table \@ref(tab:table-time-state))
+On average, tuco-tucos spent between 45-50% of the 24 hours in the Rest state, with no statistical difference between the percentage of time spent resting between seasons (ANOVA; F = 1.93, p = 0.163). The remaining time is spent in an active state, either Medium or High Activity State (Table \@ref(tab:table-time-state))
 
 Tuco-tucos spent a variable percentage of their daily active time in one of the two active states, High or Medium, across seasons. Daily time spent in High Activity was lower in July (15.8%) and higher in October (29.4%; \@ref(tab:table-time-state)). In contrast, daily time spent in a Medium Activity State was higher in July (34.1%) and lower in October (24.8%). There is a significant difference in the percentage of time spent in Medium (Fig. \@ref(fig:plot-time-state); ANOVA: F = 4.457, p = 0.0175) and High Activity State across seasons (Fig. \@ref(fig:plot-time-state); ANOVA: F = 13.62, p = \< 0.001). Tukey's post hoc test shows that the mean percentage of time spent in the Medium Activity State is 9% lower in October than in July (p = 0.01). For the High Activity State, pairwise Tukey's test shows a significant difference between October-July (p \< 0.001) and February-July (p \< 0.01). In comparison to July the mean daily percentage of time spent in a High Activity State is 13% higher in October and 8% higher in February (Fig. \@ref(fig:plot-time-state)).
 
-```{r table-time-state}
-daily_budget_id = tuco %>%
+```{r calculate-time-state}
+daily_budget = tuco %>%
     group_by(season, ID, date = lubridate::date(datetime)) %>%
     summarise(Rest   = sum(state == "Rest")/n() * 100,
               Medium = sum(state == "Medium")/n() * 100,
@@ -563,31 +582,15 @@ daily_budget_id = tuco %>%
     group_by(season, ID) %>%
     summarise(Rest   = mean(Rest),
               Medium = mean(Medium),
-              High   = mean(High),
-              "Total Active" = Medium + High) %>%
-  ungroup()
-
-## -------------------- TO SUPLEMENTS
-# daily_budget_season = daily_budget_id %>% 
-#   group_by(season) %>% 
-#   summarise(n = n(),
-#             "Rest" = round(mean(Rest),2),
-#             "Medium" = round(mean(Medium),2),
-#             "High" = round(mean(High),2),
-#             "Active" = Medium + High)
-# 
-# kable(daily_budget_season, caption = "Average percentage of time spent in each state.")
+              High   = mean(High)) %>%
+    tidyr::pivot_longer(cols = c("Rest","Medium","High"),
+                        names_to = "state",
+                        values_to = "perc") %>%
+    mutate(state = factor(state, c("Rest","Medium","High"),
+                          labels = c("Rest","Medium","High")))
 ```
 
-```{r plot-time-state, fig.asp=1, fig.width=9, out.width="100%", fig.cap="Daily time-activty budgets for the behavioral states. (A) Percentage of time spent in each behavioral state per animal. (B) Distribution of the mean percentage of time spent in each behavioral state calculated by animal. The mean pecentage of time spent in the High Activity State is lower in July in comparison to October and February. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October."}
-daily_budget_id = daily_budget_id %>%
-  dplyr::select(1:5) %>%
-  tidyr::pivot_longer(cols = c("Rest","Medium","High"),
-                      names_to = "state",
-                      values_to = "perc") %>%
-          mutate(state = factor(state, c("Rest","Medium","High"),
-                                labels = c("Rest","Medium","High")))
-
+```{r plot-time-state, fig.asp=1, fig.width=9, out.width="100%", fig.cap="Daily time-activity budgets for the behavioral states. (A) Percentage of time spent in each behavioral state per animal. (B) Boxplot and individual points of the distribution of the mean percentage of time spent in each behavioral state. Asteriscs shows statistical significant pairwise comparison between Months. The mean percentage of time spent in the High Activity State is lower in July in comparison to October and February. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October."}
 bar_time = ggplot(daily_budget_id, aes(perc, ID, fill = state, group = season)) +
               geom_bar(position = "stack",
                        stat = "identity") +
@@ -659,9 +662,9 @@ bar_time + bxp_time +
 
 -  REF calcular diunalidade para o VeDBA tbm
 
-High Activity State is predominately diurnal. The average diurnality for the High Activity State is higher than 70% for all seasons (Table \@ref(tab:table-mean-time-in-state)). The Medium Activity State, however, has a diurnality index that ranges from 50% in March to 56% in July and February (Table \@ref(tab:table-mean-time-in-state)). The Rest State is predominantly nocturnal with Diurnality lower than 38% for all season, which is in accordance with the results from the High Activity State. There is no statistical difference between seasons (ANOVA; p \> 0.2 for all states; Figure \@ref(fig:diurnality-plot).
+High Activity State is predominately diurnal (DI > 0.5). The average diurnality for the High Activity State is higher than 0.7 for all seasons. The Medium Activity State, however, has a diurnality index that ranges from 0.5 in March to 0.56 in July and February. The Rest State is predominantly nocturnal with Diurnality lower than 0.38 in all seasons. There is no statistical difference between seasons (ANOVA; p \> 0.2 for all states; Figure \@ref(fig:diurnality-plot).
 
-```{r calculate-time-in-state}
+```{r calculate-diurnality}
 anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
 daylength = tuco[, .(datetime = median(datetime)), by = ID]
 
@@ -690,7 +693,7 @@ diurnality = tuco %>%
     ungroup()
 ```
 
-```{r diurnality-plot, fig.pos = "H", fig.width=9, fig.asp=0.4, out.width="95%", fig.cap = "Distribution of each state's diurnality index. Only the High Activity State is predominantly diurnal. High Activity State had a average diurnality greater than 70\\% acriss all season."}
+```{r diurnality-plot, fig.pos = "H", fig.width=9, fig.asp=0.4, out.width="95%", fig.cap = "Distribution of each state's diurnality index. Only the High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all season."}
 
 ggplot(diurnality,
                   aes(x = season,
@@ -699,6 +702,7 @@ ggplot(diurnality,
     gghalves::geom_half_boxplot(nudge = 0.05,
                                 outlier.color = NA) +
     gghalves::geom_half_point() +
+    geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey90") +
     scale_color_manual(values = tuco_pal) +
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     scale_y_continuous(limits = c(0,1))+
@@ -708,14 +712,6 @@ ggplot(diurnality,
     theme(legend.position = "none")
 ```
 
-```{r table-mean-time-in-state}
-mean_diurnality = diurnality %>% 
-  group_by(State = state, Season = season) %>% 
-  summarise("Mean Diurnality" = round(mean(diurnality), 2))
-
-kable(mean_diurnality, caption = "Mean diurnality of each state.")
-```
-
 \newpage
 
 ### Circadian Rhythmicity
@@ -723,17 +719,16 @@ kable(mean_diurnality, caption = "Mean diurnality of each state.")
 ```{r read-rhythmicity, message=FALSE, warning=FALSE, include=FALSE}
 acf_peaks = readRDS("../03_analysis/ACF/acf_peaks.rds")
 period_peaks = readRDS("../03_analysis/periodogram/peaks_period.rds")
-
-acf_peaks_vedba = acf_peaks %>% filter(state == "vedba")
-period_peaks_vedba = period_peaks %>% filter(state == "vedba")
-
-#acf_peaks = acf_peaks %>% filter(state != "Rest")
-#period_peaks = period_peaks %>% filter(state != "Rest")
 ```
 
-Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (Table \@ref(tab:rhymicity-table); REF APPENDIX - plotar ACFs). The percentage of animals classified as rhythmic is higher for the high activity state, where in total 18 animals were classified as rhythmic. In contrast, the medium activity state had, in total, 11 animals classified as rhythmic (Table \@ref(tab:rhymicity-table)).
+Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (Table \@ref(tab:rhymicity-table); REF APPENDIX - plotar ACFs). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic. In contrast, the medium activity state had, in total, 11 animals classified as rhythmic (Table \@ref(tab:rhymicity-table)).
 
 ```{r rhymicity-table}
+# --------------------------------!!
+# TRANSFORMAR EM GRAFICO ---------!!
+#---------------------------------!!
+#---------------------------------!!
+
 acf_summary = acf_peaks %>% 
   group_by(state, season) %>% 
   summarise(Animals = length(rhythmic),
@@ -745,7 +740,7 @@ acf_summary$season = factor(acf_summary$season, levels = c("March", "July", "Oct
 kable(acf_summary, caption = "Percentage of Rhythmic Animals")
 ```
 
-We calculated the Rhythmicity Index (RI) only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states (Figure \@ref(fig:plot-ri-and-period)A; ANOVA; p \< 0.05). We did not test for differences between seasons (See Methods).
+We calculated the RI only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \@ref(fig:plot-ri-and-period)A; ANOVA; p \< 0.05). We did not test for differences between seasons (See Methods).
 
 ```{r}
 period_mean = period_peaks %>% 
@@ -758,11 +753,13 @@ period_mean = period_peaks %>%
                              round(sd, 2)))
 ```
 
-Lastly, we used lomb-scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. The high activity state has a mean period ± standard deviation of `r period_mean[period_mean$state == "High",]$mean_sd`. The medium activity state has a mean period of `r period_mean[period_mean$state == "Medium",]$mean_sd`.
+Lastly, we used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. The high activity state has a mean period ± standard deviation of `r period_mean[period_mean$state == "High",]$mean_sd`. The medium activity state has a mean period of `r period_mean[period_mean$state == "Medium",]$mean_sd`.
 
-We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data (Table \@ref(tab:rhymicity-table)). The distribution of RI and the period estimation using VeDBA does not visually differ greatly (Figure \@ref(fig:plot-ri-and-period) A and B). For VeDBA the mean estimated period was `r period_mean[period_mean$state == "vedba",]$mean_sd`. \newline
+We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data (Table \@ref(tab:rhymicity-table)). The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A). For VeDBA the mean estimated period was `r period_mean[period_mean$state == "vedba",]$mean_sd`.
 
-```{r plot-ri-and-period, fig.width=7, fig.asp=0.9, fig.pos = "H", out.width="100%", fig.cap = "Distribution of Rhythmicity Index for state-labelled data and VeDBA."}
+\newline
+
+```{r plot-ri-and-period, fig.width=8, fig.asp=0.8, fig.pos = "H", out.width="100%", fig.cap = "Distribution of Rhythmicity Index for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA. Graphs shows half boxplots and individual data"}
 acf_dist_plot = ggplot(acf_peaks,
                        aes(x = state,
                            y = acf,
@@ -776,13 +773,10 @@ acf_dist_plot = ggplot(acf_peaks,
     geom_text(data = data.frame(state = "Medium", acf = 0.3), aes(state, acf), label = "*", color = "grey60", size = 5)
 
 period_dist_plot = ggplot(period_peaks) +
-    #geom_hline(yintercept = 24, linetype = "dashed", color = "grey90") +
     geom_density(aes(x = peak/60,
                       fill = state,
                       color = state), 
                       alpha = 0.1) +
-    #gghalves::geom_half_boxplot() +
-    #gghalves::geom_half_point(transformation = position_jitter(width = 0.05, height = 0)) +
     scale_y_continuous(n.breaks = 8) +
     xlab("Period") +
     ylab("Density") +
@@ -797,7 +791,43 @@ acf_dist_plot / period_dist_plot + patchwork::plot_annotation(tag_levels = "A")
 
 ## Discussion
 
+- mencionar que tudo que é medido foi a primeira vez em vida livre
+
 -   Optamos pelo tipo de modelos mais simples com outras a analises a posteriori. Existem outros métodos interessantes Patterson 2009. Extensions to out model could include (...)
+    - selecionamos os fatores mais relevantes baseados nas analises exploratorias
+    
 -   limitações dos dados de lightlogger: não sabemos se os picos podem se extender durante a noite tbm.
+  - discutir as semelhancas entre arena e freeliving
+    - o padrão é igual, explicar o que foi visto nas arenas
+  
+
 -   diferença ritmicidade vedba vs estados na ritmicidade
--   os resultados do indice de ritmicidade devem ser interpretados com cuidado já que existe diferença na classificação dos animais em primeiro lugar. Isso principalmente na hora de interpretar o grafico de boxplot dos RI, entre HIGH e VEDBA.
+  - falar que nem sempre o HMM é ideal para ritmicidade e diurnalidade
+  - uma boa mensagem para deixar pro futuro
+  
+- reler artigo catemeralidade
+  - nesse artigo foi percebido varios bouts de atividades
+  - tamiris: while not on the wheel they are doing different things
+    - não podemos assumir que quando nao está na roda ele está parado
+    - erkert artigo + voles lehmann (trabalhos de catemeralidade)
+    - esse ponto é essencial para conectar com o que o HMM fez
+    - HMM trouxe a tona outros ritmos presentes ao longo de todo dia + o componente circadiano que tbm vemos na roda, p.e.
+    - tbm falar que não era possível medir -> tecnologias diferentes.
+    
+- Deixar os eixos como Atividade Geral (VeDBA)
+  - colocar apenas na legenda que atividade geral é medida pelo VeDBA
+    
+- Erkert, H.G.; Cramer B. 2006. Chronobiological background to cathemerality: circadian rhythms in Eulemur fulvus albifrons (Prosimili) and Aotus azarai boliviensis (Anthropoidea). Folia Primatologica 77: 87–113.
+- lehmann
+
+
+
+- A atividade "catemera" não era prevista então isso é uma coisa interessante
+  - falar que é novo e interessante
+  - tudo isso foi medido pq fomos ao campo 
+  - "qual a relacao entre o circadiano e os ultradianos?"
+  
+---
+
+- os resultados do indice de ritmicidade devem ser interpretados com cuidado já que existe diferença na classificação dos animais em primeiro lugar.
+  - Isso principalmente na hora de interpretar o grafico de boxplot dos RI, entre HIGH e VEDBA.
