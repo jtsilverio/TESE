@@ -26,18 +26,17 @@ The results for the plant survey is in line with what has been described in the 
 
 # Static Acceleration Smooth Window Assessment
 
-\newpage
-
 ```{r appendix-smooth-window,  out.width = "100%", echo = FALSE}
     include_graphics("../04_figures/appendix/plot_smoothing_window.png")
 ```
 
 # Exploratory VeDBA data Analysis
-
+<!--
 ```{r appendix-eda, echo = FALSE, child = "../03_analysis/eda/eda.Rmd"}
 ```
+-->
 
-# Models' AIC
+# HMM AIC
 
 -   Adicionar o LL
 
@@ -51,7 +50,7 @@ mod_df = mod_df %>%
 kable(mod_df)
 ```
 
-# Model's Estimated Parameters
+# HMM Estimated Parameters
 
 ```{r appendix-parameters}
 #parameters_table = data.frame(Parameter = rep('par',9), Estimate = rep(0,9))
@@ -77,37 +76,37 @@ kable(parameters_table,
       caption = "Gamma State-dependent distribution parameters, mean and standard deviation, estimated by a three-state Hidden Markov Model.")
 ```
 
-# Pseudo-residuals
+# HMM Pseudo-residuals
 
 ```{r appendix-residuals, out.width="100%"}
 include_graphics("../04_figures/residuals/m2_PR.png")
 ```
 
-# VeDBA Actograms
+# Individual VeDBA Actograms
 
 ```{r vedba-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_vedba.png")
 ```
 
-# High Activity Actograms
+# Individual High Activity Actograms
 
 ```{r high-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_high.png")
 ```
 
-# Medium Activity Actograms
+# Individual Medium Activity Actograms
 
 ```{r medium-actograms, out.width="95%"}
 include_graphics("../04_figures/actograms/actograms_medium.png")
 ```
 
-# Rhythmicity
+# Individual Rhythmicity Plots
 
 ```{r}
 include_graphics("../04_figures/ACF/acf_plot.png")
 ```
 
-# Period Estimation
+# Individual Period Estimation
 
 ```{r}
 include_graphics("../04_figures/periodogram/periodogram.png")

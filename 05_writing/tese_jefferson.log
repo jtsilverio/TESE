@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2021.9.8)  20 SEP 2021 10:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2021.10.1)  2 OCT 2021 21:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -592,36 +592,48 @@ LaTeX Warning: Reference `bib:end' on page iii undefined on input line 70.
 \openout6 = `tese_jefferson.toc'.
 
 [9] (./tese_jefferson.lof
-Overfull \hbox (2.9131pt too wide) in paragraph at lines 8--8
- \T1/ppl/m/n/12 lines show mean hourly VeDBA. (B) Points show daily (24h) VeDBA
- 
- []
-
-
 Overfull \hbox (6.46457pt too wide) in paragraph at lines 9--9
  [][] [][]\T1/ppl/m/n/12 State-dependent dis-tri-bu-tions of the se-lected Hid-
 den Markov model 
  []
 
-
-Overfull \hbox (1.38853pt too wide) in paragraph at lines 10--10
- \T1/ppl/m/n/12 rhythm. High Ac-tiv-ity is dis-perse through-out the day with a
- higher 
- []
-
 [10
 
-])
+]
+Overfull \hbox (16.98947pt too wide) in paragraph at lines 10--10
+ \T1/ppl/m/n/12 VeDBA, and state-labelled data of a rep-re-sen-ta-tive an-i-mal
+ (ID:OCT09). 
+ []
+
+
+Overfull \hbox (3.54858pt too wide) in paragraph at lines 10--10
+ \T1/ppl/m/n/12 and High State oc-cur-rences (B and C). Medium Ac-tiv-ity State
+ shows 
+ []
+
+
+Overfull \hbox (0.64485pt too wide) in paragraph at lines 10--10
+ \T1/ppl/m/n/12 no clear pat-tern of a daily rhythm. High Ac-tiv-ity is spread 
+through- 
+ []
+
+[11]
+Overfull \hbox (10.85664pt too wide) in paragraph at lines 15--15
+ [][] [][]\T1/ppl/m/n/12 Distribution of Rhyth-mic-ity In-dex for state-labelle
+d data and VeDBA. 
+ []
+
+)
 \tf@lof=\write7
 \openout7 = `tese_jefferson.lof'.
 
-[11] (./tese_jefferson.lot)
+[12] (./tese_jefferson.lot)
 \tf@lot=\write8
 \openout8 = `tese_jefferson.lot'.
 
 No file tese_jefferson.los.
 No file tese_jefferson.lab.
-[12
+[13
 
 ]
 Chapter 1.
@@ -635,241 +647,266 @@ File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 ]
 
 LaTeX Warning: Reference `fig:appendix-plants' on page 2 undefined on input lin
-e 135.
+e 129.
 
 
 LaTeX Warning: Reference `fig:appendix-weather' on page 2 undefined on input li
-ne 135.
+ne 129.
 
-<../04_figures/map/tuco_map.png, id=285, 597.1911pt x 597.1911pt>
+<../04_figures/map/tuco_map.png, id=300, 597.1911pt x 597.1911pt>
 File: ../04_figures/map/tuco_map.png Graphic file (type png)
 <use ../04_figures/map/tuco_map.png>
-Package pdftex.def Info: ../04_figures/map/tuco_map.png  used on input line 138
+Package pdftex.def Info: ../04_figures/map/tuco_map.png  used on input line 132
 .
 (pdftex.def)             Requested size: 426.79135pt x 426.78793pt.
 [2] [3 <../04_figures/map/tuco_map.png>] [4]
-<../04_figures/collar/collar_tuco.png, id=314, 853.1875pt x 803.0pt>
+<../04_figures/collar/collar_tuco.png, id=329, 853.1875pt x 803.0pt>
 File: ../04_figures/collar/collar_tuco.png Graphic file (type png)
 <use ../04_figures/collar/collar_tuco.png>
 Package pdftex.def Info: ../04_figures/collar/collar_tuco.png  used on input li
-ne 159.
+ne 153.
 (pdftex.def)             Requested size: 426.79135pt x 401.69505pt.
-
-LaTeX Warning: Reference `fig:appendix-smooth-window' on page 5 undefined on in
-put line 168.
-
 [5] [6 <../04_figures/collar/collar_tuco.png>]
 
 LaTeX Warning: Reference `fig:appendix-daylenght' on page 7 undefined on input 
-line 172.
+line 166.
 
 [7]
-
-LaTeX Warning: Reference `fig:appendix-eda' on page 8 undefined on input line 1
-83.
-
-
-Overfull \hbox (1.40103pt too wide) in paragraph at lines 185--186
+Overfull \hbox (1.40103pt too wide) in paragraph at lines 177--178
 \T1/ppl/m/n/12 into ac-count ([]Zuc-chini, Iain Mac-Don-ald, and Roland Lan-gro
 ck 2016[]). The Markov
  []
 
-<tese_jefferson_files/figure-latex/hmm-formulation-1.pdf, id=354, 264.99pt x 78
+<tese_jefferson_files/figure-latex/hmm-formulation-1.pdf, id=374, 264.99pt x 78
 .2925pt>
 File: tese_jefferson_files/figure-latex/hmm-formulation-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/hmm-formulation-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/hmm-formulation-1.pd
-f  used on input line 190.
+f  used on input line 182.
 (pdftex.def)             Requested size: 264.98935pt x 78.2923pt.
 [8]
 
-LaTeX Warning: Reference `fig:appendix-eda' on page 9 undefined on input line 2
-01.
+LaTeX Warning: Reference `fig:appendix-eda' on page 9 undefined on input line 1
+91.
 
-[9 <./tese_jefferson_files/figure-latex/hmm-formulation-1.pdf>] [10] [11] [12] 
-[13]
-<tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf, id=477, 701.62125pt x 2
-48.93pt>
+
+LaTeX Warning: Reference `fig:appendix-eda' on page 9 undefined on input line 1
+93.
+
+[9 <./tese_jefferson_files/figure-latex/hmm-formulation-1.pdf>] [10]
+Overfull \hbox (1.04012pt too wide) in paragraph at lines 211--212
+\T1/ppl/m/n/12 Scargle pe-ri-odograms to as-sess the ro-bust-ness and pe-ri-od-
+ic-ity of ac-tiv-ity rhythms.
+ []
+
+[11] [12]
+<tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf, id=486, 701.62125pt x 2
+53.94875pt>
 File: tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf Graphic file (type 
 pdf)
 <use tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf 
- used on input line 273.
-(pdftex.def)             Requested size: 426.79135pt x 151.42545pt.
+ used on input line 259.
+(pdftex.def)             Requested size: 426.79135pt x 154.47838pt.
+[13]
 
 LaTeX Warning: Reference `fig:appendix-residuals' on page 14 undefined on input
- line 284.
+ line 270.
 
 
 LaTeX Warning: Reference `tab:appendix-parameters' on page 14 undefined on inpu
-t line 284.
+t line 270.
 
-<tese_jefferson_files/figure-latex/hmm-plot-1.pdf, id=480, 634.37pt x 377.41pt>
+<tese_jefferson_files/figure-latex/hmm-plot-1.pdf, id=495, 634.37pt x 377.41pt>
 
 File: tese_jefferson_files/figure-latex/hmm-plot-1.pdf Graphic file (type pdf)
 <use tese_jefferson_files/figure-latex/hmm-plot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/hmm-plot-1.pdf  used
- on input line 287.
+ on input line 273.
 (pdftex.def)             Requested size: 426.79135pt x 253.923pt.
 [14 <./tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf>]
 
 LaTeX Warning: Reference `fig:vedba-actograms' on page 15 undefined on input li
-ne 295.
+ne 281.
 
-<../04_figures/actograms/actograms_results.png, id=499, 711.2025pt x 355.3275pt
->
-File: ../04_figures/actograms/actograms_results.png Graphic file (type png)
-<use ../04_figures/actograms/actograms_results.png>
-Package pdftex.def Info: ../04_figures/actograms/actograms_results.png  used on
- input line 298.
-(pdftex.def)             Requested size: 426.79135pt x 213.23067pt.
-[15 <./tese_jefferson_files/figure-latex/hmm-plot-1.pdf>] [16 <../04_figures/ac
-tograms/actograms_results.png (PNG copy)>]
-<tese_jefferson_files/figure-latex/plot-patterns-1.pdf, id=520, 629.35126pt x 1
-043.9pt>
-File: tese_jefferson_files/figure-latex/plot-patterns-1.pdf Graphic file (type 
-pdf)
-<use tese_jefferson_files/figure-latex/plot-patterns-1.pdf>
-Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-patterns-1.pdf 
- used on input line 319.
-(pdftex.def)             Requested size: 375.57846pt x 622.96797pt.
-
-LaTeX Warning: Float too large for page by 2.18489pt on input line 324.
-
-[17
-
-] [18 <./tese_jefferson_files/figure-latex/plot-patterns-1.pdf>]
-
-LaTeX Warning: Reference `tab:table-time-state' on page 19 undefined on input l
-ine 330.
-
-
-LaTeX Warning: Reference `tab:table-time-state' on page 19 undefined on input l
-ine 332.
-
-<tese_jefferson_files/figure-latex/plot-time-state-1.pdf, id=545, 622.325pt x 6
+<tese_jefferson_files/figure-latex/actograms-results-1.pdf, id=513, 623.32875pt
+ x 299.1175pt>
+File: tese_jefferson_files/figure-latex/actograms-results-1.pdf Graphic file (t
+ype pdf)
+<use tese_jefferson_files/figure-latex/actograms-results-1.pdf>
+Package pdftex.def Info: tese_jefferson_files/figure-latex/actograms-results-1.
+pdf  used on input line 284.
+(pdftex.def)             Requested size: 426.79135pt x 204.80753pt.
+[15 <./tese_jefferson_files/figure-latex/hmm-plot-1.pdf>] [16 <./tese_jefferson
+_files/figure-latex/actograms-results-1.pdf>]
+<tese_jefferson_files/figure-latex/plot-time-state-1.pdf, id=542, 622.325pt x 6
 10.28pt>
 File: tese_jefferson_files/figure-latex/plot-time-state-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/plot-time-state-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-time-state-1.pd
-f  used on input line 335.
+f  used on input line 300.
 (pdftex.def)             Requested size: 426.79135pt x 418.53282pt.
-[19] [20 <./tese_jefferson_files/figure-latex/plot-time-state-1.pdf>]
-<tese_jefferson_files/figure-latex/diurnality-plot-1.pdf, id=567, 640.3925pt x 
+[17
+
+] [18 <./tese_jefferson_files/figure-latex/plot-time-state-1.pdf>]
+<tese_jefferson_files/figure-latex/plot-patterns-1.pdf, id=562, 629.35126pt x 1
+061.9675pt>
+File: tese_jefferson_files/figure-latex/plot-patterns-1.pdf Graphic file (type 
+pdf)
+<use tese_jefferson_files/figure-latex/plot-patterns-1.pdf>
+Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-patterns-1.pdf 
+ used on input line 321.
+(pdftex.def)             Requested size: 375.57846pt x 633.7501pt.
+
+LaTeX Warning: Float too large for page by 24.96703pt on input line 326.
+
+[19] [20 <./tese_jefferson_files/figure-latex/plot-patterns-1.pdf>]
+<tese_jefferson_files/figure-latex/diurnality-plot-1.pdf, id=584, 640.3925pt x 
 226.8475pt>
 File: tese_jefferson_files/figure-latex/diurnality-plot-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/diurnality-plot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/diurnality-plot-1.pd
-f  used on input line 353.
+f  used on input line 335.
 (pdftex.def)             Requested size: 405.45047pt x 143.62427pt.
 [21 <./tese_jefferson_files/figure-latex/diurnality-plot-1.pdf>]
-<tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf, id=587, 477.785pt 
-x 429.605pt>
+
+LaTeX Warning: Reference `tab:rhymicity-table' on page 22 undefined on input li
+ne 346.
+
+
+LaTeX Warning: Reference `tab:rhymicity-table' on page 22 undefined on input li
+ne 346.
+
+<tese_jefferson_files/figure-latex/rhymicity-bars-1.pdf, id=597, 417.56pt x 203
+.76125pt>
+File: tese_jefferson_files/figure-latex/rhymicity-bars-1.pdf Graphic file (type
+ pdf)
+<use tese_jefferson_files/figure-latex/rhymicity-bars-1.pdf>
+Package pdftex.def Info: tese_jefferson_files/figure-latex/rhymicity-bars-1.pdf
+  used on input line 349.
+(pdftex.def)             Requested size: 417.55896pt x 203.76074pt.
+
+LaTeX Warning: Reference `tab:rhymicity-table' on page 22 undefined on input li
+ne 359.
+
+<tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf, id=602, 622.325pt 
+x 408.52625pt>
 File: tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf Graphic file (
 type pdf)
 <use tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-ri-and-period-1
-.pdf  used on input line 427.
-(pdftex.def)             Requested size: 426.79135pt x 383.75006pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 424--432
-
+.pdf  used on input line 362.
+(pdftex.def)             Requested size: 426.79135pt x 280.16917pt.
+[22 <./tese_jefferson_files/figure-latex/rhymicity-bars-1.pdf>] [23 <./tese_jef
+ferson_files/figure-latex/plot-ri-and-period-1.pdf>]
+Overfull \hbox (6.80151pt too wide) in paragraph at lines 380--381
+[]\T1/ppl/m/n/12 selecionamos os fa-tores mais rel-e-vantes basea-dos nas anali
+ses ex-plorato-
  []
 
-[22] [23 <./tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf>]
-Overfull \hbox (1.56744pt too wide) in paragraph at lines 446--447
+[24]
+Overfull \hbox (1.56744pt too wide) in paragraph at lines 444--445
 []\T1/ppl/m/n/12 os re-sul-ta-dos do in-dice de rit-mi-ci-dade de-vem ser in-te
 r-pre-ta-dos com cuidado
  []
 
-[24]
+[25]
 Chapter 2.
-[25
+[26
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 4
-62.
+65.
 (/home/jeff/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-Overfull \hbox (2.04953pt too wide) in paragraph at lines 476--478
-[][]\T1/ppl/m/n/12 Burnham, Ken-neth P., David Ray-mond An-der-son, and Ken-net
-h P. Burn-ham. 2002.
+Overfull \hbox (2.04953pt too wide) in paragraph at lines 479--481
+[]\T1/ppl/m/n/12 Burnham, Ken-neth P., David Ray-mond An-der-son, and Ken-neth 
+P. Burn-ham. 2002.
  []
 
 
-Overfull \hbox (31.45158pt too wide) in paragraph at lines 479--481
+Overfull \hbox (31.45158pt too wide) in paragraph at lines 482--484
 \T1/ppl/m/n/12 Rhyth-mic-ity.'' In, 454:141--74. El-se-vier. []$\T1/cmtt/m/n/12
  https : / / doi . org / 10 . 1016 / S0076-[]6879(08 )
  []
 
-[26
+[27
 
 ]
-Overfull \hbox (12.42867pt too wide) in paragraph at lines 497--499
-[][]\T1/ppl/m/n/12 Leise, Tanya L. 2017. ``Anal-y-sis of Non-sta-tion-ary Time 
-Se-ries for Bi-o-log-i-cal Rhythms
+Overfull \hbox (12.42867pt too wide) in paragraph at lines 500--502
+[]\T1/ppl/m/n/12 Leise, Tanya L. 2017. ``Anal-y-sis of Non-sta-tion-ary Time Se
+-ries for Bi-o-log-i-cal Rhythms
  []
 
-[27]
-Overfull \hbox (4.5205pt too wide) in paragraph at lines 506--508
-[][]\T1/ppl/m/n/12 McClintock, Brett T., Roland Lan-grock, Olivier Gimenez, Em-
-manuelle Cam, David
- []
-
-
-Overfull \hbox (2.09769pt too wide) in paragraph at lines 515--517
-[][]\T1/ppl/m/n/12 Papastamatiou, Yan-nis P., Yuuki Y. Watan-abe, Ur²ka Dem²ar,
- Vianey Leos-Barajas,
+[28]
+Overfull \hbox (4.5205pt too wide) in paragraph at lines 509--511
+[]\T1/ppl/m/n/12 McClintock, Brett T., Roland Lan-grock, Olivier Gimenez, Em-ma
+nuelle Cam, David
  []
 
 
-Overfull \hbox (24.92047pt too wide) in paragraph at lines 515--517
+Overfull \hbox (2.09769pt too wide) in paragraph at lines 518--520
+[]\T1/ppl/m/n/12 Papastamatiou, Yan-nis P., Yuuki Y. Watan-abe, Ur²ka Dem²ar, V
+ianey Leos-Barajas,
+ []
+
+
+Overfull \hbox (24.92047pt too wide) in paragraph at lines 518--520
 \T1/ppl/m/n/12 ming.'' \T1/ppl/m/it/12 Move-ment Ecol-ogy \T1/ppl/m/n/12 6 (1):
  9. []$\T1/cmtt/m/n/12 https : / / doi . org / 10 . 1186 / s40462-[]018-[]0127-
 []3$[]\T1/ppl/m/n/12 . 
  []
 
-[28]
-Overfull \hbox (4.31665pt too wide) in paragraph at lines 542--544
+[29]
+Overfull \hbox (4.31665pt too wide) in paragraph at lines 545--547
 \T1/ppl/m/it/12 ogy In-ter-na-tional \T1/ppl/m/n/12 26 (1): 14--27. []$\T1/cmtt
 /m/n/12 https : / / doi . org / 10 . 1080 / 07420520802686331$[]\T1/ppl/m/n/12 
 . 
  []
 
-[29] 
+[30]
+Overfull \hbox (12.01913pt too wide) in paragraph at lines 554--556
+\T1/ppl/m/n/12 celerom-e-try Re-veals Sex-Dependent Plas-tic-ity in Above-Groun
+d Ac-tiv-ity.'' \T1/ppl/m/it/12 Royal
+ []
+
+
 AED: lastpage setting LastPage
-[30] (./tese_jefferson.aux)
+[31] (./tese_jefferson.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `tese_jefferson.out' has not changed.
-(rerunfilecheck)             Checksum: 1AEEB172FC20450833E4BD006BDAB75E;4150.
+(rerunfilecheck)             Checksum: E7770B1029006822FB46001131EE79F2;4556.
  ) 
 Here is how much of TeX's memory you used:
- 13226 strings out of 480539
- 203043 string characters out of 5902594
- 534478 words of memory out of 5000000
- 30450 multiletter control sequences out of 15000+600000
+ 13235 strings out of 480539
+ 203695 string characters out of 5902593
+ 535137 words of memory out of 5000000
+ 30455 multiletter control sequences out of 15000+600000
  433888 words of font info for 88 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 72i,11n,80p,1799b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk>{/
-home/jeff/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</home/jeff/.TinyTeX/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></home/jeff/.TinyTeX/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/jeff/.TinyTeX/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/jeff/.TinyTeX/texmf-dist/fonts
-/type1/public/mathpazo/fplmr.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/ur
-w/palatino/uplb8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/
-uplbi8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb
-></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on tese_jefferson.pdf (42 pages, 13969934 bytes).
+ 72i,11n,80p,1801b,482s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{ref-ref} has been referenced but does not exist, 
+replaced by a fixed one
+
+ </home/jeff/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600pk>{/ho
+me/jeff/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}</home/jeff/.TinyTeX/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></home/jeff/.TinyTeX/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/jeff/.TinyTeX/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy10.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/t
+ype1/public/mathpazo/fplmr.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/
+palatino/uplb8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/up
+lbi8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><
+/home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on tese_jefferson.pdf (44 pages, 13857256 bytes).
 PDF statistics:
- 798 PDF objects out of 1000 (max. 8388607)
- 647 compressed objects within 7 object streams
- 138 named destinations out of 1000 (max. 500000)
- 256 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 838 PDF objects out of 1000 (max. 8388607)
+ 673 compressed objects within 7 object streams
+ 142 named destinations out of 1000 (max. 500000)
+ 261 words of extra memory for PDF output out of 10000 (max. 10000000)
 

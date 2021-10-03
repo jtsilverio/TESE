@@ -5,12 +5,10 @@ library(ggplot2)
 library(dplR)
 library(egg)
 library(patchwork)
-source("05_writing/tuco_theme.R")
- 
+
 # Read Data ---------------------------------------------------------------
 tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
 tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
-
 
 # Read Model --------------------------------------------------------------
 m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com 

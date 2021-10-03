@@ -49,10 +49,10 @@ biblio-style: "csl/apa.csl"
 link-citations: true
 bibliography: references.bib
 output: 
-  coppedown::thesis_pdf: default
+  #coppedown::thesis_pdf: default
   #coppedown::thesis_gitbook: default
-  #coppedown::thesis_word: 
-  #  reference_docx: template.docx
+  coppedown::thesis_word: 
+    reference_docx: template.docx
   #coppedown::thesis_epub: default
 ---
 
@@ -77,8 +77,6 @@ if(!require(devtools))
   install.packages("devtools", repos = "http://cran.rstudio.com")
 if(!require(coppedown))
   devtools::install_github("COPPE-UFRJ/coppedown")
-
-source(file = "tuco_theme.R") # Set Theme and Color Pallete
 
 # Set LaTeX tables styling
 if(knitr::is_latex_output()){

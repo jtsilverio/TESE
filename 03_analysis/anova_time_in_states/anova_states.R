@@ -9,7 +9,7 @@ m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com
 
 # Viterbi State Decoding -------------------------------------------------------
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("rest","medium","high"))
+tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
 
 # Calculate Daily Budgets ------------------------------------------------------
 daily_budget_id = tuco %>% 
