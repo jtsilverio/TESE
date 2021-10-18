@@ -49,10 +49,10 @@ biblio-style: "csl/apa.csl"
 link-citations: true
 bibliography: references.bib
 output: 
-  #coppedown::thesis_pdf: default
+  coppedown::thesis_pdf: default
   #coppedown::thesis_gitbook: default
-  coppedown::thesis_word: 
-    reference_docx: template.docx
+  #coppedown::thesis_word: 
+  #  reference_docx: template.docx
   #coppedown::thesis_epub: default
 ---
 

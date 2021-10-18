@@ -165,9 +165,14 @@
 
   Once VeDBA was calculated, the 1Hz acceleration data was downsampled by taking the median over a 1-minute non-overlapping sliding window. All VeDBA datapoints were classified as occurring during the daytime or nighttime based on the daylength of the recording dates. Daylength was calculated using the \emph{maptools} package in R (\protect\hyperlink{ref-bivand2020}{Bivand and Lewin-Koh 2020}), which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating twilight times. We used civil twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occurring during the day or nighttime. Daylength change along the year at the study site can be seen in the Appendix (Figure \ref{fig:appendix-daylenght}).
 
-  Light exposure was used to further classify VeDBA data points as above or below ground. The threshold for considering a data point as being aboveground was 2 lux, consistent with what has been done in \protect\hyperlink{ref-jannetti2019}{Jannetti et al.} (\protect\hyperlink{ref-jannetti2019}{2019}). Accelerometer and lightlogger data were merged accordingly to the date and times of recordings using purposely written R scripts (\protect\hyperlink{ref-rcoreteam2020}{R Core Team 2020}). Time of recordings between both devices were not synchronized to the minute. Consequently, we had to round lightlogger recording times to the nearest 5 minutes to merge both data streams.
+  Light exposure was used to analyse the time tuco-tucos spend on the surface and to further classify VeDBA data points as above or below ground. The threshold for considering a data point as being aboveground was 2 lux, consistent with what has been done in \protect\hyperlink{ref-jannetti2019}{Jannetti et al.} (\protect\hyperlink{ref-jannetti2019}{2019}). Accelerometer and lightlogger data were merged accordingly to the date and times of recordings using purposely written R scripts (\protect\hyperlink{ref-rcoreteam2020}{R Core Team 2020}). Time of recordings between both devices were not synchronized to the minute. Consequently, we had to round lightlogger recording times to the nearest 5 minutes to merge both data streams.
 
   In order to exclude any effects that capture and recapture can have in the animal's activity, we removed the first and last days of all dataset. We also excluded the data corresponding to the days we were attempting to recapture the animal in cases where the recapture attempts took longer than one day. Animals that had data excluded due to recapturing efforts were FEV05 (5 days), JUL16 (5 days) and JUL23 (2 days).
+
+  \hypertarget{time-on-surface-general-activity-analysis}{%
+  \subsection{Time on Surface \& General Activity Analysis}\label{time-on-surface-general-activity-analysis}}
+
+  VeDBA data was first used to analyse the general activity levels of tuco-tucos. The temporal distribution of VeDBA was visualized
 
   \hypertarget{hidden-markov-models}{%
   \subsection{Hidden Markov Models}\label{hidden-markov-models}}
@@ -248,13 +253,29 @@
   \end{tabular}
   }
   \end{table}
-  \hypertarget{daily-activity-levels}{%
-  \subsection{Daily Activity Levels}\label{daily-activity-levels}}
+  \hypertarget{time-on-surface}{%
+  \subsection{Time On Surface}\label{time-on-surface}}
+
+  Time on surface, measured by light exposure, showed a changing temporal pattern along the year. In July, the peak of surface emergences is concentrated in the middle of the day. In other seasons the peak of surface emergences is bimodal, with a higher peak in the first hours of daylight and a smaller peak at the end of daylight (Fig. \ref{fig:plot-light-exposure}A).
+
+  Tuco-tucos spent an overall mean and standard deviation of 71.98 ± 29.21 minutes of the day on the surface. This corresponds to a mean percentage of the day length of 0.13 ± 0.04 in July and 0.06 ± 0.04 in February. Time on surface showed no significant annual change. The percentage of the day length spent on the surface, however, was significantly different between July and February (ANOVA; F = 4.39, p \textless{} 0.05). \newline
+  \begin{figure}[H]
+
+  {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/plot-light-exposure-1} 
+
+  }
+
+  \caption{Tuco-tuco's daily patterns of surface emergence. (A) Density estimates of surface emergence. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars shows observed surface emergence per hour. X-axis is hour of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show time of civil twilights. (B) Mean time tuco-tucos spent on the surface per day. (C) Mean percentage of time on surface in relation to the daylength.}\label{fig:plot-light-exposure}
+  \end{figure}
+  \clearpage
+
+  \hypertarget{general-activity}{%
+  \subsection{General Activity}\label{general-activity}}
 
   Tuco-tuco's daily activity levels (24-hour average), measured by VeDBA, are significantly different across the year (ANOVA; F = 7.182, p \textless{} 0.01; Figure \ref{fig:vedba-boxplot}). Post hoc comparisons using Tukey-Kramer's Test shows significant group differences between July-October and July-February (p \textless{} 0.05). In both pairwise comparisons daily VeDBA levels in July are lower, showing a difference in means of 0.029 g in comparison to October and 0.019 g in comparison to February. In sum, daily VeDBA activity levels are lower in July in comparison to October and February (Fig \ref{fig:vedba-boxplot}).
 
-  The daytime VeDBA (Light Phase Average) is also significantly different between Months (ANOVA; F = 7.282, p \textless{} 0.001). Post hoc comparisons using Tukey-Kramer's Test shows a difference in mean of 0.035 between October-July only (p \textless{} 0.05).
-  \begin{figure}
+  The daytime VeDBA (Light Phase Average) is also significantly different between months (ANOVA; F = 7.282, p \textless{} 0.001). Post hoc comparisons using Tukey-Kramer's Test shows a difference in mean of 0.035 between October-July only (p \textless{} 0.05). \newline
+  \begin{figure}[H]
 
   {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/vedba-boxplot-1} 
 
@@ -267,8 +288,8 @@
 
   We fitted two different HMMs to VeDBA data, one empty model, with no covariates, and a second one with \emph{`season'} as a covariate in the transition probability matrix. The second model was selected based on informational criterion (\(\Delta\)AIC \textgreater{} 2; REF Tabela AIC nos supps).
 
-  The estimated state-dependent distributions are shown in Figure \ref{fig:hmm-plot}. We interpreted and labelled these states as `Rest,' `Medium intensity activity,' and `High intensity activity' corresponding to low, intermediate, and high VeDBA values respectively. The marginal distribution (Figure \ref{fig:hmm-plot}; dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Figure \ref{fig:appendix-residuals}) shows that the residuals deviate from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \ref{tab:appendix-parameters}).
-  \begin{figure}
+  The estimated state-dependent distributions are shown in Figure \ref{fig:hmm-plot}. We interpreted and labelled these states as `Rest,' `Medium intensity activity,' and `High intensity activity' corresponding to low, intermediate, and high VeDBA values respectively. The marginal distribution (Figure \ref{fig:hmm-plot}; dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Figure \ref{fig:appendix-residuals}) shows that the residuals deviate from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \ref{tab:appendix-parameters}). \newline
+  \begin{figure}[H]
 
   {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/hmm-plot-1} 
 
@@ -278,8 +299,8 @@
   \end{figure}
   With the state-labeled data we were able to dissociate and visualize the daily patterns of each different state. Actograms and time series plots show how the different states are related to the calculated VeDBA (Figure \ref{fig:actograms-results}). Visual analysis of diel rhythms in VeDBA and in the state-labelled data indicates the daily rhythm is more robust in the High Activity state in comparison to Medium Activity.
 
-  However, despite being more concentrated during the daylight hours, High Activity episodes also occur sporadically during the night. Medium Activity, in turn, seems to be more spread throughout the day with no clear 24-hour rhythm. Individual Actograms for VeDBA and state-labelled data are presented in the Appendix (Figure \ref{fig:vedba-actograms}).
-  \begin{figure}
+  However, despite being more concentrated during the daylight hours, High Activity episodes also occur sporadically during the night. Medium Activity, in turn, seems to be more spread throughout the day with no clear 24-hour rhythm. Individual Actograms for VeDBA and state-labelled data are presented in the Appendix (Figure \ref{fig:vedba-actograms}). \newline
+  \begin{figure}[H]
 
   {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/actograms-results-1} 
 
@@ -308,7 +329,7 @@
   \hypertarget{daily-activity-patterns}{%
   \subsection{Daily Activity Patterns}\label{daily-activity-patterns}}
 
-  Daily activity rhythms for each behavioral state are shown in Figure \ref{fig:plot-patterns}. These plots show that, qualitatively, the timing of occurrence of High Activity and Light Exposure episodes follow a diurnal pattern. Medium Activity, however, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year. In all four Months the peak of High Activity is around 14:00. In turn, Light Exposure patterns changes along the year. In July, the peak of episodes of light exposure is more concentrated in the middle of the day. In other seasons the peak of Light Exposure episodes appears to be bimodal, with a higher peak in the first hours of daylight and a much smaller peak at the end of daylight.
+  Daily activity patterns for each behavioral state are shown in Figure \ref{fig:plot-patterns}. These plots show that, qualitatively, the timing of occurrence of High Activity and Light Exposure episodes follow a diurnal pattern. Medium Activity, however, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year. In all four Months the peak of High Activity is around 14:00.
   \begin{itemize}
   \tightlist
   \item
@@ -316,47 +337,60 @@
   \item
     REF adicionar linha do meio dia solar
   \end{itemize}
+  \newpage
   \begin{figure}
 
-  {\centering \includegraphics[width=0.88\linewidth]{tese_jefferson_files/figure-latex/plot-patterns-1} 
+  {\centering \includegraphics[width=0.95\linewidth]{tese_jefferson_files/figure-latex/plot-patterns-1} 
 
   }
 
-  \caption{Density estimates of daily activity patterns of tuco-tucos' behavioral states. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. The x-axis is hour of the day in Anillaco, La Rioja (UTC-3). Rug lines above the x-axis shows individual occurrences. Dotted vertical lines show time of civil twilights. (A) High Activity State shows a diurnal pattern independent of the time of the year. (B) Medium Activity State shows no daily pattern. (C) Daily pattern of light exposure changes according to the season.}\label{fig:plot-patterns}
+  \caption{Density estimates of daily activity patterns of tuco-tucos' behavioral states. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. The x-axis is hour of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show time of civil twilights. (A) High Activity State shows a diurnal pattern independent of the time of the year. (B) Medium Activity State shows no daily pattern. (C) Daily pattern of light exposure changes according to the season.}\label{fig:plot-patterns}
+  \end{figure}
+  \clearpage
+
+  \hypertarget{aboveground-activity}{%
+  \subsection{Aboveground Activity}\label{aboveground-activity}}
+
+  Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \ref{fig:aboveground-activity}). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is 0.15, whether for the medium state the mean is 0.05. Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of 0.01.\newline
+  \begin{itemize}
+  \tightlist
+  \item
+    aqui ainda falta um teste. Precisa ser um não parametrico ou test-t dois a dois. O ANOVA não cabe nesses dados.
+  \end{itemize}
+  \begin{figure}[H]
+
+  {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/aboveground-activity-1} 
+
+  }
+
+  \caption{Distribution of the percentages of each activity state that happens aboveground during daytime.}\label{fig:aboveground-activity}
   \end{figure}
   \newpage
 
   \hypertarget{diurnality}{%
   \subsection{Diurnality}\label{diurnality}}
 
-  High Activity State is predominately diurnal (DI \textgreater{} 0.5). The average diurnality for the High Activity State is higher than 0.7 for all seasons. The Medium Activity State, however, has a diurnality index that ranges from 0.5 in March to 0.56 in July and February. The Rest State is predominantly nocturnal with Diurnality lower than 0.38 in all seasons. There is no statistical difference between seasons (ANOVA; p \textgreater{} 0.2 for all states; Figure \ref{fig:diurnality-plot}).
+  High Activity State is predominately diurnal (DI \textgreater{} 0.5). The average diurnality for the High Activity State is higher than 0.7 for all seasons. The Medium Activity State, however, has a diurnality index that ranges from 0.5 in March to 0.56 in July and February. The Rest State is predominantly nocturnal with Diurnality lower than 0.38 in all seasons. There is no statistical difference between seasons (ANOVA; p \textgreater{} 0.2 for all states; Figure \ref{fig:diurnality-plot}). \newline
   \begin{figure}[H]
 
-  {\centering \includegraphics[width=0.95\linewidth]{tese_jefferson_files/figure-latex/diurnality-plot-1} 
+  {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/diurnality-plot-1} 
 
   }
 
-  \caption{Distribution of each state's diurnality index. Only the High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all season.}\label{fig:diurnality-plot}
+  \caption{Distribution of calculated diurnality index (DI). Between labelled states, only the High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all season. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal, }\label{fig:diurnality-plot}
   \end{figure}
   \newpage
 
   \hypertarget{circadian-rhythmicity}{%
   \subsection{Circadian Rhythmicity}\label{circadian-rhythmicity}}
 
-  Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (Table \ref{tab:rhymicity-table}; REF APPENDIX - plotar ACFs individuais). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic (85.7\%). In contrast, the medium activity state had, in total, 11 animals (52.4\%) classified as rhythmic (Table \ref{tab:rhymicity-table}).
-  \begin{figure}
+  Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (REF APPENDIX - plotar ACFs individuais). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic (85.7\%). In contrast, the medium activity state had, in total, 11 animals (52.4\%) classified as rhythmic.
 
-  {\centering \includegraphics{tese_jefferson_files/figure-latex/rhymicity-bars-1} 
-
-  }
-
-  \caption{Percentege of animals classified as rhythmic for a circadian component (~24h). Classification of rhythmic animals was done visually using Autocorrelation plots. Animals that showed a cyclic waveform was classified as rhythmic.}\label{fig:rhymicity-bars}
-  \end{figure}
   We calculated the RI only for animals classified as rhythmic (Figure \ref{fig:plot-ri-and-period}A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \ref{fig:plot-ri-and-period}A; ANOVA; p \textless{} 0.05). We did not test for differences between seasons (See Methods).
 
   Lastly, we used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \ref{fig:plot-ri-and-period}B). All estimated periods, independent of state, were in the 24-hour range. The high activity state has a mean period ± standard deviation of 23.87h ± 0.34. The medium activity state has a mean period of 23.91h ± 1.22.
 
-  We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data (Table \ref{tab:rhymicity-table}). The distribution of RI shows no difference between High state and VeDBA (Figure \ref{fig:plot-ri-and-period} A). For VeDBA the mean estimated period was 23.91h ± 0.31.
+  We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \ref{fig:plot-ri-and-period} A). For VeDBA the mean estimated period was 23.91h ± 0.31.
   \begin{figure}[H]
 
   {\centering \includegraphics[width=1\linewidth]{tese_jefferson_files/figure-latex/plot-ri-and-period-1} 
@@ -448,16 +482,129 @@
       Isso principalmente na hora de interpretar o grafico de boxplot dos RI, entre HIGH e VEDBA.
     \end{itemize}
   \end{itemize}
+  \appendix \# Apêndice \{-\}
+
   \hypertarget{anillacos-plant-community}{%
   \chapter{Anillaco's Plant Community}\label{anillacos-plant-community}}
 
-  Placeholder
+  Following methods similar to (\protect\hyperlink{ref-aranda-rickert2014}{Aranda-Rickert, Diez, and Marazzi 2014}) a non-extensive survey of the plant community was done in May 2019. Three perpendicular 50m transects were defined near the study site (COORDINATES). A point-intercept method was used to record plant species present in the transects, species right below the sampling points were registered in the data. Sampling points were defined every 1m along the 50m transects. Plant species were identified in the field by a Botanist, except for a few members of the Poaceae family.
+
+  The results for the plant survey is in line with what has been described in the literature for the region (\protect\hyperlink{ref-abraham2009}{Abraham et al. 2009}; \protect\hyperlink{ref-aranda-rickert2014}{Aranda-Rickert, Diez, and Marazzi 2014}; \protect\hyperlink{ref-fracchia2011}{Fracchia et al. 2011}). The results show a dominance of Zygolhyllaceae, Poaceae and Fabaceae families. The relative frequency of plant families and species recorded in the area are shown in the graphs below (Fig. \ref{fig:appendix-plants}).
+  \begin{figure}
+
+  {\centering \includegraphics[width=1\linewidth]{../04_figures/appendix/plot_plants} 
+
+  }
+
+  \caption{Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)}\label{fig:appendix-plants}
+  \end{figure}
+  \hypertarget{anillacos-weather}{%
+  \chapter{Anillaco's Weather}\label{anillacos-weather}}
+  \begin{figure}
+
+  {\centering \includegraphics[width=1\linewidth]{../04_figures/appendix/plot_weather} 
+
+  }
+
+  \caption{Temperature  and Rainfall yearly trends in Anillaco, Argentina. Data was collected in the years 2017 and 2019 from a weather Station (Vantage Pro 2, Davis Instuments. USA.) maintened in CRILAR, aproximately 5km away from the study site.}\label{fig:appendix-weather}
+  \end{figure}
+  \hypertarget{anillacos-yearly-daylength-changes}{%
+  \chapter{Anillaco's Yearly Daylength Changes}\label{anillacos-yearly-daylength-changes}}
+  \begin{itemize}
+  \tightlist
+  \item
+    Adicionar tabela com duração do dia nas datas de coleta
+  \end{itemize}
+  \begin{figure}
+
+  {\centering \includegraphics[width=1\linewidth]{../04_figures/appendix/plot_daylength} 
+
+  }
+
+  \caption{Changes in daytime changes across the year in Anillaco, La Rioja. Maximum duration of daytime, during summer, is 14 hours and 53 minutes. Mininum duration of daytime, during winter, is 11 hours and 10 minutes.}\label{fig:appendix-daylenght}
+  \end{figure}
+  \hypertarget{static-acceleration-smooth-window-assessment}{%
+  \chapter{Static Acceleration Smooth Window Assessment}\label{static-acceleration-smooth-window-assessment}}
+  \begin{center}\includegraphics[width=1\linewidth]{../04_figures/appendix/plot_smoothing_window} \end{center}
+
+  \hypertarget{exploratory-vedba-data-analysis}{%
+  \chapter{Exploratory VeDBA data Analysis}\label{exploratory-vedba-data-analysis}}
+
+  \hypertarget{hmm-aic}{%
+  \chapter{HMM AIC}\label{hmm-aic}}
+  \begin{itemize}
+  \tightlist
+  \item
+    Adicionar o LL
+  \end{itemize}
+  \begin{table}[!h]
+  \centering
+  \begin{tabular}{ccc}
+  \toprule
+  Model & Formula & AIC\\
+  \midrule
+  m2 & \textasciitilde{}season & -935612.2\\
+  m1 & \textasciitilde{}1 & -934800.8\\
+  \bottomrule
+  \end{tabular}
+  \end{table}
+  \hypertarget{hmm-estimated-parameters}{%
+  \chapter{HMM Estimated Parameters}\label{hmm-estimated-parameters}}
+  \begin{table}[!h]
+
+  \caption{\label{tab:appendix-parameters}Gamma State-dependent distribution parameters, mean and standard deviation, estimated by a three-state Hidden Markov Model.}
+  \centering
+  \begin{tabular}[t]{cccc}
+  \toprule
+  Parameter & State & Estimate & CI\\
+  \midrule
+  mean & Rest & 0.018 & {}[0.018, 0.018]\\
+  mean & Medium & 0.116 & {}[0.116, 0.117]\\
+  mean & High & 0.327 & {}[0.326, 0.328]\\
+  sd & Rest & 0.010 & {}[0.01, 0.01]\\
+  sd & Medium & 0.051 & {}[0.05, 0.051]\\
+  \addlinespace
+  sd & High & 0.087 & {}[0.086, 0.087]\\
+  \bottomrule
+  \end{tabular}
+  \end{table}
+  \hypertarget{hmm-pseudo-residuals}{%
+  \chapter{HMM Pseudo-residuals}\label{hmm-pseudo-residuals}}
+  \begin{center}\includegraphics[width=1\linewidth]{../04_figures/residuals/m2_PR} \end{center}
+
+  \hypertarget{individual-vedba-actograms}{%
+  \chapter{Individual VeDBA Actograms}\label{individual-vedba-actograms}}
+  \begin{center}\includegraphics[width=0.95\linewidth]{../04_figures/actograms/actograms_vedba} \end{center}
+
+  \hypertarget{individual-high-activity-actograms}{%
+  \chapter{Individual High Activity Actograms}\label{individual-high-activity-actograms}}
+  \begin{center}\includegraphics[width=0.95\linewidth]{../04_figures/actograms/actograms_high} \end{center}
+
+  \hypertarget{individual-medium-activity-actograms}{%
+  \chapter{Individual Medium Activity Actograms}\label{individual-medium-activity-actograms}}
+  \begin{center}\includegraphics[width=0.95\linewidth]{../04_figures/actograms/actograms_medium} \end{center}
+
+  \hypertarget{individual-rhythmicity-plots}{%
+  \chapter{Individual Rhythmicity Plots}\label{individual-rhythmicity-plots}}
+  \begin{center}\includegraphics[width=22.96in]{../04_figures/ACF/acf_plot} \end{center}
+
+  \hypertarget{individual-period-estimation}{%
+  \chapter{Individual Period Estimation}\label{individual-period-estimation}}
+  \begin{center}\includegraphics[width=22.96in]{../04_figures/periodogram/periodogram} \end{center}
+
+  \backmatter
+  \bibliographystyle{$biblio-style$}
+  \bibliography{thesis}
 
   \hypertarget{references}{%
   \chapter*{References}\label{references}}
   \addcontentsline{toc}{chapter}{References}
 
-  Placeholder
+  \noindent
+
+  \setlength{\parindent}{-0.20in}
+  \setlength{\leftskip}{0.20in}
+  \setlength{\parskip}{8pt}
 
   \hypertarget{refs}{}
   \begin{CSLReferences}{1}{0}
@@ -466,6 +613,9 @@
 
   \leavevmode\vadjust pre{\hypertarget{ref-amaya2016}{}}%
   Amaya, Juan Pablo, Juan I. Areta, Veronica S. Valentinuzzi, and Emmanuel Zufiaurre. 2016. {``Form and Function of Long-Range Vocalizations in a Neotropical Fossorial Rodent: The Anillaco Tuco-Tuco ( {\emph{Ctenomys}} Sp.).''} \emph{PeerJ} 4 (October): e2559. \url{https://doi.org/10.7717/peerj.2559}.
+
+  \leavevmode\vadjust pre{\hypertarget{ref-aranda-rickert2014}{}}%
+  Aranda-Rickert, Adriana, Patricia Diez, and Brigitte Marazzi. 2014. {``Extrafloral Nectar Fuels Ant Life in Deserts.''} \emph{AoB PLANTS} 6 (January). \url{https://doi.org/10.1093/aobpla/plu068}.
 
   \leavevmode\vadjust pre{\hypertarget{ref-aranda-rickert2011a}{}}%
   Aranda-Rickert, Adriana, and Sebastián Fracchia. 2011. {``Pogonomyrmexcunicularius as the Keystone Disperser of Elaiosome-Bearing Jatropha Excisa Seeds in Semi-Arid Argentina: Pogonomyrmex Cunicularius Ants as Keystone Seed Dispersers.''} \emph{Entomologia Experimentalis Et Applicata} 139 (2): 91--102. \url{https://doi.org/10.1111/j.1570-7458.2011.01111.x}.

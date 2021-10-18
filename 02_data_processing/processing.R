@@ -62,7 +62,7 @@ downsample = function(data, window = 600, FUN = median){
         df[,temp := temp_aggregated]
         df[,datetime := round_date(datetime, unit = "minutes")]
         df = df[1:(nrow(df) -1)] # Delete the last row of the dataframe. It always round up to midnight, so there is only one record on that day. If we delete it now it doesn't get in the way of plotting later.
-        df[,day_number := frank(as_date(datetime), ties.method = "dense")] # Because we rounded datetime we need to re rank the day_number
+        df[,day_number := frank(as_date(datetime), ties.method = "dense")] # Because we rounded datetime we need to rank the day_number again
         
         
         return(df)
