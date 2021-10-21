@@ -314,20 +314,20 @@ October  & 3                         & 6                           & 1          
 
 ```{r}
 # Calculate Above ground bouts of activity
-source("../03_analysis/light_exposure/function_bouts.R")
 tuco_luximeter = tuco.metadata %>% filter(lux, recaptured, collar_recovered) %>% dplyr::select(ID)    
 
 # calculate percentage of daylenght seen per animal
 time_aboveground = tuco %>% 
     filter(ID %in% tuco_luximeter$ID) %>% 
     group_by(ID, season, date = lubridate::date(datetime)) %>% 
-	summarise(time_aboveground = sum(aboveground, na.rm = T),
-	          daylength =  median(daylength),
-	          perc_aboveground = (time_aboveground/daylength)) %>% 
+	summarise(daylength = sum(daytime),
+	          time_aboveground = sum(aboveground, na.rm = T),
+	          perc_aboveground = time_aboveground/daylength) %>% 
     group_by(ID, season) %>% 
     summarise(mean_t_aboveground = mean(time_aboveground),
               mean_p_aboveground = mean(perc_aboveground),
-              season = unique(season)) %>% 
+              season = unique(season),
+              daylength = median(daylength)) %>% 
     ungroup()
 ```
 
@@ -405,7 +405,7 @@ graph_t_aboveground = ggplot(data = time_aboveground, aes(x = season, y = mean_t
     gghalves::geom_half_point(color = "orange") +
     gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0, color = "orange") +
 	xlab("") +
-	ylab("Mean Time on Surface")
+	ylab("Mean Time on Surface (min)")
 
 graph_p_aboveground = ggplot(data = time_aboveground, aes(x = season, y = mean_p_aboveground)) +
     gghalves::geom_half_point(color = "orange") +
@@ -493,7 +493,7 @@ bx_daily_vedba = ggplot(data = vedba_daily,
                               outlier.color = NA) +
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     xlab("") +
-    ylab("Daily Mean\nGeneral Activity (VeDBA)") +
+    ylab("Mean Daily\nGeneral Activity (VeDBA)") +
     theme(legend.position = "none")
 
 df1 = data.frame(x = c(1.9, 3), y = c(0.16,0.16))
@@ -521,7 +521,7 @@ bx_daytime_vedba = ggplot(data = vedba_daytime,
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     scale_y_continuous(breaks = c(0.10, 0.13, 0.16, 0.19, 0.22, 0.25)) +
     xlab("") +
-    ylab("Daytime Mean\nGeneral Activity (VeDBA)") +
+    ylab("Mean Daytime \nGeneral Activity (VeDBA)") +
     theme(legend.position = "none")
 
 
@@ -640,9 +640,9 @@ Tuco-tucos spent a variable percentage of their daily active time in one of the 
 ```{r calculate-time-state}
 daily_budget_id = tuco %>%
     group_by(season, ID, date = lubridate::date(datetime)) %>%
-    summarise(Rest   = sum(state == "Rest")/n() * 100,
-              Medium = sum(state == "Medium")/n() * 100,
-              High   = sum(state == "High")/n() *100,
+    summarise(Rest   = sum(state == "Rest")/n(),
+              Medium = sum(state == "Medium")/n(),
+              High   = sum(state == "High")/n(),
               "Total Active" = Medium + High) %>%
     group_by(season, ID) %>%
     summarise(Rest   = mean(Rest),
@@ -661,19 +661,20 @@ daily_budget_id$ID = paste0("ID:", daily_budget_id$ID)
 bar_time = ggplot(daily_budget_id, aes(perc, ID, fill = state, group = season)) +
               geom_bar(position = "stack",
                        stat = "identity") +
-              geom_text(aes(label = round(perc, 2)), 
+              geom_text(aes(label = round(perc, 3) * 100), 
                         position = position_stack(vjust = 0.5), 
                         color = "grey98", size = 2.8) +
               scale_fill_manual(values = tuco_pal[1:3]) +
-              scale_x_continuous(expand = c(0.02, 0)) +
+              #scale_x_continuous(expand = c(0.02, 0)) +
               facet_grid(season~.,
                          scales = "free",
                          space = "free_y") +
-              xlab("Time in State (%)") +
+              xlab("Time in State") +
               ylab("") +
               theme(panel.border = element_rect(colour = NA, fill=NA),
                     axis.ticks.y = element_blank()) +
-              labs(fill = "State")
+              labs(fill = "State") +
+              scale_x_continuous(labels = scales::percent_format())
 
 
 bxp_time = ggplot(daily_budget_id,
@@ -687,18 +688,19 @@ bxp_time = ggplot(daily_budget_id,
             scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
             facet_wrap(~state) +
             xlab("") +
-            ylab("Mean Daily\nTime in State (%)") +
-            theme(legend.position = "none")
+            ylab("Mean Daily\nTime in State") +
+            theme(legend.position = "none") +
+            scale_y_continuous(labels = scales::percent_format())
 
 
 df1 = data.frame(x = c(1.9, 3), 
-                 y = c(50, 50), 
+                 y = c(0.50, 0.50), 
                  state = factor("Medium", "Medium"))
 df2 = data.frame(x = c(1.9, 3), 
-                 y = c(50, 50), 
+                 y = c(0.50, 0.50), 
                  state = factor("High", "High"))
 df3 = data.frame(x = c(1.9, 4), 
-                 y = c(55, 55), 
+                 y = c(0.55, 0.55), 
                  state = factor("High", "High"))
 
 bxp_time = bxp_time +
@@ -712,7 +714,7 @@ bxp_time = bxp_time +
              mapping = aes(x,y, group = 1),
              color = "grey60") +
   geom_text(data = data.frame(x = c(2.5, 2.5, 3),
-                       y = c(52,52,57),
+                       y = c(0.52,0.52,0.57),
                        state = factor(c("Medium", "High", "High"),),
                        label = rep("*",3)),
             aes(x,y,label = label),
@@ -908,42 +910,43 @@ plot_high = wrap_plots(plot_id, plot_season, widths = c(1.5,3))
 ```{r}
 tuco_luximeter = tuco.metadata %>% filter(lux, recaptured, collar_recovered) %>% dplyr::select(ID)    
 
-aboveground_activity = tuco %>% 
-    filter(ID %in% tuco_luximeter$ID) %>% 
-    group_by(ID, date(datetime), season, state) %>% 
-    summarise(aboveground_time = sum(aboveground),
-              n = n(),
-              aboveground_perc = aboveground_time/n()) %>%
-    mutate(aboveground_time = ifelse(is.na(aboveground_time), 0, aboveground_time),
-           aboveground_perc = ifelse(is.na(aboveground_perc), 0, aboveground_perc)) %>% 
-    group_by(ID, season, state) %>% 
-    summarise(aboveground_time = mean(aboveground_time),
-              aboveground_perc = mean(aboveground_perc)) %>% 
-    ungroup()
+aboveground_activity = tuco %>%
+    group_by(ID, date = lubridate::date(datetime), season) %>% 
+    mutate(daylength = sum(daytime)) %>%
+    filter(ID %in% tuco_luximeter$ID, daytime == T) %>%
+    group_by(ID, date = lubridate::date(datetime), season, state) %>% 
+    summarise(daylength = median(daylength),
+              time = sum(aboveground),
+              perc = time/daylength) %>% 
+    group_by(season, ID, state) %>%
+    summarise(time = mean(time),
+              perc = mean(perc))
 ```
 
-Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(aboveground_perc), 2)) %>% dplyr::select(mean)`, whether for the medium state the mean is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(aboveground_perc), 2)) %>% dplyr::select(mean)`. Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of `r aboveground_activity %>% filter(state == "Rest") %>% summarise(mean = round(mean(aboveground_perc), 2)) %>% dplyr::select(mean)`.\newline
+Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`, whether for the medium state the mean is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`. Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of `r aboveground_activity %>% filter(state == "Rest") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`.\newline
 
 - aqui ainda falta um teste. Precisa ser um não parametrico ou test-t dois a dois. O ANOVA não cabe nesses dados.
+- adicionar estatistica descritiva do tempo
 
 ```{r aboveground-activity, out.width="100%", fig.width=7, fig.height=3.5, fig.pos="H", fig.align='center', fig.cap = "Distribution of the percentages of each activity state that happens aboveground during daytime."}
-ggplot(aboveground_activity, aes(state, aboveground_perc, color = state)) +
+plot_abvact_time = ggplot(aboveground_activity, aes(state, time, color = state)) +
     gghalves::geom_half_point() +
     gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0) +
-    ylab("Percentage of Activity Aboveground") +
-    xlab("Behavioral State") +
+    ylab("Time Spent in\nAboveground Activity (min)") +
+    xlab("") +
     scale_color_manual(values = tuco_pal[1:3]) +
     theme(legend.position = "none")
 
-# ggplot(aboveground_activity, aes(season, (aboveground_perc), color = state)) +
-#     gghalves::geom_half_point() +
-#     gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0) +
-#     facet_wrap(~state) +
-#     scale_x_discrete(labels = c("Jul","Oct","Feb")) +
-#     scale_color_manual(values = tuco_pal[1:3]) +
-#     ylab("Percentage of Activity Aboveground") +
-#     xlab("") +
-#     theme(legend.position = "none")
+plot_abvact_perc = ggplot(aboveground_activity, aes(state, perc, color = state)) +
+    gghalves::geom_half_point() +
+    gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0) +
+    ylab("Percentage of\nAboveground Activity") +
+    xlab("") +
+    scale_color_manual(values = tuco_pal[1:3]) +
+    theme(legend.position = "none") +
+    scale_y_continuous(labels = scales::percent_format(), limits = c(0,0.10))
+
+plot_abvact_time + plot_abvact_perc
 ```
 
 \newpage
@@ -964,13 +967,16 @@ diurnality_vedba$state = "General Activity"
 
     
 diurnality = tuco %>% 
-    group_by(ID, season, daylength, daytime, state) %>% 
-    summarise(n = n()) %>% 
+    group_by(ID, date(datetime), season) %>% 
+    mutate(daylength = sum(daytime)) %>% 
+    group_by(ID, date(datetime), season, state) %>% 
+    summarise(daylength = median(daylength),
+              nighttime = sum(!daytime),
+              daytime = sum(daytime),
+              diurnality = (daytime/daylength)/
+                  (daytime/daylength + nighttime/(1440 - daylength))) %>% 
     group_by(ID, season, state) %>% 
-    summarise(diurnality = (n[daytime]/daylength)/
-                           (n[daytime]/daylength + n[!daytime]/(1440-daylength))) %>% 
-    unique() %>% 
-    ungroup()
+    summarise(diurnality = mean(diurnality))
 
 diurnality = dplyr::full_join(diurnality, diurnality_vedba)
 diurnality$state = factor(diurnality$state, levels = c("Rest","Medium","High","General Activity"))
@@ -979,9 +985,9 @@ diurnality$state = factor(diurnality$state, levels = c("Rest","Medium","High","G
 ```{r diurnality-plot, fig.pos = "H", out.width="100%", fig.width=8, fig.asp=0.4, fig.cap = "Distribution of calculated diurnality index (DI). Between labelled states, only the High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all season. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal, "}
 
 ggplot(diurnality,
-                  aes(x = season,
-                      y = diurnality,
-                      color = state)) +
+      aes(x = season,
+          y = diurnality,
+          color = state)) +
     geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey90") +
     gghalves::geom_half_boxplot(nudge = 0.05,
                                 outlier.color = NA) +
@@ -1049,7 +1055,7 @@ Lastly, we used Lomb-Scargle periodograms to estimate the periodicity of each st
 We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A). For VeDBA the mean estimated period was `r period_mean[period_mean$state == "vedba",]$mean_sd`.
 
 
-```{r plot-ri-and-period, fig.width=7, fig.height=6, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Distribution of Rhythmicity Index for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA. Graphs shows half boxplots and individual data"}
+```{r plot-ri-and-period, fig.width=9, fig.height=3, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Distribution of Rhythmicity Index for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA. Graphs shows half boxplots and individual data"}
 acf_dist_plot = ggplot(acf_peaks,
                        aes(x = state,
                            y = acf,
@@ -1074,7 +1080,7 @@ period_dist_plot = ggplot(period_peaks) +
     scale_color_manual(values = tuco_pal) +
     scale_fill_manual(values = tuco_pal)
 
-acf_dist_plot / period_dist_plot + patchwork::plot_annotation(tag_levels = "A")
+acf_dist_plot + period_dist_plot + patchwork::plot_annotation(tag_levels = "A") +patchwork::plot_layout(widths = c(2,1))
 ```
 
 \newpage

@@ -156,8 +156,8 @@
 
   \caption{Collar setup and example of field deployment. Upper photo shows the complete collar setup with accelerometer, lightlogger and the telemetry transmitter. Bottom photo shows a tuco-tuco wearing a collar. In the bottom photo it is possible to see the acceleromer and the lightlogger attached to the collar.}\label{fig:methods-collar}
   \end{figure}
-  \hypertarget{data-processing-general-activity-calculation}{%
-  \subsection{Data Processing \& General Activity Calculation}\label{data-processing-general-activity-calculation}}
+  \hypertarget{data-processing-general-activity-and-aboveground-activity-calculation}{%
+  \subsection{Data Processing, General Activity and Aboveground Activity Calculation}\label{data-processing-general-activity-and-aboveground-activity-calculation}}
 
   Data were recorded on board of the sensors and later downloaded and converted to raw text files using the software provided by the device's manufacturers. Acceleration data was used to measure gross motor activity. Tri-axial acceleration data was first reduced to one dimension using the Vectorial Dynamic Body Acceleration (VeDBA, \protect\hyperlink{ref-qasem2012}{Qasem et al. 2012}). VeDBA is commonly used as a proxy for the animal's activity level and energy expenditure (\protect\hyperlink{ref-wilson2008}{Wilson et al. 2008}; \protect\hyperlink{ref-williams2016}{Williams et al. 2016}). VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the number of points to calculate the moving average with, which can be dependent on the study species and device's recording frequency. In this study we used a 4-second moving average after following the methodology proposed by (\protect\hyperlink{ref-ref}{\textbf{ref?}}). (ii) Calculating the acceleration correspondent to the animal's movement, also known as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axes.
 
@@ -169,10 +169,12 @@
 
   In order to exclude any effects that capture and recapture can have in the animal's activity, we removed the first and last days of all dataset. We also excluded the data corresponding to the days we were attempting to recapture the animal in cases where the recapture attempts took longer than one day. Animals that had data excluded due to recapturing efforts were FEV05 (5 days), JUL16 (5 days) and JUL23 (2 days).
 
-  \hypertarget{time-on-surface-general-activity-analysis}{%
-  \subsection{Time on Surface \& General Activity Analysis}\label{time-on-surface-general-activity-analysis}}
+  \hypertarget{time-on-surface-general-activity}{%
+  \subsection{Time on Surface \& General Activity}\label{time-on-surface-general-activity}}
 
-  VeDBA data was first used to analyse the general activity levels of tuco-tucos. The temporal distribution of VeDBA was visualized
+  Time on surface was calculated using the aboveground data (see Data Processing). We visualized the daily temporal pattern of surface emergences using histograms and kernel density functions. We also calculated tuco-tuco's mean daily time on surface and the mean percentage of time on surface in relation to daylength.
+
+  General activity was analyzed using the calculated VeDBA. Temporal patterns in general activity was visualized by the mean hourly VeDBA. As we did for time on surface, we also calculated the mean daily VeDBA and mean daytime VeDBA.
 
   \hypertarget{hidden-markov-models}{%
   \subsection{Hidden Markov Models}\label{hidden-markov-models}}
@@ -351,11 +353,13 @@
   \hypertarget{aboveground-activity}{%
   \subsection{Aboveground Activity}\label{aboveground-activity}}
 
-  Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \ref{fig:aboveground-activity}). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is 0.15, whether for the medium state the mean is 0.05. Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of 0.01.\newline
+  Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \ref{fig:aboveground-activity}). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is c(2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4), c(0.04, 0.06, 0.11, 0.07, 0.04, 0.05, 0.06, 0.08, 0.03, 0.02, 0.04, 0.08, 0.03), whether for the medium state the mean is c(2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4), c(0.05, 0.02, 0.04, 0.09, 0.02, 0.05, 0.01, 0.02, 0.01, 0.01, 0.04, 0.03, 0.01). Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of c(2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4), c(0.01, 0, 0.01, 0.01, 0.06, 0.01, 0, 0.01, 0, 0, 0, 0.01, 0).\newline
   \begin{itemize}
   \tightlist
   \item
     aqui ainda falta um teste. Precisa ser um não parametrico ou test-t dois a dois. O ANOVA não cabe nesses dados.
+  \item
+    adicionar estatistica descritiva do tempo
   \end{itemize}
   \begin{figure}[H]
 

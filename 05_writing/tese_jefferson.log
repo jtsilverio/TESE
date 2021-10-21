@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2021.10.1)  15 OCT 2021 17:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021) (preloaded format=pdflatex 2021.10.1)  21 OCT 2021 14:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -651,74 +651,80 @@ File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 
 
 ]
-<../04_figures/map/tuco_map.png, id=405, 597.1911pt x 597.1911pt>
+<../04_figures/map/tuco_map.png, id=406, 597.1911pt x 597.1911pt>
 File: ../04_figures/map/tuco_map.png Graphic file (type png)
 <use ../04_figures/map/tuco_map.png>
 Package pdftex.def Info: ../04_figures/map/tuco_map.png  used on input line 132
 .
 (pdftex.def)             Requested size: 426.79135pt x 426.78793pt.
 [2] [3 <../04_figures/map/tuco_map.png>] [4]
-<../04_figures/collar/collar_tuco.png, id=435, 853.1875pt x 803.0pt>
+<../04_figures/collar/collar_tuco.png, id=436, 853.1875pt x 803.0pt>
 File: ../04_figures/collar/collar_tuco.png Graphic file (type png)
 <use ../04_figures/collar/collar_tuco.png>
 Package pdftex.def Info: ../04_figures/collar/collar_tuco.png  used on input li
 ne 153.
 (pdftex.def)             Requested size: 426.79135pt x 401.69505pt.
 [5] [6 <../04_figures/collar/collar_tuco.png>] [7]
-Overfull \hbox (1.40103pt too wide) in paragraph at lines 182--183
+Overfull \hbox (9.1161pt too wide) in paragraph at lines 175--176
+\T1/ppl/m/n/12 time on sur-face and the mean per-cent-age of time on sur-face i
+n re-la-tion to daylength. 
+ []
+
+
+Overfull \hbox (1.40103pt too wide) in paragraph at lines 184--185
 \T1/ppl/m/n/12 into ac-count ([]Zuc-chini, Iain Mac-Don-ald, and Roland Lan-gro
 ck 2016[]). The Markov
  []
 
 [8]
-<tese_jefferson_files/figure-latex/hmm-formulation-1.pdf, id=495, 264.99pt x 78
+<tese_jefferson_files/figure-latex/hmm-formulation-1.pdf, id=492, 264.99pt x 78
 .2925pt>
 File: tese_jefferson_files/figure-latex/hmm-formulation-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/hmm-formulation-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/hmm-formulation-1.pd
-f  used on input line 187.
+f  used on input line 189.
 (pdftex.def)             Requested size: 264.98935pt x 78.2923pt.
 
 LaTeX Warning: Reference `fig:appendix-eda' on page 9 undefined on input line 1
-96.
+98.
 
 [9 <./tese_jefferson_files/figure-latex/hmm-formulation-1.pdf>]
 
 LaTeX Warning: Reference `fig:appendix-eda' on page 10 undefined on input line 
-198.
+200.
 
 [10]
-Overfull \hbox (1.04012pt too wide) in paragraph at lines 216--217
+Overfull \hbox (1.04012pt too wide) in paragraph at lines 218--219
 \T1/ppl/m/n/12 Scargle pe-ri-odograms to as-sess the ro-bust-ness and pe-ri-od-
 ic-ity of ac-tiv-ity rhythms.
  []
 
 [11] [12]
-<tese_jefferson_files/figure-latex/plot-light-exposure-1.pdf, id=593, 556.0775p
+<tese_jefferson_files/figure-latex/plot-light-exposure-1.pdf, id=594, 556.0775p
 t x 467.7475pt>
 File: tese_jefferson_files/figure-latex/plot-light-exposure-1.pdf Graphic file 
 (type pdf)
 <use tese_jefferson_files/figure-latex/plot-light-exposure-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-light-exposure-
-1.pdf  used on input line 264.
+1.pdf  used on input line 266.
 (pdftex.def)             Requested size: 426.79135pt x 359.0033pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 261--269
+Underfull \hbox (badness 10000) in paragraph at lines 263--271
 
  []
 
 [13] [14 <./tese_jefferson_files/figure-latex/plot-light-exposure-1.pdf>]
-<tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf, id=615, 701.62125pt x 2
-48.93pt>
+<tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf, id=616, 701.62125pt x 3
+21.2pt>
 File: tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf Graphic file (type 
 pdf)
 <use tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf 
- used on input line 280.
-(pdftex.def)             Requested size: 426.79135pt x 151.42545pt.
+ used on input line 282.
+(pdftex.def)             Requested size: 426.79135pt x 195.3877pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 277--285
+Underfull \hbox (badness 10000) in paragraph at lines 279--287
 
  []
 
@@ -727,145 +733,145 @@ Underfull \hbox (badness 10000) in paragraph at lines 277--285
  <./tese_jefferson_files/figure-latex/vedba-boxplot-1.pdf>]
 
 LaTeX Warning: Reference `fig:appendix-residuals' on page 16 undefined on input
- line 291.
+ line 293.
 
-<tese_jefferson_files/figure-latex/hmm-plot-1.pdf, id=633, 634.37pt x 312.16624
+<tese_jefferson_files/figure-latex/hmm-plot-1.pdf, id=634, 634.37pt x 312.16624
 pt>
 File: tese_jefferson_files/figure-latex/hmm-plot-1.pdf Graphic file (type pdf)
 <use tese_jefferson_files/figure-latex/hmm-plot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/hmm-plot-1.pdf  used
- on input line 294.
+ on input line 296.
 (pdftex.def)             Requested size: 426.79135pt x 210.02673pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 291--299
+Underfull \hbox (badness 10000) in paragraph at lines 293--301
 
  []
 
 [16 <./tese_jefferson_files/figure-latex/hmm-plot-1.pdf>]
 
 LaTeX Warning: Reference `fig:vedba-actograms' on page 17 undefined on input li
-ne 302.
+ne 304.
 
-<tese_jefferson_files/figure-latex/actograms-results-1.pdf, id=648, 551.05875pt
+<tese_jefferson_files/figure-latex/actograms-results-1.pdf, id=649, 551.05875pt
  x 299.1175pt>
 File: tese_jefferson_files/figure-latex/actograms-results-1.pdf Graphic file (t
 ype pdf)
 <use tese_jefferson_files/figure-latex/actograms-results-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/actograms-results-1.
-pdf  used on input line 305.
+pdf  used on input line 307.
 (pdftex.def)             Requested size: 426.79135pt x 231.67216pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 302--310
+Underfull \hbox (badness 10000) in paragraph at lines 304--312
 
  []
 
 [17 <./tese_jefferson_files/figure-latex/actograms-results-1.pdf>]
-<tese_jefferson_files/figure-latex/plot-time-state-1.pdf, id=662, 622.325pt x 6
+<tese_jefferson_files/figure-latex/plot-time-state-1.pdf, id=663, 622.325pt x 6
 10.28pt>
 File: tese_jefferson_files/figure-latex/plot-time-state-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/plot-time-state-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-time-state-1.pd
-f  used on input line 321.
+f  used on input line 323.
 (pdftex.def)             Requested size: 426.79135pt x 418.53282pt.
 [18
 
 ] [19 <./tese_jefferson_files/figure-latex/plot-time-state-1.pdf>] [20]
-<tese_jefferson_files/figure-latex/plot-patterns-1.pdf, id=683, 701.62125pt x 1
+<tese_jefferson_files/figure-latex/plot-patterns-1.pdf, id=684, 701.62125pt x 1
 061.9675pt>
 File: tese_jefferson_files/figure-latex/plot-patterns-1.pdf Graphic file (type 
 pdf)
 <use tese_jefferson_files/figure-latex/plot-patterns-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-patterns-1.pdf 
- used on input line 343.
+ used on input line 345.
 (pdftex.def)             Requested size: 405.45047pt x 613.70538pt.
 [21 <./tese_jefferson_files/figure-latex/plot-patterns-1.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 354--355
+Underfull \hbox (badness 10000) in paragraph at lines 356--357
 
  []
 
-<tese_jefferson_files/figure-latex/aboveground-activity-1.pdf, id=699, 496.8562
-5pt x 239.89626pt>
+<tese_jefferson_files/figure-latex/aboveground-activity-1.pdf, id=700, 485.815p
+t x 218.8175pt>
 File: tese_jefferson_files/figure-latex/aboveground-activity-1.pdf Graphic file
  (type pdf)
 <use tese_jefferson_files/figure-latex/aboveground-activity-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/aboveground-activity
--1.pdf  used on input line 362.
-(pdftex.def)             Requested size: 426.79135pt x 206.06882pt.
+-1.pdf  used on input line 366.
+(pdftex.def)             Requested size: 426.79135pt x 192.23277pt.
 [22
 
  <./tese_jefferson_files/figure-latex/aboveground-activity-1.pdf>]
-<tese_jefferson_files/figure-latex/diurnality-plot-1.pdf, id=711, 569.12625pt x
+<tese_jefferson_files/figure-latex/diurnality-plot-1.pdf, id=712, 569.12625pt x
  197.73875pt>
 File: tese_jefferson_files/figure-latex/diurnality-plot-1.pdf Graphic file (typ
 e pdf)
 <use tese_jefferson_files/figure-latex/diurnality-plot-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/diurnality-plot-1.pd
-f  used on input line 376.
+f  used on input line 380.
 (pdftex.def)             Requested size: 426.79135pt x 148.29163pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 373--381
+Underfull \hbox (badness 10000) in paragraph at lines 377--385
 
  []
 
 [23 <./tese_jefferson_files/figure-latex/diurnality-plot-1.pdf>]
-<tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf, id=727, 478.78876p
-t x 408.52625pt>
+<tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf, id=728, 623.32875p
+t x 191.71625pt>
 File: tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf Graphic file (
 type pdf)
 <use tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf>
 Package pdftex.def Info: tese_jefferson_files/figure-latex/plot-ri-and-period-1
-.pdf  used on input line 396.
-(pdftex.def)             Requested size: 426.79135pt x 364.1607pt.
+.pdf  used on input line 400.
+(pdftex.def)             Requested size: 426.79135pt x 131.26924pt.
 [24] [25 <./tese_jefferson_files/figure-latex/plot-ri-and-period-1.pdf>]
-Overfull \hbox (6.80151pt too wide) in paragraph at lines 414--415
+Overfull \hbox (6.80151pt too wide) in paragraph at lines 418--419
 []\T1/ppl/m/n/12 selecionamos os fa-tores mais rel-e-vantes basea-dos nas anali
 ses ex-plorato-
  []
 
 [26]
-Overfull \hbox (1.56744pt too wide) in paragraph at lines 478--479
+Overfull \hbox (1.56744pt too wide) in paragraph at lines 482--483
 []\T1/ppl/m/n/12 os re-sul-ta-dos do in-dice de rit-mi-ci-dade de-vem ser in-te
 r-pre-ta-dos com cuidado
  []
 
 [27]
 Appendix A.
-<../04_figures/appendix/plot_plants.png, id=760, 650.43pt x 794.97pt>
+<../04_figures/appendix/plot_plants.png, id=761, 650.43pt x 794.97pt>
 File: ../04_figures/appendix/plot_plants.png Graphic file (type png)
 <use ../04_figures/appendix/plot_plants.png>
 Package pdftex.def Info: ../04_figures/appendix/plot_plants.png  used on input 
-line 495.
+line 499.
 (pdftex.def)             Requested size: 426.79135pt x 521.64926pt.
 [28
 
 ] [29 <../04_figures/appendix/plot_plants.png (PNG copy)>]
 Appendix B.
-<../04_figures/appendix/plot_weather.png, id=773, 650.43pt x 722.7pt>
+<../04_figures/appendix/plot_weather.png, id=774, 650.43pt x 722.7pt>
 File: ../04_figures/appendix/plot_weather.png Graphic file (type png)
 <use ../04_figures/appendix/plot_weather.png>
 Package pdftex.def Info: ../04_figures/appendix/plot_weather.png  used on input
- line 505.
+ line 509.
 (pdftex.def)             Requested size: 426.79135pt x 474.2266pt.
 [30
 
 ] [31 <../04_figures/appendix/plot_weather.png (PNG copy)>]
 Appendix C.
-<../04_figures/appendix/plot_daylength.png, id=783, 650.43pt x 325.215pt>
+<../04_figures/appendix/plot_daylength.png, id=784, 650.43pt x 325.215pt>
 File: ../04_figures/appendix/plot_daylength.png Graphic file (type png)
 <use ../04_figures/appendix/plot_daylength.png>
 Package pdftex.def Info: ../04_figures/appendix/plot_daylength.png  used on inp
-ut line 520.
+ut line 524.
 (pdftex.def)             Requested size: 426.79135pt x 213.40196pt.
 [32
 
 ] [33 <../04_figures/appendix/plot_daylength.png (PNG copy)>]
 Appendix D.
-<../04_figures/appendix/plot_smoothing_window.png, id=793, 650.43pt x 722.7pt>
+<../04_figures/appendix/plot_smoothing_window.png, id=794, 650.43pt x 722.7pt>
 File: ../04_figures/appendix/plot_smoothing_window.png Graphic file (type png)
 <use ../04_figures/appendix/plot_smoothing_window.png>
 Package pdftex.def Info: ../04_figures/appendix/plot_smoothing_window.png  used
- on input line 528.
+ on input line 532.
 (pdftex.def)             Requested size: 426.79135pt x 474.2266pt.
 [34
 
@@ -886,21 +892,21 @@ Appendix G.
 
 ]
 Appendix H.
-<../04_figures/residuals/m2_PR.png, id=822, 1204.5pt x 1003.75pt>
+<../04_figures/residuals/m2_PR.png, id=823, 1204.5pt x 1003.75pt>
 File: ../04_figures/residuals/m2_PR.png Graphic file (type png)
 <use ../04_figures/residuals/m2_PR.png>
 Package pdftex.def Info: ../04_figures/residuals/m2_PR.png  used on input line 
-573.
+577.
 (pdftex.def)             Requested size: 426.79135pt x 355.6675pt.
 [39
 
  <../04_figures/residuals/m2_PR.png (PNG copy)>]
 Appendix I.
-<../04_figures/actograms/actograms_vedba.png, id=828, 597.3225pt x 825.0825pt>
+<../04_figures/actograms/actograms_vedba.png, id=829, 597.3225pt x 825.0825pt>
 File: ../04_figures/actograms/actograms_vedba.png Graphic file (type png)
 <use ../04_figures/actograms/actograms_vedba.png>
 Package pdftex.def Info: ../04_figures/actograms/actograms_vedba.png  used on i
-nput line 577.
+nput line 581.
 (pdftex.def)             Requested size: 405.45047pt x 560.0541pt.
 [40
 
@@ -909,11 +915,11 @@ Overfull \vbox (85.94006pt too high) has occurred while \output is active []
 
 [41 <../04_figures/actograms/actograms_vedba.png (PNG copy)>]
 Appendix J.
-<../04_figures/actograms/actograms_high.png, id=838, 597.3225pt x 825.0825pt>
+<../04_figures/actograms/actograms_high.png, id=839, 597.3225pt x 825.0825pt>
 File: ../04_figures/actograms/actograms_high.png Graphic file (type png)
 <use ../04_figures/actograms/actograms_high.png>
 Package pdftex.def Info: ../04_figures/actograms/actograms_high.png  used on in
-put line 581.
+put line 585.
 (pdftex.def)             Requested size: 405.45047pt x 560.0541pt.
 [42
 
@@ -922,12 +928,12 @@ Overfull \vbox (85.94006pt too high) has occurred while \output is active []
 
 [43 <../04_figures/actograms/actograms_high.png>]
 Appendix K.
-<../04_figures/actograms/actograms_medium.png, id=849, 597.3225pt x 825.0825pt>
+<../04_figures/actograms/actograms_medium.png, id=850, 597.3225pt x 825.0825pt>
 
 File: ../04_figures/actograms/actograms_medium.png Graphic file (type png)
 <use ../04_figures/actograms/actograms_medium.png>
 Package pdftex.def Info: ../04_figures/actograms/actograms_medium.png  used on 
-input line 585.
+input line 589.
 (pdftex.def)             Requested size: 405.45047pt x 560.0541pt.
 [44
 
@@ -936,14 +942,14 @@ Overfull \vbox (135.59003pt too high) has occurred while \output is active []
 
 [45 <../04_figures/actograms/actograms_medium.png>]
 Appendix L.
-<../04_figures/ACF/acf_plot.png, id=860, 597.31155pt x 824.96205pt>
+<../04_figures/ACF/acf_plot.png, id=861, 597.31155pt x 824.96205pt>
 File: ../04_figures/ACF/acf_plot.png Graphic file (type png)
 <use ../04_figures/ACF/acf_plot.png>
-Package pdftex.def Info: ../04_figures/ACF/acf_plot.png  used on input line 589
+Package pdftex.def Info: ../04_figures/ACF/acf_plot.png  used on input line 593
 .
 (pdftex.def)             Requested size: 1659.31967pt x 2291.95287pt.
 
-Overfull \hbox (1232.52832pt too wide) in paragraph at lines 589--589
+Overfull \hbox (1232.52832pt too wide) in paragraph at lines 593--593
  [] 
  []
 
@@ -954,14 +960,14 @@ Overfull \vbox (1835.4672pt too high) has occurred while \output is active []
 
 [47 <../04_figures/ACF/acf_plot.png (PNG copy)>]
 Appendix M.
-<../04_figures/periodogram/periodogram.png, id=871, 597.31155pt x 824.96205pt>
+<../04_figures/periodogram/periodogram.png, id=872, 597.31155pt x 824.96205pt>
 File: ../04_figures/periodogram/periodogram.png Graphic file (type png)
 <use ../04_figures/periodogram/periodogram.png>
 Package pdftex.def Info: ../04_figures/periodogram/periodogram.png  used on inp
-ut line 593.
+ut line 597.
 (pdftex.def)             Requested size: 1659.31967pt x 2291.95287pt.
 
-Overfull \hbox (1232.52832pt too wide) in paragraph at lines 593--593
+Overfull \hbox (1232.52832pt too wide) in paragraph at lines 597--597
  [] 
  []
 
@@ -973,11 +979,11 @@ Overfull \vbox (1835.4672pt too high) has occurred while \output is active []
 [49 <../04_figures/periodogram/periodogram.png (PNG copy)>]
 No file tese_jefferson.bbl.
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 6
-12.
+16.
 (/home/jeff/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-Overfull \hbox (12.09387pt too wide) in paragraph at lines 626--628
+Overfull \hbox (12.09387pt too wide) in paragraph at lines 630--632
  \T1/ppl/m/it/12 Den-drochronolo-gia \T1/ppl/m/n/12 26 (2): 115--24. []$\T1/cmt
 t/m/n/12 https : / / doi . org / 10 . 1016 / j . dendro . 2008 .
  []
@@ -986,61 +992,61 @@ t/m/n/12 https : / / doi . org / 10 . 1016 / j . dendro . 2008 .
 
 
 ]
-Overfull \hbox (8.16035pt too wide) in paragraph at lines 629--631
+Overfull \hbox (8.16035pt too wide) in paragraph at lines 633--635
  \T1/ppl/m/n/12 2002. \T1/ppl/m/it/12 Model Se-lec-tion and Mul-ti-model In-fer
 -ence: A Prac-ti-cal Information-Theoretic
  []
 
 
-Overfull \hbox (4.29837pt too wide) in paragraph at lines 647--649
+Overfull \hbox (4.29837pt too wide) in paragraph at lines 651--653
  []\T1/ppl/m/n/12 Langrock, Roland, Ruth King, Ja-son Matthiopou-los, Len Thoma
 s, Daniel Fortin,
  []
 
 [51]
-Overfull \hbox (7.73132pt too wide) in paragraph at lines 668--670
+Overfull \hbox (7.73132pt too wide) in paragraph at lines 672--674
  \T1/ppl/m/n/12 Barajas, Darcy Bradley, Roland Lan-grock, Kevin Weng, Christo-p
 her G. Lowe,
  []
 
 
-Overfull \hbox (1.63376pt too wide) in paragraph at lines 668--670
+Overfull \hbox (1.63376pt too wide) in paragraph at lines 672--674
  \T1/ppl/m/n/12 High-light Cen-tral Place For-ag-ing Strate-gies in Ma-rine Pre
 da-tors That Never
  []
 
 [52]
-Overfull \hbox (0.67435pt too wide) in paragraph at lines 674--676
+Overfull \hbox (0.67435pt too wide) in paragraph at lines 678--680
  \T1/ppl/m/n/12 2009. ``Clas-si-fy-ing Move-ment Be-haviour in Re-la-tion to En
 -vi-ron-men-tal Con-
  []
 
 
-Overfull \hbox (8.0905pt too wide) in paragraph at lines 677--679
+Overfull \hbox (8.0905pt too wide) in paragraph at lines 681--683
  []\T1/ppl/m/n/12 Pohle, Jen-nifer, Roland Lan-grock, Floris M. van Beest, and 
 Niels Mar-tin Schmidt.
  []
 
 
-Overfull \hbox (1.46735pt too wide) in paragraph at lines 680--682
+Overfull \hbox (1.46735pt too wide) in paragraph at lines 684--686
  []\T1/ppl/m/n/12 Qasem, Lama, An-to-nia Cardew, Alexis Wil-son, Iwan Grif-fith
 s, Lewis G. Halsey,
  []
 
 
-Overfull \hbox (3.76971pt too wide) in paragraph at lines 680--682
+Overfull \hbox (3.76971pt too wide) in paragraph at lines 684--686
  \T1/ppl/m/n/12 We Be Sum-ming Val-ues or Cal-cu-lat-ing the Vec-tor?'' \T1/ppl
 /m/it/12 PLOS ONE \T1/ppl/m/n/12 7 (2): e31187.
  []
 
 
-Overfull \hbox (12.85414pt too wide) in paragraph at lines 686--688
+Overfull \hbox (12.85414pt too wide) in paragraph at lines 690--692
  \T1/ppl/m/n/12 Anal-y-sis of In-com-plete and Un-equally Spaced Time-Series.''
  \T1/ppl/m/it/12 Bi-o-log-i-cal Rhythm
  []
 
 [53]
-Overfull \hbox (3.25313pt too wide) in paragraph at lines 707--709
+Overfull \hbox (3.25313pt too wide) in paragraph at lines 711--713
  \T1/ppl/m/n/12 Ac-cel-er-a-tion for Es-ti-mates of Activity-Specific Metabolic
  Rate in Free-Living
  []
@@ -1052,12 +1058,12 @@ AED: lastpage setting LastPage
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `tese_jefferson.out' has not changed.
-(rerunfilecheck)             Checksum: EEFA411EC91BA9455B8BE253B7409123;7413.
+(rerunfilecheck)             Checksum: BE9BB24C64555EF8FF81FD505BDE7355;7488.
  ) 
 Here is how much of TeX's memory you used:
  13454 strings out of 480539
- 210609 string characters out of 5902593
- 538333 words of memory out of 5000000
+ 210641 string characters out of 5902593
+ 538349 words of memory out of 5000000
  30595 multiletter control sequences out of 15000+600000
  433888 words of font info for 88 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
@@ -1074,10 +1080,10 @@ ype1/public/mathpazo/fplmr.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/
 palatino/uplb8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/up
 lbi8a.pfb></home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><
 /home/jeff/.TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on tese_jefferson.pdf (69 pages, 17803722 bytes).
+Output written on tese_jefferson.pdf (69 pages, 17819993 bytes).
 PDF statistics:
- 1096 PDF objects out of 1200 (max. 8388607)
- 888 compressed objects within 9 object streams
+ 1097 PDF objects out of 1200 (max. 8388607)
+ 889 compressed objects within 9 object streams
  204 named destinations out of 1000 (max. 500000)
  436 words of extra memory for PDF output out of 10000 (max. 10000000)
 
