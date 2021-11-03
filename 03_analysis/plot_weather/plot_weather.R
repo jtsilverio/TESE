@@ -4,8 +4,6 @@ library(dplyr)
 library(egg)
 library(patchwork)
 library(maptools)
-source("03_analysis/tuco_theme.R")
-
 
 # 2017 --------------------------------------------------------------------
 weather.2017 = readxl::read_xlsx(
