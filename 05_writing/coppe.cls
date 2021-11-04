@@ -447,7 +447,7 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
     \cleardoublepage
     \vspace*{\fill}
     \begin{flushright}
-      \begin{minipage}{60mm}
+      \begin{minipage}{120mm}
         \raggedleft \it \normalsize \@dedic
       \end{minipage}
     \end{flushright}}

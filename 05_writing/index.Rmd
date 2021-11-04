@@ -36,7 +36,7 @@ examiner:
 listoftables: true
 listoffigures: true
 dedication: |
-  A alguém cujo valor é digno desta dedicatória.
+  "O sol afundou mais um pouco. As sombras se alongaram, atravessando a caldeira de sal. Linhas de cores vibrantes espalharam-se sobre o horizonte do poente. A cor foi se transformando num dedo de trevas a experimentar a areia. As sombras cor de carvão se alastraram, e o desmoronamento compacto da noite obliterou o deserto." \linebreak \textnormal{— Frank Herbert, Dune.}
 thanks:
 - title: Agradecimentos
   text:  |
