@@ -1,7 +1,7 @@
 ---
 doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
 english: true 
-title:  'Titulo de Tese'
+title: 'Titulo de Tese'
 foreigntitle: "Thesis' Title"
 department: 'IB'
 date_month: "`r format(Sys.time(), '%m')`"
@@ -33,10 +33,10 @@ examiner:
   - title: Prof.
     name: Nome Completo do Terceiro Examinador
     degree: Ph.D
-listoftables: true
-listoffigures: true
+listoftables: false
+listoffigures: false
 dedication: |
-  "O sol afundou mais um pouco. As sombras se alongaram, atravessando a caldeira de sal. Linhas de cores vibrantes espalharam-se sobre o horizonte do poente. A cor foi se transformando num dedo de trevas a experimentar a areia. As sombras cor de carvão se alastraram, e o desmoronamento compacto da noite obliterou o deserto." \linebreak \textnormal{— Frank Herbert, Dune.}
+  "O sol afundou mais um pouco. As sombras se alongaram, atravessando a caldeira de sal. Linhas de cores vibrantes espalharam-se sobre o horizonte do poente. A cor foi se transformando num dedo de trevas a experimentar a areia. As sombras cor de carvão se alastraram, e o desmoronamento compacto da noite obliterou o deserto." \linebreak \textnormal{— Frank Herbert, Duna.}
 thanks:
 - title: Agradecimentos
   text:  |
@@ -48,11 +48,13 @@ site: bookdown::bookdown_site
 biblio-style: "csl/apa.csl"
 link-citations: true
 bibliography: references.bib
+nocite: |
+  @geissmann2019
 output: 
-  coppedown::thesis_pdf: default
+  #coppedown::thesis_pdf: default
   #coppedown::thesis_gitbook: default
-  #coppedown::thesis_word: 
-  #  reference_docx: template.docx
+  coppedown::thesis_word: 
+    reference_docx: template.docx
   #coppedown::thesis_epub: default
 ---
 
