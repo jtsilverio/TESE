@@ -5,8 +5,8 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
     require(egg)
     require(lubridate)
     require(dplyr)
-    source("03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
-    source("03_analysis/actogram/stat-tile-etho.R") # From ggetho
+    source("../03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
+    source("../03_analysis/actogram/stat-tile-etho.R") # From ggetho
     
     # Calculate Sunrise and Sunset Times
     # TODO: Take the median date first and only calculate crepuscules for that date.
@@ -14,7 +14,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
     tuco$dawn    = maptools::crepuscule(crds = anillaco, dateTime = tuco$datetime,
                          solarDep = 6, direction = "dawn", POSIXct.out=TRUE)$day_frac  * 1440
     tuco$dusk    = maptools::crepuscule(crds = anillaco, dateTime = tuco$datetime,
-                         solarDep = 6, direction = "dusk", POSIXct.out=TRUE)$day_frac  * 1440
+                                        solarDep = 6, direction = "dusk", POSIXct.out=TRUE)$day_frac  * 1440
     tuco = tuco[,dawn := median(dawn), by = ID] 
     tuco = tuco[,dusk := median(dusk), by = ID] 
     
@@ -97,7 +97,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
             facet_wrap(~ID, scales = "free_y", ncol = 3) +
             xlab("") +
             ylab("") + 
-            theme_article() +
+            #theme_article() +
             theme(panel.grid.major.y = element_line(color = "grey95"))
     }else{
         
@@ -107,7 +107,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
         }else{
             stop("State is not a correct option. Should be 'vedba', 'rest', 'medium' or 'high'")
         }
-
+        
         actograms =
             ggplot(data = tuco, aes(x = time, y = date, group = ID)) +
             geom_vline(aes(xintercept = dawn), color = "grey60", linetype = 2, size = 0.5) +
@@ -119,7 +119,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
             facet_wrap(~ID, scales = "free_y", ncol = 3) +
             xlab("") +
             ylab("") + 
-            theme_article() +
+            #theme_article() +
             theme(panel.grid.major.y = element_line(color = "grey95"))
     }
     
@@ -128,7 +128,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
                                       aes(label = sex), 
                                       data = sexlabels, vjust = 1.2, hjust = 1.2, 
                                       size = 3, family = "Arial Unicode MS") + 
-                theme(legend.position = "none")
+        theme(legend.position = "none")
     actograms
 }
 
