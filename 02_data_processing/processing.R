@@ -101,7 +101,7 @@ if (sys.nframe() == 0){
     rm(tuco_subset)
     
     # Calculate Dynamic acceleration ------------------------------------------
-    tuco_acc[, c("Xd", "Yd" , "Zd") := dba(X, Y, Z), by = ID]
+    tuco_acc[, c("Xd","Yd","Zd") := dba(X, Y, Z), by = ID]
     tuco_acc[, c("X","Y","Z") := NULL]
 
     # Calculate VeDBA ---------------------------------------------------------
@@ -109,7 +109,7 @@ if (sys.nframe() == 0){
     tuco_acc[, c("Xd","Yd","Zd") := NULL]
 
     # Downsample --------------------------------------------------------------
-    tuco_acc = downsample(tuco_acc, window = 300)
+    tuco_acc = downsample(tuco_acc)
 
     # Join Acc and Lux --------------------------------------------------------
     source("02_data_processing/read_lux.R")
@@ -145,9 +145,9 @@ if (sys.nframe() == 0){
     tuco[, daytime := ifelse(tuco$time > dawn & tuco$time < dusk, T, F)]
         
     # Classify in Aboveground or belowground ----------------------------------
-    tuco[, lux_filled := zoo::na.locf(lux, fromLast = T, na.rm = F), by = "ID"]
-    tuco[, aboveground := ifelse(tuco$lux_filled >= 2, T, F)]
-    
+    #lux_filled = tuco[, lux_filled := zoo::na.locf(lux, fromLast = T, na.rm = F), by = "ID"]
+    tuco[, aboveground := ifelse(tuco$lux >= 2, T, F)]
+
     # Clean Workspace
     rm(tuco_acc, tuco_lux, i, files, dir.data, dawn, dusk)
     
@@ -155,8 +155,8 @@ if (sys.nframe() == 0){
     setcolorder(tuco, c("ID","sex","season",
                         "day_number", "datetime","time",
                         "temp", "vedba", "lux",
-                        "lux_filled", "daytime", "aboveground"))
+                        "daytime", "aboveground"))
     
-    saveRDS(tuco, "01_data/activity_processed/tuco_processed_30s.rds")
+    saveRDS(tuco, "01_data/activity_processed/tuco_processed.rds")
     gc()
 }
