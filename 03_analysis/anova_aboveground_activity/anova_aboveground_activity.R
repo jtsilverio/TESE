@@ -35,28 +35,32 @@ tuco = left_join(tuco, daylength, by = "ID")
 # Calculate aboveground activity percentage
 tuco_luximeter = tuco.metadata %>% filter(lux, recaptured, collar_recovered) %>% dplyr::select(ID)    
 
-time_surface = tuco %>% 
+# calculate percentage of daylenght seen per animal
+time_aboveground = tuco %>% 
     filter(ID %in% tuco_luximeter$ID) %>% 
     group_by(ID, season, date = lubridate::date(datetime)) %>% 
-    summarise(time_aboveground = sum(aboveground, na.rm = T),
-              daylength =  median(daylength),
-              perc_aboveground = (time_aboveground/daylength)) %>% 
+    summarise(daylength = sum(daytime),
+              time_aboveground = sum(aboveground, na.rm = T) * 5,
+              perc_aboveground = time_aboveground/daylength) %>% 
     group_by(ID, season) %>% 
     summarise(mean_t_aboveground = mean(time_aboveground),
+              sd_t_aboveground = sd(time_aboveground),
               mean_p_aboveground = mean(perc_aboveground),
-              season = unique(season)) %>% 
+              sd_p_aboveground = sd(perc_aboveground),
+              season = unique(season),
+              daylength = median(daylength)) %>% 
     ungroup()
 
 # ANOVA TESTS ------------------------------------------------------------------
 
 # AOV TIME
-aov_aboveground_activity = aov(data = time_surface, formula = mean_t_aboveground~season)
-summary(aov_aboveground_activity)
-#plot(aov_aboveground_activity)
-TukeyHSD(aov_aboveground_activity)
+aov_surface_time = aov(data = time_aboveground, formula = mean_t_aboveground~season)
+summary(aov_surface_time)
+#plot(aov_surface_time)
+TukeyHSD(aov_surface_time)
 
 # AOV PERC
-aov_aboveground_activity = aov(data = time_surface, formula = mean_p_aboveground~season)
-summary(aov_aboveground_activity)
-#plot(aov_aboveground_activity)
-TukeyHSD(aov_aboveground_activity)
+aov_surface_time = aov(data = time_aboveground, formula = mean_p_aboveground~season)
+summary(aov_surface_time)
+#plot(aov_surface_time)
+TukeyHSD(aov_surface_time)
