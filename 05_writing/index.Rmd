@@ -51,10 +51,10 @@ bibliography: references.bib
 nocite: |
   @geissmann2019
 output: 
-  #coppedown::thesis_pdf: default
+  coppedown::thesis_pdf: default
   #coppedown::thesis_gitbook: default
-  coppedown::thesis_word: 
-    reference_docx: template.docx
+  #coppedown::thesis_word: 
+  #  reference_docx: template.docx
   #coppedown::thesis_epub: default
 ---
 
