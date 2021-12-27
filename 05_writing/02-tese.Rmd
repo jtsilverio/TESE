@@ -5,9 +5,9 @@ output:
   pdf_document: default
 ---
 
-# Hidden Markov Models reveals annual changes in the daily activity levels of the Anillaco Tuco-tuco (*Ctenomys sp.*)
+# Titulo Tese
 
-```{r load-packages, include=FALSE}
+```{r setup, include=FALSE}
 library(coppedown)
 library(knitr)
 library(ggplot2)
@@ -28,16 +28,16 @@ knitr::opts_chunk$set(
     message = FALSE,
     warning = FALSE
     )
-```
 
-```{r read-data}
+
+# Read Data --------------------------------------------------------------------
 tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
 tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
 source("../03_analysis/actogram/function_actogram.R")
-```
 
-```{r decode-state}
-# Read Models
+
+# Decode HMM state -------------------------------------------------------------
+# Read Models 
 m1 = readRDS("../03_analysis/hmm/m1.rds")  # modelo vazio
 m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com 
 
@@ -50,6 +50,48 @@ tuco = tuco %>%
     mutate(rest = ifelse(state == "Rest", T, F),
            medium = ifelse(state == "Medium", T, F),
            high = ifelse(state == "High", T, F))
+
+
+# Calculate Sunrise and Sunset Times -------------------------------------------
+anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
+sunriset = tuco %>% select(ID, season, datetime) %>%
+  group_by(ID, season) %>% 
+  summarise(datetime = median(datetime))
+
+sunriset$dawn = maptools::crepuscule(crds = anillaco,
+                                    dateTime = sunriset$datetime,
+                                    solarDep = 6, 
+                                    direction = "dawn", 
+                                    POSIXct.out=TRUE)$day_frac  * 1440
+
+sunriset$dusk = maptools::crepuscule(crds = anillaco,
+                                    dateTime = sunriset$datetime,
+                                    solarDep = 6,
+                                    direction = "dusk",
+                                    POSIXct.out=TRUE)$day_frac  * 1440
+
+sunriset_season = sunriset %>%
+  group_by(season) %>% 
+  summarise(dawn = median(dawn), dusk = median(dusk), daytime_length = dusk - dawn)
+
+# calculate daylength ----------------------------------------------------------
+anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
+daylength = tuco[, .(datetime = median(datetime)), by = ID]
+
+daylength$dawn = maptools::crepuscule(crds = anillaco,
+                    dateTime = daylength$datetime,
+                    solarDep = 6,
+                    direction = "dawn",
+                    POSIXct.out=TRUE)$day_frac  * 1440
+
+daylength$dusk = maptools::crepuscule(crds = anillaco,
+                                    dateTime = daylength$datetime,
+                                    solarDep = 6,
+                                    direction = "dusk",
+                                    POSIXct.out=TRUE)$day_frac  * 1440
+
+daylength = daylength[, .(daylength = dusk - dawn), by = ID]
+tuco = left_join(tuco, daylength, by = "ID")
 ```
 
 ```{r set-theme}
@@ -109,57 +151,18 @@ if(knitr::is_latex_output()){
 }
 ```
 
-```{r calculate-sunrise}
-# Calculate Sunrise and Sunset Times
-anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
-sunriset = tuco %>% select(ID, season, datetime) %>%
-  group_by(ID, season) %>% 
-  summarise(datetime = median(datetime))
-
-sunriset$dawn = maptools::crepuscule(crds = anillaco,
-                                    dateTime = sunriset$datetime,
-                                    solarDep = 6, 
-                                    direction = "dawn", 
-                                    POSIXct.out=TRUE)$day_frac  * 1440
-
-sunriset$dusk = maptools::crepuscule(crds = anillaco,
-                                    dateTime = sunriset$datetime,
-                                    solarDep = 6,
-                                    direction = "dusk",
-                                    POSIXct.out=TRUE)$day_frac  * 1440
-
-sunriset_season = sunriset %>%
-  group_by(season) %>% 
-  summarise(dawn = median(dawn), dusk = median(dusk), daytime_length = dusk - dawn)
-```
-
-```{r calculate-daytime-length}
-anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
-daylength = tuco[, .(datetime = median(datetime)), by = ID]
-
-daylength$dawn = maptools::crepuscule(crds = anillaco,
-                    dateTime = daylength$datetime,
-                    solarDep = 6,
-                    direction = "dawn",
-                    POSIXct.out=TRUE)$day_frac  * 1440
-
-daylength$dusk = maptools::crepuscule(crds = anillaco,
-                                    dateTime = daylength$datetime,
-                                    solarDep = 6,
-                                    direction = "dusk",
-                                    POSIXct.out=TRUE)$day_frac  * 1440
-
-daylength = daylength[, .(daylength = dusk - dawn), by = ID]
-tuco = left_join(tuco, daylength, by = "ID")
-```
 
 ## Introduction
 
--   Contexto:
--   Síntese do conhecimento:O que se sabe sobe o tema central?
--   Como a questão investigada se encaixa nesse contexto teórico?
--   Rever anotações
--   objetivos: - tbm testar a necessidade de classificar para ritmicidade
+Cyclic environmental changes can impose different restrictions and trade-offs on an animal's physiology and behavior. Light, for example, has a clear 24-hour daily variation, in the form of the day-night cycle. In fact, some animals are morphologically and physiologically adapted to the diurnal or nocturnal way of life (ref, noga). In terms of physiology, animals have evolved a internal time keeping mechanism, named the circadian clock or circadian oscillator. The circadian clock generates a variety of physiological, metabolic, and behavioral rhythms — such as hormonal rhythms, body temperature rhythms, and activity rhythms (**REF**). Rhythms driven by the circadian clock, and thus generated endogenously, are referred as circadian rhythms (i.e. circa 24-hour). One main characteristic of the circadian clock is that it is synchronized with environment cycles, this way the  circadian clock act as an internal time keeper and maintains a stable temporal relationship between the internal physiology and the external environmental cycle. The presence of circadian clock is thought to enable organisms to anticipate daily environmental challenges (Pitttedirgh, Jabbur), so changes in physiology and behavior occurs in anticipation to predictable environmental changes. The reactive response to environmental challenges, however, is also important in shaping activity rhythms. Animals are constantly interacting with multiple environmental cycles or non-cyclic challenges and, not surprisingly, can also respond acutely to these external stimulus, being inhibited or stimulated. Light, for example, have both effects, it is the main synchronizer of the circadian clock and can also inhibit nocturnal animals' activity. Consequently, in nature, the observed circadian rhythm, such as the activity rhythm, is an outcome of the influence and interaction of these two mechanisms: the circadian clock, driving endogenous rhythms, and from direct response to environmental stimulus, modifying existing circadian rhythms (aschoff 88).
+ 
+Circadian clock and biological rhythms studies have been majorly conducted in laboratory conditions, which is a powerful approach that enabled the characterization of the clock and its mechanism of synchronization. Studies on circadian rhythms generally relied heavily on manipulating the light-dark cycle and controlling for other variables to investigate synchronization with the light-dark cycle. However, there are limitations to laboratory approaches, specially when we want to extrapolate what we learned in the laboratory to an ecological context. In fact, the ecological significance of circadian rhythms still lacks understanding [@enrightEcologicalAspectsEndogenous1970; @halleActivityPatternsSmall2000; @helmTwoSidesCoin2017]. In nature, animals are exposed to multiple cyclic an non-cyclic environmental challenges, including biotic factors such as predation, competition, social interaction and food availability; and abiotic factors such as temperature, humidity and light. Consequently, the observed circadian rhythm in nature has significantly more influence from direct responses to external stimulus than in the laboratory, where these effects are often viewed pejoratively [@kronfeld-schor2013; @hut2012]. For example, interspecific competition between _Dypomys microps_ and _Dypomys merriami_ appears to drive activity of _D. merriami_ to the last part of the night [@kenagy1973]. A more extreme case is exhibited by the golden spiny mouse, _Acomys russatus_, where it completely changes its activity pattern from nocturnal to diurnal in areas where the common spiny mouse, _Acomys cahirinus_, is absent [@shkolnik1971; @kronfeld-schor2003]. A second aspect that hinders the understanding significance of circadian rhythms in nature is that the behavior and physiology of laboratory animals might be unrepresentative of wild animals [@calisiLabFieldExperiments2009]. A growing number of rodents have completely different activity patterns between laboratory and nature, some species exhibit nocturnal running wheel activity when in the laboratory but field observations reveals diurnal activity in nature, and vice versa [@hut2012]. There is also cases where the same animal transferred from field to the laboratory changes completely changes its activity pattern, as is also the case for _Acomys russatus_. The reasons for this dramatic change in activity patterns is still unknown, it is hypothetesised, however, that changes to a more diurnal activity pattern might have energetic advantaged, helping reducing thermoregulatory costs [@hut2012]. There has also been a lot efforts in advancing the studies of chronobiology in the wild and the ecology and adaptive significance of circadian rhythms [@kronfeld-schor2013; @dominoni2017; @helm2017]. Overall, these examples illustrate that it is hard to translate some aspects of chronobiology from the lab to the wild and that more natural studies are still needed to better disentangle the influences and relevance of the endogenous clock versus direct responses to external stimulus in natural conditions.
+
+Circadian activity rhythms studies requires a continuous recording of individual activity for a prolonged time, thus it renders studies in the wild a practical and technological challenge. Recording individual fine-scale activity data on some species of animals is hard, specially because some species are hard to capture, observe or record for long time periods. More recently, however, advancements and miniaturization of animal-borne sensors allowed researchers to investigate fine-scale activity and physiology in free-living animals [@wilmers2015; @rutz2009]. These sensors, also known as _biologgers_, have enabled the remote fine-scale measurements of animal data with relatively low disturbance. Two kinds of biologgers widely used in ecological and, more recently, in chronobiological studies are lightloggers and accelerometers. Lightloggers, as the names imply, records the light exposure of animals, they are often used in migration studies when the timing of light exposure (e.g. going out of nest) is of importance. Accelerometers, in turn, are devices that record animal movement in three dimensions, which can be used to calculate and quantify general activity, energy expenditure and estimate movement paths [@brown2013]. Albeit fine-scale time series data from biologgers is more rich ecologically it also generally required more complex methods and techniques to be analyzed [@brown2013]. One technique used to deal with such type of data is the Hidden Markov Models (HMM). HMMs can be used to uncover state changes in a system, if we think about activity we may want to model the dynamics between rest and active states, for example [@mcclintock2020]. All in all, the possibility of recording individual fine-scale data and the recent statical methods available open a lot of opportunities to study activity rhythms in free-living animals. 
+
+The Anillaco tuco-tuco (_Ctenomys_ aff _knightii_) is an endemic rodent species from Anillaco, a semi arid region in the north west of Argentina. The genus _Ctenomys_ is endemic to South America, distributed in diverse habitats, from  deserts to high altitudes [@freitas2021]. Species from this genus are subterranean and spend most of their time inside their tunnels, going out of their tunnels to forage and maintain their tunnel systems [@freitas2021]. The activity patterns and circadian system of the Anillaco tuco-tuco has been studied in laboratory and semi-natural enclosures. In the laboratory, standard chronobiological experiments showed that their running wheel activity rhythm is driven by the circadian clock and synchronized by the light-dark cycle [@valentinuzzi2009; @tachinardi2014]. In these controlled settings tuco-tucos are nocturnal, running in the wheel almost exclusively during the night [@valentinuzzi2009]. In semi-natural enclosures, however, direct observation and automated recordings of light exposure shows that the Anillaco tuco-tuco emerges to the surface during the day [@tomotani2011; @flores2016], and hence it is characterized as diurnal, opposed to what is recorded in the laboratory. In semi-natural enclosures it has also been shown that the surface temperature influences the tuco-tuco's surface emergence. In winter tuco-tucos generally goes out of their tunnels during the middle of the day, in the hottest hours [@jannetti2019]. In the summer, though, tuco-tucos appears to avoid the hottest hours and emerge to the surface in the begging and end of the day [@flores2021]. Altought, laboratory and semi-natural enclosures are crucial to understating the chronobiology and activity patterns of tuco-tucos the next natural step is to study these animals in the nature. Using available _biologgers_ we can now record activity and surface emergence simultaneously in free-living tuco-tuco, which might shed some light into the range of biotic and abiotic factors that might shape tuco-tucos activity and validate the observed surface emergence in semi-natural enclosures.
+
+In the present work our first aim is to develop a field methodology to study free-living tuco-tucos using _biologgers_. Our second aim is to describe the activity and surface emergence patterns in free-living Anillaco tuco-tucos using _biologger_. To do this we deployed animal-borne accelerometers and light loggers on 21 Anillaco tuco-tucos in different months of the year and described their activity and surface emergence patterns. We also used hidden Markov models to further analyse and describe the different behaviors and their change between months of the year.
 
 ## Methods
 
