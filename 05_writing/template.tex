@@ -4,6 +4,7 @@ $else$
   \documentclass[$doc_type$,numbers,hidelinks]{coppe}
 $endif$
 
+\RequirePackage[hyphens]{url} %https://tex.stackexchange.com/questions/340913/line-overflow-and-page-breaks-in-references-bibliography-in-rmarkdown-pdf-pando
 \usepackage{amsmath,amssymb}
 \usepackage{hyperref}
 \usepackage{longtable}
@@ -15,7 +16,7 @@ $endif$
 \usepackage{caption}
 \usepackage[font=footnotesize,labelfont={it}]{caption}
 
-\providecommand{\tightlist}{%
+\providecommand{\tightlist}{
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \makelosymbols

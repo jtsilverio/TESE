@@ -63,8 +63,8 @@
 \RequirePackage{eqparbox}
 \RequirePackage{ltxcmds}
 \RequirePackage{mathpazo} % added to change default font
-\RequirePackage[english]{babel}
-\RequirePackage[utf8]{inputenc}
+%\RequirePackage[english]{babel}
+%\RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
 
 \RequirePackage[a4paper,bindingoffset=0.0cm,vcentering=true,%
@@ -119,18 +119,18 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 %}
 \ProcessOptions\relax
 \if@english
-%\RequirePackage[english]{babel}
+    \RequirePackage[english]{babel}
 \else
-%\RequirePackage[english,brazil]{babel}
+    \RequirePackage[english,brazil]{babel}
 \fi
 \addto{\captionsenglish}{%
 	\renewcommand{\bibname}{References}
 }
 
 \newcommand\department[1]{%
-	\ifthenelse{\equal{#1}{IB}}
-	{\global\def\local@deptname{Instituto de Biociências}
-		\global\def\foreign@deptname{Biological Sciences}}{}
+	\ifthenelse{\equal{#1}{pos-fisio}}
+	{\global\def\local@deptname{Ciências, na Área de Fisiologia Geral}
+		\global\def\foreign@deptname{Science, General Physiology}}{}
 }
 
 \renewcommand\title[1]{%
@@ -371,7 +371,7 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 \hypersetup{%
   pdfauthor={\@authname\ \@authsurn},
   pdftitle={\local@title},
-  pdfsubject={\local@doctype\ de \@degreename\ em \local@deptname\ da COPPE/UFRJ},
+  pdfsubject={\local@doctype\ de \@degreename\ em \local@deptname\ da Universidade de São Paulo},
   pdfcreator={LaTeX with CoppeTeX toolkit},
   breaklinks={true},
   raiselinks={true},
@@ -382,9 +382,10 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
   \vspace*{\fill}
   \begin{center}
     \setlength{\fboxsep}{5mm}
-    \framebox[120mm][c]{\makebox[5mm][c]{}%
+    \framebox[120mm][c]{
+      %\makebox[5mm][c]{}%
       \begin{minipage}[c]{105mm}
-      \setlength{\parindent}{5mm}
+      \setlength{\parindent}{7mm}
       \noindent\sloppy\nohyphens\@authsurn,
       \nohyphens\@authname\par
       \nohyphens{%
@@ -395,8 +396,7 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
         \fi/\@authname\ \@authsurn. -- \local@cityname:
       Universidade de São Paulo/Instituto de Biociências, \number\year.}\par
       \pageref{front:pageno},
-      \pageref{LastPage}
-      p.\@ifundefined{r@cat:lofflag}{}{\pageref{cat:lofflag}} $29,7$cm.\par
+      \pageref{LastPage} p.\par
       % There is an issue here. When the last entry must be split between lines,
       % the spacing between it and the next paragraph becomes smaller.
       % Should we manually introduce a fixed space? But how could we know that
@@ -424,16 +424,15 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
       \end{tabularx}}\par
       \nohyphens{\local@doctype\ ({\MakeLowercase\@degreename}) --
       Universidade de São Paulo/Instituto de Biociências/Programa de \local@deptname, \number\year.}\par
-      Refer{\^ e}ncias Bibliogr{\' a}ficas: p. \pageref{bib:begin} -- \pageref{bib:end}.\par
+      %Refer{\^ e}ncias Bibliogr{\' a}ficas: p. \pageref{bib:begin} -- \pageref{bib:end}.\par%
       \count1=0
       \count2=1
       \nohyphens{\@whilenum \count1<\value{keywords} \do {%
         \number\count2. \csname CoppeKeyword:\the\count1 \endcsname.
         \advance\count1 by 1
-        \advance\count2 by 1}
+        \advance\count2 by 1}\par
       I. \csname CoppeAdvisorSurname:0\endcsname,%
-      \ \csname CoppeAdvisorName:0\endcsname%
-      \ifthenelse{\@advisor>1}{\ \emph{et~al.}{}}.
+      \ \csname CoppeAdvisorName:0\endcsname, orient. %
       II. \local@universityname, \local@deptname.
       III. T{\' i}tulo.}
     \end{minipage}}
@@ -768,8 +767,8 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 \newcommand\frontcover@maintext{
   \sloppy\nohyphens{\local@doctype\ de \@degreename\
   \ifthenelse{\boolean{maledoc}}{apresentado}{apresentada}
-  ao Programa de P{\' o}s-gradua{\c c}{\~ a}o em \local@deptname,
-  COPPE, da \local@universityname, como parte dos requisitos
+  ao Programa de p{\' o}s gradua{\c c}{\~ a}o em \local@deptname,
+  IB, da \local@universityname, como parte dos requisitos
   necess{\' a}rios {\` a} obten{\c c}{\~ a}o do t{\' i}tulo de
   \local@degname\ em \local@deptname.}
 }

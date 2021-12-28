@@ -2,7 +2,6 @@
 `r if(knitr:::is_latex_output()) "# Apêndice {-}"`
 `r if(!knitr:::is_latex_output()) "# Apêndice"`
 
-
 # Animals
 
 ```{r animals-table-appendix}
