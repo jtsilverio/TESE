@@ -10,7 +10,7 @@ vedba_daily = tuco %>%
     summarise(vedba = mean(vedba))
 
 # AOV
-aov_vedba_daily = aov(data = vedba_daily[], formula = vedba~season)
+aov_vedba_daily = aov(data = vedba_daily, formula = vedba~season)
 summary(aov_vedba_daily)
 TukeyHSD(aov_vedba_daily) # compare groups
 

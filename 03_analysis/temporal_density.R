@@ -1,46 +1,61 @@
-########################
-library(overlap)
-
-s = (tuco[tuco$season == "February"])
-s$high = F
-s[s$state == "high"]$high = T
-s$time = lubridate::hour(s$datetime)*60 + lubridate::minute(s$datetime) 
-s$radians = s$time * ((2*pi)/1440)
-times = s[s$high]$radians
-
-a = densityPlot(times, rug = T, extend = F, adjust = 1, n.grid = 500)
-str(a)
-##################
-
 library(activity)
 
-#s = (tuco)
-s$radians = s$time * ((2*pi)/1440)
-times = s[s$high]$radians
+get_pdf = function(x){
+    m = fitact(x$radians, adj = 0.2618)
+    data = data.frame(m@data)
+    pdf  = data.frame(m@pdf)
+    return(list(data, pdf))
+}
 
-mod = fitact(s[s$high]$radians, bw = 30)
-plot(mod, data = c("both"), centre = "day", yunit = "density")
+tuco_fit = tuco %>% 
+    dplyr::select(ID, sex, season, time, state) %>% 
+    mutate(radians = time * ((2*pi)/1440)) %>% 
+    tidyr::nest(cols = -c(season, state)) %>% 
+    mutate(fit = purrr::map(cols, get_pdf)) %>% 
+    dplyr::select(-cols)
 
-df = data.frame(mod@pdf)
+kernel_data = tuco_fit %>% 
+    mutate(data = purrr::map(fit, function(x) x[[1]])) %>% 
+    select(-fit) %>% 
+    tidyr::unnest(data)
 
-library(ggplot2)
-ggplot(df) +
-    #geom_histogram(aes(x,y), binwidth = 60) +
-    geom_histogram(data = data.frame(mod@data), aes(mod.data, y = ..density..), color = "white", alpha = 0.1) +
+kernel_pdf = tuco_fit %>% 
+    mutate(pdf = purrr::map(fit, function(x) x[[2]])) %>% 
+    select(-fit) %>% 
+    tidyr::unnest(pdf)
+    
+ggplot() +
+    geom_histogram(data = kernel_data, aes(x = m.data,
+                                           y = ..density..,
+                                           fill = state),
+                   color = "white",
+                   alpha = 0.2,
+                   bins = 24) +
     #geom_ribbon(aes(x, ymin = lcl, ymax = ucl), fill = "grey70") +
-    geom_density(aes(x, y), stat = "identity", size = 1) +
-    scale_x_continuous(limits = c(0,2*pi), breaks = c(0, pi/2, pi, 3/4*2*pi, 2*pi), labels = c(0,6,12,18,24)) +
-    geom_rug(data = data.frame(mod@data), aes(mod.data), alpha = 0.02)
+    geom_density(data = kernel_pdf,
+                 aes(x, y, color = state),
+                 stat = "identity",
+                 size = 0.5) +
+    scale_x_continuous(limits = c(0,2*pi),
+                       breaks = c(0, pi/2, pi, 3/4*2*pi, 2*pi),
+                       labels = c(0,6,12,18,24)) +
+    facet_grid(season~state) +
+    scale_color_manual(values = tuco_pal) +
+    scale_fill_manual(values = tuco_pal) +
+    theme(legend.position = "none")
 
+    
 
-ggplot(s[s$above]) +
-    #geom_histogram(aes(x = time, y = ..density.., fill = season), 
-    #               binwidth = 60) +
-    geom_density(aes(x = time, fill = season), 
-                 bw = 45, kernel = "e", size = 0.5, color = "grey50") +
-    #stat_ecdf(aes(x = time, color = season)) +
-    #ggridges::geom_density_ridges(aes(x = time, y = ID))
-    #facet_wrap(~season) +
-    geom_vline(xintercept = 1440/2, linetype = 3) +
-    scale_x_continuous(limits = c(0,1440), expand = c(0,0), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
-    scale_fill_viridis_d()
+#######################
+# library(overlap)
+# 
+# s = tuco %>% filter(season == "February" & state == "High")
+# #s$high = F
+# s[s$state == "high"]$high = T
+# s$time = lubridate::hour(s$datetime)*60 + lubridate::minute(s$datetime)
+# s$radians = s$time * ((2*pi)/1440)
+# #times = s[s$high]$radians
+# 
+# a = densityPlot(s$radians, rug = T, extend = F, adjust = 1, n.grid = 500,)
+# str(a)
+#################
