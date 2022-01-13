@@ -231,7 +231,7 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 			\vspace*{1.5mm}
 			\setlength\baselineskip{0pt}
 			\setlength\parskip{1mm}
-			\makebox[10mm][c]{\includegraphics{figures/logo}}
+			\makebox[10mm][c]{\includegraphics{figure/logo}}
 		\end{center}
 		
 		\vspace{0.5cm}
@@ -241,8 +241,10 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 				\if@english
 				\MakeUppercase\foreign@title
 				\else
-				\MakeUppercase\local@title
-				\fi}\par
+				\MakeUppercase\local@title\par
+				\MakeUppercase{\small\foreign@title}
+				\fi}
+				\par
 			\vspace*{3cm}
 			\nohyphens{\@authname\ \@authsurn}\par
 		\end{center}
@@ -298,7 +300,8 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
       \if@english
         \MakeUppercase\foreign@title
       \else
-        \MakeUppercase\local@title
+        \MakeUppercase\local@title\par
+        \MakeUppercase{\small\foreign@title}
       \fi}\par
     \vspace*{7mm}
     {\@authname\ \@authsurn}\par
