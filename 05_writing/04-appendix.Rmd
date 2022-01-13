@@ -137,7 +137,7 @@ include_graphics("../04_figures/actograms/actograms_medium.png")
 ## Individual Rhythmicity Plots
 
 ```{r, out.width="100%"}
-include_graphics("../04_figures/ACF/acf_plot.png")
+include_graphics("../04_figures/rhythmicity/acf_plot.png")
 ```
 
 ## Individual Period Estimation

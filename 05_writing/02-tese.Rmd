@@ -1,8 +1,5 @@
 ---
 bibliography: references.bib
-output:
-  word_document: default
-  pdf_document: default
 ---
 
 # Titulo Tese
@@ -44,7 +41,7 @@ m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com
 
 # Viterbi State Decoding
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
+tuco$state = factor(decoded, labels = c("Low","Medium","High"))
 
 # # Widen State Column, so its a little bit easier to index by state.
 # tuco = tuco %>% 
@@ -55,7 +52,7 @@ tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
 
 # Calculate Sunrise and Sunset Times -------------------------------------------
 anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
-sunriset = tuco %>% select(ID, season, datetime) %>%
+sunriset = tuco %>% dplyr::select(ID, season, datetime) %>%
   group_by(ID, season) %>% 
   summarise(datetime = median(datetime))
 
@@ -93,15 +90,14 @@ daylength$dusk = maptools::crepuscule(crds = anillaco,
 
 daylength = daylength[, .(daylength = dusk - dawn), by = ID]
 tuco = left_join(tuco, daylength, by = "ID")
-```
 
-```{r set-theme}
+# Set Theme ----------------------------------------------------------
 font_add_google("Roboto Condensed", "roboto")
 showtext_auto()
 
-tuco_pal = c(Rest = "#66C2A5",
-             Medium = "#5a69af",
-             High = "#c25b67",
+tuco_pal = c("Low" = "#66C2A5",
+             "Medium" = "#5a69af",
+             "High" = "#c25b67",
              "General Activity" = "#393939")
 
 theme_tuco =
@@ -199,35 +195,39 @@ include_graphics("../04_figures/collar/collar_tuco.png")
 
 ### Data Processing
 
-Data were recorded on board of the sensors and later downloaded and converted to raw text files using the software provided by the manufacturers. Acceleration data was used to measure gross motor activity. Tri-axial acceleration data was first reduced to one dimension using the Vectorial Dynamic Body Acceleration [VeDBA, @qasem2012]. VeDBA, measured in gravitational g, is commonly used as a proxy for the animal's activity level and energy expenditure [@wilson2006; @williams2016]. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the number of points used to calculate the moving average, which can be dependent on the study species and device's recording frequency. In this study we used a 4-second moving average after following the methodology proposed by [@shepard2008, Figure \@ref(fig:appendix-smooth-window)]. (ii) Calculating the acceleration correspondent to the animal's movement, also known as Dynamic Body Acceleration (DBA). The DBA was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the DBA over the device's axes \@ref(eq:vedba).
+Data were recorded on board of the sensors and later downloaded and converted to raw text files using the software provided by the manufacturers. Acceleration data was used to measure gross motor activity. Tri-axial acceleration data was first reduced to one dimension using the Vectorial Dynamic Body Acceleration (VeDBA, [@qasem2012]). VeDBA, measured in gravitational g, is commonly used as a proxy for the animal’s activity level and energy expenditure [@williams2016]. VeDBA was calculated by: (i) Estimating the effect of the gravitational force over the accelerometer, also known as static acceleration. The static acceleration can be estimated by applying a moving average over the raw acceleration data. There is not a consensus over the number of points used to calculate the moving average, which can be dependent on the study species and device's recording frequency. In this study we used a 4-second moving average after following the methodology proposed by @shepard2008, Figure \@ref(fig:appendix-smooth-window)]. (ii) Calculating the dynamic acceleration corresponding to the animal’s movement in each axis. The dynamic acceleration was calculated by subtracting the static acceleration from the raw data. (iii) Lastly, we calculate the VeDBA by the vectorial sum of the dynamic acceleration over the device's axes (1.1). Once VeDBA was calculated, the 1Hz acceleration data was downsampled by taking the median over a 1-minute non-overlapping sliding window. 
 
 \begin{equation}
-VeDBA = \sqrt{Xd^2 + Yd^2 + Zd^2} (\#eq:vedba)
+VeDBA = \sqrt{X^2 + Y^2 + Z^2} (\#eq:vedba)
 \end{equation}
-
-Once VeDBA was calculated, the 1Hz acceleration data was downsampled by taking the median over a 1-minute non-overlapping sliding window. All VeDBA datapoints were classified as occurring during the daytime or nighttime based on the daylength of the recording dates. Daylength was calculated using the *maptools* package in R [@bivand2020], which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating twilight times. We used civil twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occurring during the day or nighttime. Annual daylength variation at the study site can be seen in the Appendix (Figure \@ref(fig:appendix-daylength)).
 
 Light exposure was used to analyse patterns of surface emergence, the time tuco-tucos spend on the surface and to further classify VeDBA data points as above or below ground. We classified each 5-minutes data point as being above or below ground using a 2 lux threshold [@jannetti2019].
 
 Accelerometer and lightlogger data were merged accordingly to the date and times of recordings using purposely written R scripts [@rcoreteam2020]. Time of recordings between both devices were not synchronized to the minute. Consequently, we had to round lightlogger recording times to the nearest 5 minutes to merge both data streams.
 
-In order to exclude any effects that capture and recapture can have in the animal’s activity, we removed the first and last days of all datasets. We also excluded the data corresponding to the days we were attempting to recapture the animal in cases where the recapture attempts took longer than one day. Animals that had data excluded due to recapturing efforts were FEV05 (5 days), JUL16 (5 days) and JUL23 (2 days).
+All animal's data points were classified as occurring during the daytime or nighttime based on the daylength of the recording dates. Daylength was calculated using the _maptools_ package in R [@bivand2020], which uses the National Oceanic and Atmospheric Administration (NOAA) equations for estimating twilight times. We used civil twilight times, defined as the times in which the center of the sun is 6° below the horizon, as thresholds to calculate daylength and classify datapoints as occurring during the day or nighttime. Annual daylength variation at the study site can be seen in the Appendix (Figure \@ref(fig:appendix-daylength)).
+
+In order to exclude any effects that capture and recapture can have in the animal's activity, we removed the first and last days of all datasets. We also excluded the data corresponding to the days we were attempting to recapture the animal in cases where the recapture attempts took longer than one day. Animals that had data excluded due to recapturing efforts were FEV05 (5 days), JUL16 (5 days) and JUL23 (2 days).
 
 ### Surface Emergence & Time On Surface 
 
-Visualization of the daily temporal pattern of surface emergence was done using the 5-minute above ground data (see Data Processing). Data points classified as aboveground were treated as presence/absence and used to generate a density histogram with a smoothed kernel density estimate. These visualizations were done individually, for each animal's data, and also for the population level, using the pooled data from all animals of a given month of the year.
+Visualization of the daily temporal pattern of surface emergence was done using the 5-minute aboveground data (see Data Processing). Data points classified as aboveground were treated as presence/absence and used to visualize the temporal pattern of surface emergence by Von Mises circular kernel density estimates as proposed by [@rowcliffe2014], a method generally used in camera trap studies. These visualizations were done at the population level, using the pooled data from all animals of a given month of the year. The individual surface emergence patterns is also provided in the appendix. It is important to note that the area under the kernel density estimates sums to 1 and shows the relative probability of surface emergence, it does not reflect the absolute amplitude of the rhythm.
 
-Time on surface was calculated presuming that each 5-minute data point classified as aboveground was spent entirely outside the animal's burrow. Accordingly, we deduced the daily time on surface by summing the number of above ground data points multiplied by 5 minutes. Lastly, we also calculated the mean daily percentage of time on surface in relation to the experienced day length for each animal. 
+To  analyze tuco-tuco’s surface emergence we calculated the mean time on surface per animal and the percentage of time on surface in relation to daytime. Time on surface was calculated presuming that each 5-minute data point classified as aboveground was spent entirely outside the animal's burrow. Accordingly, we deduced the daily time on surface by first summing the number of daily above ground data points multiplied by 5 minutes, and then calculating the mean daily time on surface per animal. In the same manner we also calculated the percentage of the daytime spent on the surface per day and then, calculated the mean percentage per animal.
 
 ### General Activity
 
-General activity levels was analyzed using the calculated VeDBA (see Data Processing). We used the mean hourly VeDBA to visualize the temporal patterns in general activity. We also calculated each animal's mean daily VeDBA and the mean daytime VeDBA for month-group comparisons.
+General activity was analyzed using the calculated VeDBA (see Data Processing). The general activity temporal patterns were visually analyzed by calculating the hourly mean VeDBA. The hourly mean VeDBA was calculated by binning the VeDBA data into 1-hour intervals for each animal and then calculating the mean for each time interval.
+
+The daily VeDBA levels were analyzed in relation to the daily mean VeDBA and the percentage of VeDBA during the daytime. This  was done by (1) grouping the data per animal and summing the total VeDBA of each day and (2) for each animal taking the mean of the calculated total VeDBA per day. The mean percentage of VeDBA during the daytime was calculated in the same manner by dividing the daily sum of VeDBA during the daytime by the total sum of VeDBA and then calculating the mean per animal.
 
 ### Behavioral State Classification
 
 #### Hidden Markov Models
 
-We used Hidden Markov Models (HMMs) to further analyze and classify the 1-minute VeDBA data. HMMs are a type of time series model, therefore, they take into account the temporal dependency of the observations [@leosbarajas2017]. HMMs are also well suited to model accelerometer data given their intrinsic temporal dependency [@leosbarajas2017; @patterson2019]. HMMs are composed of two time series: the observable *state-dependent process* ($X_t$), VeDBA in our case, and an underlying, or hidden, *state process* ($S_t$). The *state process* is what drives the observations and what we are interested in estimating, which roughly corresponds to behavioral states (Figure \@ref(fig:hmm-formulation)).
+We used Hidden Markov Models (HMMs) to further analyze and classify the 1-minute VeDBA data. HMMs are a type of time series model, therefore, they take into account the temporal dependency of the observations [@leosbarajas2017]. HMMs are also well suited to model accelerometer data given their intrinsic temporal dependency [@leosbarajas2017; @patterson2019].
+
+HMMs are composed of two time series: the observable *state-dependent process* ($X_t$), VeDBA in our case, and an underlying, or hidden, *state process* ($S_t$). The *state process* is what drives the observations and what we are interested in estimating, which roughly corresponds to behavioral states (Figure \@ref(fig:hmm-formulation)).
 
 The *state process* follows the Markov Property and take temporal dependency into account [@zucchini2016]. The Markov property denotes that a state $S_t$ depends only on the previous state $S_{t-1}$ [@zucchini2016]. In the case of accelerometer and animal movement studies the states are representations of the animals' behavior and can take on finite number ($N$) of possible values. The number of states can be chosen *a priori* or based on model selection [@pohle2017]. The changes in probabilities between states are also part of the of HMM formulation, summarized by a Transition Probability Matrix that gives the probability of transitioning from the current state to a possible future state.
 
@@ -263,21 +263,27 @@ In the basic HMM formulation the observable *state-dependent process* comes from
 
 #### Model Formulation and State Classification
 
-In our models we have chosen VeDBA as our activity metric. We determined *a priori* a possible number of three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (REF Figure \@ref(fig:appendix-eda)) and in the biological interpretability of the states. It is important to note, however, that the states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral states (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to "Rest", "Medium Intensity Activity" and "High Intensity Activity".
+In our models we have chosen VeDBA as our activity metric. We determined *a priori* a possible number of three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (REF Figure \@ref(fig:appendix-eda)) and in the biological interpretability of the states. It is important to note, however, that the states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral states (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to low, medium and high intensity activity.
 
-HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute VeDBA data using a 'complete pooling' approach. This means that the *state-dependent* distribution parameters are common to all animals. Therefore, we assume that individuals are independent and behaviors are the same to all individuals and across the year. However, given that the season/month of the year seems to be an important feature influencing the VeDBA distribution (Figure \@ref(fig:appendix-eda)) we included season as a covariate in the *state process*. Hence, we let the probability of changing from one state to another vary in relation to the season/month of the year. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data [@burnham2002].
+HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute VeDBA data using a 'complete pooling' approach. This means that the *state-dependent* distribution parameters are common to all animals. Therefore, we assume that individuals are independent and behaviors are the same to all individuals and across the year. However, given that the season/month of the year seems to be an important feature influencing the VeDBA distribution (Figure \@ref(fig:appendix-eda)) we included season as a covariate in the *state process*. Hence, we let the probability of changing from one state to another vary in relation to the season/month of the year. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data.
 
-Models were fitted using the momentuHMM package in R [@mcclintock2021]. We used the gamma distribution, parametrized with mean and standard deviation, to model VeDBA. The gamma distribution is a flexible distribution, that accommodates positive right-skewed data. Appropriate starting values for likelihood maximization of model's parameters were found by following procedures suggested by @michelot2019. Season was included as a categorical variable, its influence over the transition probabilities was summarized using stationary probabilities plots [@leosbarajas2017]. The most probable state sequence was decoded using the Viterbi algorithm [@zucchini2016]. The decoded sequence was then used to conduct other *post-hoc* analysis of time spent in each state, aboveground activity, diurnality and rhythmicity. We checked model assumptions and goodness of fit by visual inspection of the pseudo-residuals [@zucchini2016].
+Models were fitted using the momentuHMM package in R [@mcclintock2021]. We used the gamma distribution, parametrized with mean and standard deviation, to model VeDBA. The gamma distribution is a flexible distribution, that accommodates positive right-skewed data. Appropriate starting values for likelihood maximization of model's parameters were found by following procedures suggested by @michelot2019. Season was included as a categorical variable, its influence over the transition probabilities was summarized using stationary probabilities plots [@leosbarajas2017]. The most probable state sequence was decoded using the Viterbi algorithm [@zucchini2016]. We checked model assumptions and goodness of fit by visual inspection of the pseudo-residuals [@zucchini2016]. The decoded sequence was then used to conduct other _post-hoc_ analysis of time spent in each state, aboveground activity, diurnality and rhythmicity. 
+
+### Daily Time-Activity Budgets & Behavioral States Patterns
+
+We used the labeled behavioral state data to visually analyze how the behaviors are organized in time. We visualize the temporal patterns in behavioral states using the same methods we used in the surface emergence patterns. The temporal pattern in each behavioral state was visualized by using a Von Mises circular kernel density estimate [@rowcliffe2014]. The kernel density estimate was done at the population level, using the pooled data from all animal of each month of the year. The individual behavioral state patterns are also provided in the appendix. It is important to note that the area under the kernel density estimates sums to 1 and shows the relative probability of occurrence of the behavioral state, it does not reflect the absolute amplitude (e.g. number of occurrences) of the rhythm.
+
+To analyze tuco-tuco's behavioral states we also calculated their mean daily time and the mean daily proportion in each behavioral state (i.e time-activity budget). Similar to what was done in the general activity we summarized and reduced the VeDBA data to one point estimate per animal. The mean daily time in a state was calculated by we first grouping the data per animal and calculating the daily time spent in each state by summing the labeled data points of each state. Since the data has 1-minute intervals we take that the number of labeled points per day corresponds to the time spent in each behavioral state. Then, we calculate the mean daily time in state per animal by taking the mean of the previously calculated daily time in state. We also calculate the time-activity budget per animal in the same manner, except we divide the time spent in each state by 1440 minutes.
 
 ### Aboveground Activity
 
-We also calculated the prevalence of each behavioral state when animal's were aboveground, outside of their tunnels. Above ground activity was defined as any activity in which animals were exposed to light with intensity greater than 2 lux (see Data Processing). Using the state-labelled and light logger data combined we calculated the mean time animals spent per day in each behavioral state when aboveground and the percentage in relation to the total time spent above ground.
+We calculated the prevalence of each behavioral state when animal's were aboveground, outside of their tunnels. Aboveground activity was defined as any activity in which animals were exposed to light with intensity greater than 2 lux (see Data Processing). Using the combined state-labelled and light logger data we calculated the total time spent in each state in the surface and the percentage in relation to the total time spent aboveground. Similar to the procedures used in the general activity analysis we also calculated only one point estimate per animal. The mean time spent in each state was calculated by first summing the time spent in each state per day and then taking the mean per animal. The percentage of time spent in each state was calculated in the same manner by calculating the percentage of time spent in each state in relation to the total time aboveground and then taking the mean of these percentages per animal.
 
 ### Diurnality Index
 
 We defined diurnality index (DI) as the percentage of daytime the animals spent in one of the states in relation to the total time spent in the same state during both daytime and night-time, corrected by the daylength of each season [@halle2000 and @jannetti2019]. The DI ranges from 0 to 1, with 0 meaning that all activity happens during the night and 1 the opposite, that all activity happens during the day.
 
-Diurnality calculation is shown in equation \@ref(eq:diurnality), where $ts_{day}$ and $ts_{night}$ are the time spent in the state during the day and night respectively. $L_{day}$ and $L_{night}$ are the day length and night-length, determined by the civil twilight.
+Diurnality calculation is shown in equation \@ref(eq:diurnality), where $ts_{day}$ and $ts_{night}$ are the time spent in the state during the day and night respectively. $L_{day}$ and $L_{night}$ are the day length and night length, determined by the civil twilight, calculated using the _maptools_ package in R [@bivand2020].
 
 \begin{equation}
 Diurnality = \frac{ts_{day}/L_{day}}{ts_{day}/L_{day} + ts_{night}/L_{night}} (\#eq:diurnality)
@@ -287,19 +293,21 @@ Diurnality = \frac{ts_{day}/L_{day}}{ts_{day}/L_{day} + ts_{night}/L_{night}} (\
 
 We used autocorrelation analysis [@levine2002; @dowse2009] and Lomb-Scargle periodograms to assess the robustness and periodicity of activity rhythms. The autocorelation was calculated by comparing the data to itself lagged by a unit of time. The autocorrelation coefficient ranges from 0 to 1 and it is higher as the two time series are more similar to each other. When visually analyzing the autocorrelation plot, recurring peaks indicates that the data is periodic. The height of the peak shows how robust the rhythms is [@dowse2009]. The robustness of the rhythm, also referred as the Rhythmicity Index (RI), is defined as the autocorrelation coefficient at the third peak of the autocorrelation plot (i.e. the height of the third peak).
 
-Before estimating the RI, we applied a 3-hour low-pass Butterworth filter to remove periodicity lower than 3 hours in the data. Autocorrelation plots were first visually analyzed, if they showed recurring peaks in the 24-hour range were labeled as rhythmic. Animals that showed no recurring peaks were classified as arhythmic in the circadian range. Next, we estimated the period of each behavioral state, for animals that were classified as rhythmic, using the Lomb-Scargle periodogram [@leise2017]. For comparison with the labeled data, we also calculated the RI for the unlabeled VeDBA data
+Before estimating the RI, we applied a 3-hour low-pass Butterworth filter to remove periodicity lower than 3 hours in the data. Autocorrelation plots were first visually analyzed, if they showed recurring peaks in the 24-hour range were labeled as rhythmic. Animals that showed no recurring peaks were classified as arrhythmic in the circadian range. Next, we estimated the period of each behavioral state, for animals that were classified as rhythmic, using the Lomb-Scargle periodogram [@leise2017]. For comparison with the labeled data, we also calculated the RI for the unlabeled VeDBA data
 
 All analysis were done in R [@rcoreteam2020]. Butterworth filtering was done using the the *dlpR* package [@bunn2008]. Autocorrelation function and plots were done in base R. The peaks in the autocorrelation plots were found using the *pracma* package [@hansw.borchers2019]. Lomb-Scargle periodograms were calculated using the *lomb* package [@ruf1999].
 
-### Statistical Analysis
+### Statistical tests
 
-We used ANOVA and post-hoc Tukey’s HSD to test for differences between month-groups in time on surface, general activity levels, time spent on behavioral states, time spent on aboveground activity and diurnality. Rhythmicity were compared between states only, we did not perform a month-group comparison given that, as some animals were classified as arrhythmic, the sample number for each season was too low to perform a meaningful statistical analysis. We also visually compared daily patterns of general activity levels, time on surface and behavioral states based on the shape of distributions along the 24-hours. All analysis were done in R using the base packages (R Core Team 2020).
+We used ANOVA and post-hoc Tukey’s HSD to test for differences between month-groups in time on surface, general activity levels, time spent on behavioral states, time spent on aboveground activity and diurnality. Rhythmicity was compared only between behavioral states, we did not perform a month-group comparison given that, as some animals were classified as arrhythmic, the sample number for each season was too low to perform a meaningful statistical analysis. We checked for normality before conducting the ANOVA tests by visual plots and with Shapiro Wilk test.
+
+We also visually compared daily patterns of general activity levels, time on surface and behavioral states based on the temporal distributions along the 24-hours. The daily temporal distribution on all cases, except for the general activity level (see General Activity Level), were visualized using Von Mises circular kernel density estimates. All analysis were done in R using the base packages (R Core Team 2020). 
 
 \newpage
 
 ## Results
 
-We captured and deployed collars to 20 females and 10 males. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)). One collar was found malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco-tuco's neck between the time of capture and recapture. A complete list of number of recorded days per animal can be seen in the Appendix \@ref(tab:animals-table-appendix).
+We captured and deployed collars to 20 females and 10 males. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)), a total of 70% of success rate in collar recovery. One collar was found malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco-tuco's neck between the time of capture and recapture. A complete list of number of recorded days per animal can be seen in the Appendix \@ref(tab:animals-table-appendix).
 
 ```{r calculate-captures, include=FALSE}
 # Since the tables have nested columns I couldn't generate them using R and opt to generated in LaTeX.
@@ -369,63 +377,68 @@ Surface emergence shows a changing temporal pattern along the year. In July, the
 Time on surface, measured light exposure, shows no difference along the year. The mean daily time on surface shows no significant differences among month groups (ANOVA, F = 2.148, p = 0.167), the overall mean and standard deviation of all animals is `r time_aboveground %>% summarise(mean = mean(mean_t_aboveground), sd = sd(mean_t_aboveground)) %>% summarise(mean = paste0(round(mean,2)," ± ", round(sd, 2)))` minutes on the surface during day. In contrast, the daily percentage of the time on surface in relation to day length was significantly different between groups (ANOVA; F = 4.38, p = 0.0429). Post hoc Tukey’s HSD shows a significant difference between July-February (p = 0.035; CI = [-0.12; -0.04]). For these groups the mean daily percentage of time on surface is `r time_aboveground %>% filter(season == "July") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for July, and `r time_aboveground %>% filter(season == "February") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for February.\newline
 
 ```{r daily-lux-density, fig.pos = "H",fig.asp=0.6, fig.width=9, out.width="100%"}
-color = "orange"
+# Auxiliar function to extract data from the object returned by the activity::fitact as a data.frame
+get_pdf = function(x){
+    m = fitact(x$radians, adj = 0.3)
+    data = data.frame(m@data)
+    pdf  = data.frame(m@pdf)
+    return(list(data, pdf))
+}
 
-plot_id = ggplot(tuco[tuco$aboveground]) +
-    geom_histogram(aes(x = time, y = ..density..), 
-                   binwidth = 60, alpha = 0.2, fill = color) +
-    geom_density(aes(x = time), 
-                 color = color,
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.5) +
-    facet_wrap(~factor(ID,levels = ID, labels = paste0("#", ID)),
-               ncol = 3) +
-    scale_x_continuous(limits = c(0,1450),
-                       breaks = c(0, 720, 1440),
-                       labels = c(0, 12, 24)) +
-    scale_y_continuous(n.breaks = 2) +
-    theme(legend.position = "none",text = element_text(size = 11)) +
-    ylab("Density") +
-    xlab("Hour of the day") 
+# BY SEASON
+tuco_lux_fit = tuco %>% 
+    dplyr::select(ID, sex, season, time, aboveground) %>% 
+    filter(aboveground == TRUE) %>% 
+    mutate(radians = time * ((2*pi)/1440)) %>% 
+    tidyr::nest(cols = -c(season)) %>% 
+    mutate(fit = purrr::map(cols, get_pdf)) %>% 
+    dplyr::select(-cols)
 
+kernel_data = tuco_lux_fit %>% 
+    mutate(data = purrr::map(fit, function(x) x[[1]])) %>% 
+    dplyr::select(-fit) %>% 
+    tidyr::unnest(data)
 
-plot_season = ggplot(tuco[tuco$aboveground,]) +
+kernel_pdf = tuco_lux_fit %>% 
+    mutate(pdf = purrr::map(fit, function(x) x[[2]])) %>% 
+    select(-fit) %>% 
+    tidyr::unnest(pdf)
+
+kernel_pdf = kernel_pdf %>%
+    mutate(season = factor(season, levels = c("March", "July", "October", "February")))
+
+kernel_data = kernel_data %>%
+    dplyr::add_row(season = "March", m.data = NA) %>% 
+    mutate(season = factor(season, levels = c("March", "July", "October", "February")))
+
+light_patterns = ggplot() +
     geom_vline(data = sunriset_season, 
-               aes(xintercept = dawn), 
+               aes(xintercept = dawn * ((2*pi)/1440)), 
                linetype = "dotted", 
                color = "grey70") +
     geom_vline(data = sunriset_season, 
-               aes(xintercept = dusk), 
+               aes(xintercept = dusk * ((2*pi)/1440)), 
                linetype = "dotted", 
                color = "grey70") +
-    geom_histogram(aes(x = time, y = ..density..),
-                  binwidth = 60,
-                  alpha = 0.1,
-                  color = "white",
-                  fill =  color) +
-    geom_density(aes(x = time), 
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.7,
-                 color = color) +
-    facet_wrap(~season, ncol = 2) +
-    scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
-    #geom_rug(aes(x = time), alpha = 0.2, color = "#FFCB00") +
-    #scale_color_viridis_d() +
-    #scale_fill_viridis_d() +
-    ylab("") +
-    xlab("Hour of the day") +
-    theme(legend.position = "none") +
-    plot_layout(tag_level = "new")
-    # geom_text(data = data.frame(x = 60, y = 0.00317),
-    #           aes(x,y, label = c("","n = 6","n = 2","n = 5")),
-    #           size = 3,
-    #           color = "grey60") +
-
-light_patterns = wrap_plots(plot_id, plot_season, widths = c(1,3))
+    geom_histogram(data = kernel_data, aes(x = m.data,
+                                           y = ..density..),
+                   color = "white",
+                   alpha = 0.2,
+                   bins = 24,
+                   fill = "orange") +
+    #geom_ribbon(aes(x, ymin = lcl, ymax = ucl), fill = "grey70") +
+    geom_density(data = kernel_pdf,
+                 aes(x, y),
+                 stat = "identity",
+                 size = 0.8,
+                 color = "orange") +
+    scale_x_continuous(limits = c(0,2*pi),
+                       breaks = c(0, pi/2, pi, 3/4*2*pi, 2*pi),
+                       labels = c(0,6,12,18,24)) +
+    facet_wrap(vars(season)) +
+    theme(legend.position = "none")+
+    xlab("Time (h)") +
+    ylab("Density")
 ```
 
 ```{r plot-aboveground}
@@ -451,7 +464,7 @@ graph_p_aboveground = graph_p_aboveground +
    annotate("text", x = "October", y = 0.22, label = "*", size = 4, color = "grey60")
 ```
 
-```{r plot-light-exposure, fig.pos="H",fig.height=7, fig.width= 8, out.width="100%", fig.cap="Tuco-tuco’s daily patterns of surface emergence. (A) Density histogram and kernel estimates of surface emergence showing the relative probability of surface emergence. On the left: Individual daily patterns of surface emergence, pooling all daily counts of each animal. On the right: population-level patterns of surface emergence in each month of the year. Population-level is the pooled data for all days of all animals of each month of the year. Solid lines indicate the Gaussian kernel density estimates as a function of time. Light-colored bars shows observed surface emergence binned per hour. X-axis is time of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show times of civil twilights. (B) Mean daily time on surface per animal. Each point is an animal’s mean daily time on surface (ANOVA; p = 0.167). (C) Mean daily percentage of time on surface in relation to the daylength. Each point is an animal’s mean daily percentage of time on surface (ANOVA; p = 0.043). Asterisks indicates pairwise significant statistical difference (Tukey’s HSD; p < 0.05)."}
+```{r plot-light-exposure, fig.pos="H",fig.height=7, fig.width= 8, out.width="100%", fig.cap="Tuco-tuco’s daily patterns of surface emergence and average time on surface. (A) Daily temporal pattern of surface emergence. Density histogram and kernel estimates shows the relative probability of surface emergence. On the left: Individual daily patterns of surface emergence, pooling all daily counts of each animal. On the right: population-level patterns of surface emergence in each month of the year. Population-level is the pooled data for all days of all animals of each month of the year. Solid lines indicate the Gaussian kernel density estimates as a function of time. Light-colored bars shows observed surface emergence binned per hour. X-axis is time of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show times of civil twilights. (B) Mean daily time on surface per animal. Each point is an animal’s mean daily time on surface (ANOVA; p = 0.167). (C) Mean daily percentage of time on surface in relation to the daylength. Each point is an animal’s mean daily percentage of time on surface (ANOVA; p = 0.043). Asterisks indicates pairwise significant statistical difference (Tukey’s HSD; p < 0.05)."}
 light_patterns / (graph_t_aboveground + graph_p_aboveground) + plot_annotation(tag_levels = "A") + plot_layout(heights = c(1.8,1))
 ```
 
@@ -459,11 +472,11 @@ light_patterns / (graph_t_aboveground + graph_p_aboveground) + plot_annotation(t
 
 ### General Activity
 
-Tuco-tuco's general activity follows a typical diurnal pattern. Hourly mean VeDBA is lower during the night time, rises just before dawn, remains generally higher during the daytime and falls just after dusk. The average daily VeDBA is significantly different among month-groups (ANOVA; F = 7.182, p = 0.002; Figure 1.5B). There is a significant month-group difference between July-October and July-February (Tukey’s HSD, p < 0.05). In both pairwise comparisons July's average daily VeDBA is lower, with a difference in means of 0.029 g in comparison to October and 0.019 g in comparison to February. 
+Tuco-tuco's general activity follows a typical diurnal pattern. Hourly mean VeDBA is lower during the night time, rises just before dawn, remains generally higher during the daytime and falls just after dusk. The average daily VeDBA is significantly different among month-groups (ANOVA; F = 7.182, p = 0.002; \@ref(fig:vedba-boxplot)). There is a significant month-group difference between July-October and July-February (Tukey’s HSD, p < 0.05). In both pairwise comparisons July's average daily VeDBA is lower, with a difference in means of 0.029 g in comparison to October and 0.019 g in comparison to February. 
 
-The percentage of daytime VeDBA is also significantly different between months (ANOVA; F = 8.288, p = 0.001;  Figure 1.5C). Differently from the the daily mean VeDBA, however, there is only a significant difference between July-October (Tukey's HSD, p < 0.05), with a lower July VeDBA level and mean different of 0.13 g.\newline
+The percentage of daytime VeDBA is also significantly different between months (ANOVA; F = 8.288, p = 0.001; \@ref(fig:vedba-boxplot)). Differently from the the daily mean VeDBA, however, there is only a significant difference between July-October (Tukey's HSD, p < 0.05), with a lower July VeDBA level and mean different of 0.13 g.\newline
 
-```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's Daily VeDBA levels. (A) VeDBA was binned by hour (0-23). Background lines show data for individual animals. Thick lines show mean hourly VeDBA. (B) Distribution of mean daily VeDBA. Points show daily VeDBA mean for each animal. In July Tuco-tuco's exhibited lower Daily VeDBA than October and February. (C) Distribution of percentage of VeDBA occuring during the daytime. Points show mean daily percentage of VeDBA during the daytime. During July tuco-tuco's have significant lower VeDBA levels during the day than in comparison to other monthes of the year. Vertical dashed lines shows time of civil dawn and dusk. Asterisks shows significant statistical difference between groups in an ANOVA followed by Tukey-Kramer's Test."}
+```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's daily temporal pattern of VeDBA and Mean daily VeDBA. (A) Daily temporal pattern of VeDBA binned by hour. Light gray horizontal lines show individual patterns, where each line is representative of an animal. Black lines show hourly mean VeDBA of all pooled animals in the respective month. (B) Mean daily VeDBA. Each point is an animal’s Mean daily VeDBA. There is a significant difference between month-groups (ANOVA, p = 0.002). In July tuco-tucos exhibited lower average daily VeDBA than October and February (Tukey’s HSD; Jul-Oct = 0.002, Jul-Feb = 0.049). (C) Percentage of VeDBA that occurs during daytime. Points show mean daytime percentage of VeDBA in relation to the total VeDBA during the day.  There is a significant group difference (ANOVA; p = 0.013). In July animal’s show lower VeDBA during the day than October and February (Tukey’s HSD; Jul-Oct = 0.001, Jul-Feb = 0.006). Vertical dotted lines shows time of civil twilights."}
 
 # Daily VeDBA Patterns ----------------------------------
 tuco_hourly = tuco %>%
@@ -505,12 +518,12 @@ vedba_hourly =
     facet_wrap(~season, ncol = 2) +
     theme(legend.position = "none") +
     xlab("") +
-    ylab("Hourly mean general VeDBA (g)")
+    ylab("Hourly mean VeDBA (g)")
 
 # BOXPLOT 01 -----------------------------------
 vedba_daily = tuco %>% 
     group_by(ID, season, date = lubridate::date(datetime)) %>% 
-    summarise(vedba = mean(vedba)) %>% 
+    summarise(vedba = sum(vedba)) %>% 
     group_by(ID, season) %>% 
     summarise(vedba = mean(vedba))
 
@@ -521,17 +534,18 @@ bx_daily_vedba = ggplot(data = vedba_daily,
     gghalves::geom_half_boxplot(nudge = 0.05,
                               outlier.color = NA) +
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
-    xlab("") +
+    xlab("Time (h)") +
     ylab("Mean daily VeDBA (g)") +
     theme(legend.position = "none")
 
-df1 = data.frame(x = c(1.9, 3), y = c(0.16,0.16))
-df2 = data.frame(x = c(1.9, 4), y = c(0.167, 0.167))
+df1 = data.frame(x = c(1.9, 3), y = c(230,230))
+df2 = data.frame(x = c(1.9, 4), y = c(240, 240))
+
 bx_daily_vedba = bx_daily_vedba +
    geom_line(data = df1, mapping = aes(x,y, group = 1), color = "grey60") +
-   annotate("text", x = 2.5, y = 0.162, label = "*", size = 4, color = "grey60") +
+   annotate("text", x = 2.5, y = 232, label = "*", size = 4, color = "grey60") +
    geom_line(data = df2, mapping = aes(x,y, group = 1), color = "grey60") +
-   annotate("text", x = 3, y = 0.169, label = "*", size = 4, color = "grey60")
+   annotate("text", x = 3, y = 242, label = "*", size = 4, color = "grey60")
 
 
 # BOXPLOT 02 -----------------------------------
@@ -550,7 +564,7 @@ bx_daytime_vedba = ggplot(data = vedba_daytime,
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     scale_y_continuous(breaks = seq(0.5, 1, 0.1), labels = scales::percent, limits = c(0.5, 0.85)) +
     xlab("") +
-    ylab("Mean daytime percentage of total daily VeDBA") +
+    ylab("Mean daytime \npercentage of VeDBA") +
     theme(legend.position = "none")
 
 
@@ -573,9 +587,10 @@ vedba_hourly / (bx_daily_vedba + bx_daytime_vedba) +
 
 We fitted two different HMMs to VeDBA data, one empty model, with no covariates, and a second one with *'season'* as a covariate in the transition probability matrix. The second model was selected based on informational criterion ($\Delta$AIC > 2; REF Tabela AIC nos supps).
 
-The estimated state-dependent distributions are shown in Figure \@ref(fig:hmm-plot). We interpreted and labelled these states as 'Rest', 'Medium intensity activity', and 'High intensity activity' corresponding to low, intermediate, and high VeDBA values respectively. The marginal distribution (Figure \@ref(fig:hmm-plot); dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Figure \@ref(fig:appendix-residuals)) shows that the residuals deviate from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \@ref(tab:appendix-parameters)). \newline
+The estimated state-dependent distributions are shown in Figure \@ref(fig:hmm-plot). We interpreted and labelled these states as low, medium and high intensity activity. The marginal distribution (Figure \@ref(fig:hmm-plot); dashed line) has a good correspondence to the empirical VeDBA distribution. A visual analysis of the Pseudo-residuals (Figure \@ref(fig:appendix-residuals)) shows that the residuals deviate from the expected normal distribution, especially in the lower end values, and that there is still significant residual autocorrelation. Nevertheless, the overall fitting seems to be reasonable. The estimated state-dependent parameters are shown in the Appendix (Table \@ref(tab:appendix-parameters)). \newline
 
 ```{r hmm-plot, echo=FALSE, fig.asp=0.5, fig.width=9, out.width="100%",warning=FALSE, fig.pos = "H", fig.cap="State-dependent distributions of the selected Hidden Markov model fitted to the VeDBA acceleration metric. Histogram, in grey, shows the empirical VeDBA from the pooled data of 21 Anillaco's tuco-tuco. State-dependent gamma distributions are shown above the histograms. These distributions are weighted accordingly to the proportion of observations assigned to each state."}
+
 params = list()
 params[["mean"]] = unname(m2$mle$vedba[1,])
 params[["sd"]] = unname(m2$mle$vedba[2,])
@@ -598,8 +613,8 @@ for(i in 0:3){
     
     if(i == 3){
         d = data.frame(d)
-        names(d) = c("Rest","Medium","High")
-        d$Marginal = d$Rest + d$Medium + d$High
+        names(d) = c("Low","Medium","High")
+        d$Marginal = d$Low + d$Medium + d$High
         d$x = x
         d = tidyr::pivot_longer(d, 1:4, names_to = "state", values_to = "density")
     }
@@ -621,8 +636,7 @@ ggplot(tuco, aes(x = vedba)) +
 
 With the state-labeled data we were able to dissociate and visualize the daily patterns of each different state. An example of how VeDBA levels and the behavioral states are related is shown in Figure \@ref(fig:actograms-results). 
 
-A visual inspection of all individual actograms (Figure \@ref(fig:vedba-actograms)) indicates that the high activity state rhythm is more robust than the Medium Activity rhythm. Nonetheless, neither of these behavioral states occurs exclusively during the daytime. The high activity state, despite being more concentrated during the daylight hours, also occurs sporadically during the night. Medium Activity, in turn, is spread throughout the day and night with no clear 24-hour rhythm.
-\newline
+A visual inspection of all individual actograms (Appendix Figure \@ref(fig:vedba-actograms)) indicates that the high activity state rhythm is more robust than the Medium Activity rhythm. Nonetheless, neither of these behavioral states occurs exclusively during the daytime. The high activity state, despite being more concentrated during the daylight hours, also occurs sporadically during the night. Medium Activity, in turn, is spread throughout the day and night. 
 
 ```{r}
 # Do Running Length Decoding to get Start and End of Activity/Sleep
@@ -722,7 +736,7 @@ actograms_high = act_rle %>%
     ylab("")
 ```
 
-```{r actograms-results, fig.pos = "H", out.width = "100%", fig.width = 8, fig.height=4.5 ,fig.cap = "Actograms and Time Series Plot of general activity, measured by VeDBA, and state-labelled data of a representative animal (\\#OCT09). The actograms shows daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C) classified using HMM. Medium Activity State shows no clear pattern of a daily rhythm, with episodes spread throughout the day. High Activity, on the other hand, has a higher concentration during daylight hours. The time series (D) shows 1-minute VeDBA measures colored by behavioral state. Dashed lines shows time of dawn and dusk."}
+```{r actograms-results, fig.pos = "H", out.width = "100%", fig.width = 8, fig.height=4.5 ,fig.cap = "Actograms and time series plot of general activity, measured by VeDBA, and state-labelled data of a representative animal (\\#OCT09). The actograms shows daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C) classified using HMM. Medium Activity State shows no clear pattern of a daily rhythm, with episodes spread throughout the day. High Activity, on the other hand, has a higher concentration during daylight hours. The time series (D) shows 1-minute VeDBA measures colored by behavioral state. Dashed lines shows time of dawn and dusk."}
 # Select one tuco
 tuco_selected = tuco %>% filter(ID == "OCT09")
 remove_facet = theme(strip.text.x = element_blank(),
@@ -736,14 +750,14 @@ actograms_vedba = plot_actogram(tuco_selected, plot_days = 5) +
 
 # Time Series ------------------------------------------------------------------
 tuco_selected = tuco_selected[day_number <= 5]   
-ts_vedba = ggplot(tuco_selected) +
-    geom_point(aes(datetime, vedba, color = state), size = 0.3) + 
-    xlab("") +
-    ylab("VeDBA (g)") +
-    scale_x_datetime(date_breaks = "1 day") +
-    scale_color_manual(values = tuco_pal[1:3], labels = c("Rest", "Medium", "High")) +
-    labs(color = "State") +
-    guides(colour = guide_legend(override.aes = list(size=1.5)))
+# ts_vedba = ggplot(tuco_selected) +
+#     geom_point(aes(datetime, vedba, color = state), size = 0.3) + 
+#     xlab("") +
+#     ylab("VeDBA (g)") +
+#     scale_x_datetime(date_breaks = "12 hours") +
+#     scale_color_manual(values = tuco_pal[1:3], labels = c("Rest", "Medium", "High")) +
+#     labs(color = "State") +
+#     guides(colour = guide_legend(override.aes = list(size=1.5)))
 
 
 ts_vedba_zoom = ggplot(tuco_selected) +
@@ -751,10 +765,10 @@ ts_vedba_zoom = ggplot(tuco_selected) +
     xlab("") +
     ylab("VeDBA (g)") +
     scale_x_datetime(date_breaks = "1 day") +
-    scale_color_manual(values = tuco_pal[1:3], labels = c("Rest", "Medium", "High")) +
+    scale_color_manual(values = tuco_pal[1:3], labels = c("Low", "Medium", "High")) +
     labs(color = "State") +
     guides(colour = guide_legend(override.aes = list(size=1.5))) +
-    ggforce::facet_zoom(x = day_number == 2, zoom.size = 1, show.area = F) +
+    ggforce::facet_zoom(xy = day_number == 2, zoom.size = 1, show.area = F, horizontal = FALSE) +
     theme_bw()
 
 
@@ -784,11 +798,129 @@ actogram_results
 
 \clearpage
 
+### Daily Behavioral States Patterns
+
+Daily activity patterns for each behavioral state are shown in Figure \@ref(fig:plot-patterns). These plots show that, qualitatively, the timing of occurrence of High Activity episodes follow a diurnal pattern. Medium Activity, in contrast, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year, in all the sampled Months the peak of High Activity is around 14:00.
+
+\newpage
+
+```{r plot-patterns, fig.height = 9, fig.width=10, out.width="95%", fig.cap="Density estimates of daily activity patterns of tuco-tucos’ behavioral states. Solid lines indicate the Von-Mises circular kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. The x-axis is hour of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show time of civil twilights. Visually, the low activity state is not exclusive of one phase of the day, occurring both during day and night, although, more concentrated during the night. Medium activity visually shows no clear daily rhythms, with medium activity occurring during day and night. High activity state shows a clear diurnal pattern independent of the time of the year, peaking at around 14:00. "}
+
+get_pdf = function(x){
+    m = fitact(x$radians, adj = 0.3)
+    data = data.frame(m@data)
+    pdf  = data.frame(m@pdf)
+    return(list(data, pdf))
+}
+
+tuco_fit = tuco %>% 
+    dplyr::select(ID, sex, season, time, state) %>% 
+    mutate(radians = time * ((2*pi)/1440)) %>% 
+    tidyr::nest(cols = -c(season, state)) %>% 
+    mutate(fit = purrr::map(cols, get_pdf)) %>% 
+    dplyr::select(-cols)
+
+kernel_data = tuco_fit %>% 
+    mutate(data = purrr::map(fit, function(x) x[[1]])) %>% 
+    select(-fit) %>% 
+    tidyr::unnest(data)
+
+kernel_pdf = tuco_fit %>% 
+    mutate(pdf = purrr::map(fit, function(x) x[[2]])) %>% 
+    select(-fit) %>% 
+    tidyr::unnest(pdf)
+    
+patterns_state = ggplot() +
+    geom_histogram(data = kernel_data,
+                   aes(x = m.data,
+                           y = ..density..,
+                           fill = state),
+                   color = "white",
+                   alpha = 0.2,
+                   bins = 24) +
+    #geom_ribbon(aes(x, ymin = lcl, ymax = ucl), fill = "grey70") +
+    geom_density(data = kernel_pdf,
+                 aes(x, y, color = state),
+                 stat = "identity",
+                 size = 0.5) +
+    scale_x_continuous(limits = c(0, 2*pi),
+                       breaks = c(0, pi/3, 2*pi/3, pi, 4*pi/3, 5*pi/3, 2*pi),
+                       labels = c(0, 4, 8, 12, 16, 20, 24)) +
+    facet_grid(season~state) +
+    scale_color_manual(values = tuco_pal) +
+    scale_fill_manual(values = tuco_pal) +
+    theme(legend.position = "none")+
+    xlab("Time (h)") +
+    ylab("Density") +
+    geom_vline(data = sunriset_season,
+               aes(xintercept = dawn * ((2*pi)/1440)), 
+               linetype = "dotted",
+               color = "grey70") +
+    geom_vline(data = sunriset_season,
+               aes(xintercept = dusk * ((2*pi)/1440)),
+               linetype = "dotted",
+               color = "grey70") 
+patterns_state
+```
+
+\clearpage
+
+### Diurnality
+
+High Activity State is predominately diurnal (DI \> 0.5). The average diurnality for the High Activity State is higher than 0.7 for all seasons. The Medium Activity State, however, has a diurnality index that ranges from 0.5 in March to 0.56 in July and February. The low activity state is predominantly nocturnal with Diurnality lower than 0.38 in all seasons. There is no statistical difference between seasons (ANOVA; p \> 0.05 for all states; Figure \@ref(fig:diurnality-plot)). \newline
+
+```{r calculate-diurnality}
+diurnality_vedba = tuco %>% 
+    group_by(ID, season, daylength, daytime) %>%
+    summarise(vedba_sum = sum(vedba)) %>% 
+    group_by(ID, season) %>% 
+    summarise(diurnality = (vedba_sum[daytime]/daylength)/
+                           (vedba_sum[daytime]/daylength + vedba_sum[!daytime]/(1440 - daylength)) ) %>% 
+    unique()
+diurnality_vedba$state = "General Activity"
+
+    
+diurnality = tuco %>% 
+    group_by(ID, date(datetime), season) %>% 
+    mutate(daylength = sum(daytime)) %>% 
+    group_by(ID, date(datetime), season, state) %>% 
+    summarise(daylength = median(daylength),
+              nighttime = sum(!daytime),
+              daytime = sum(daytime),
+              diurnality = (daytime/daylength)/
+                  (daytime/daylength + nighttime/(1440 - daylength))) %>% 
+    group_by(ID, season, state) %>% 
+    summarise(diurnality = mean(diurnality))
+
+diurnality = dplyr::full_join(diurnality, diurnality_vedba)
+diurnality$state = factor(diurnality$state, levels = c("Low","Medium","High","General Activity"))
+```
+
+```{r diurnality-plot, fig.pos = "H", out.width="100%", fig.width=8, fig.asp=0.4, fig.cap = " Distribution of calculated diurnality index (DI). Each point represents the DI of an animal. High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all month-groups. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal. Medium state is spread almost evenly between day and night. Low activity is concentated during the night."}
+
+ggplot(diurnality,
+      aes(x = season,
+          y = diurnality,
+          color = state)) +
+    geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey90") +
+    gghalves::geom_half_boxplot(nudge = 0.05,
+                                outlier.color = NA) +
+    gghalves::geom_half_point() +
+    scale_color_manual(values = tuco_pal) +
+    scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
+    scale_y_continuous(limits = c(0,1))+
+    facet_wrap(~state, ncol = 4) +
+    xlab("") +
+    ylab("Diurnality Index (DI)") +
+    theme(legend.position = "none")
+```
+\newpage
+
 ### Daily Time-Activity Budgets
 
-On average, tuco-tucos spent between 45-50% of the 24 hours in the Rest state, with no statistical difference between the percentage of time spent resting between seasons (ANOVA; F = 1.93, p = 0.163). The remaining time is spent in an active state, either Medium or High Activity State.
+On an overall average, tuco-tucos spent 680 ± 67 minutes per day in the low activity state, with no statistical difference between seasons (ANOVA; F = 1.93, p = 0.163).
 
-Tuco-tucos spent a variable percentage of their daily active time in one of the two active states, High or Medium, across seasons. Daily time spent in High Activity was lower in July (15.8%) and higher in October (29.4%). In contrast, daily time spent in a Medium Activity State was higher in July (34.1%) and lower in October (24.8%). There is a significant difference in the percentage of time spent in Medium (Figure \@ref(fig:plot-time-state); ANOVA: F = 4.457, p = 0.0175) and High Activity State across seasons (Figure \@ref(fig:plot-time-state); ANOVA: F = 13.62, p = \< 0.001). Tukey's post hoc test shows that the mean percentage of time spent in the Medium Activity State is 9% lower in October than in July (p = 0.01). For the High Activity State, pairwise Tukey's test shows a significant difference between October-July (p \< 0.001) and February-July (p \< 0.01). In comparison to July the mean daily percentage of time spent in a High Activity State is 13% higher in October and 8% higher in February (Figure \@ref(fig:plot-time-state)).
+In contrast, there is a significant difference in the percentage of time spent in Medium and High Activity States (Medium: ANOVA, F = 4.457, p = 0.0175; High: ANOVA, F = 13.62, p = < 0.001). In the medium state there is a significant difference between July-October (Tukey's HSD, p < 0.05). The mean time spent in the medium state in July was 491 ± 89.3 minutes and in October  357 ± 61.2 minutes. The high activity states shows a significant difference between October-July and February-July (Tukey's HSD, p < 0.01). The daily mean time spent in high activity was: July, 227 ± 43.7 minutes; October, 424 ± 82 minutes; February 355 ± 52.2 minutes.
 
 ```{r calculate-time-state}
 daily_budget_id = tuco %>% 
@@ -804,7 +936,8 @@ daily_budget_id = tuco %>%
     )
 ```
 
-```{r plot-time-state, fig.asp=1, fig.width=9, out.width="100%", fig.cap="Daily time-activity budgets for the behavioral states. (A) Percentage of time spent in each behavioral state per animal. (B) Boxplot and individual points of the distribution of the mean percentage of time spent in each behavioral state. Asteriscs shows statistical significant pairwise comparison between Months. The mean percentage of time spent in the High Activity State is lower in July in comparison to October and February. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October."}
+```{r plot-activity-budget, fig.asp=1, fig.width=9, out.width="100%", fig.cap="Time spent in each behavioral state and corresponding individual time-activity budgets. (A) Time-activity budget of the allocation of behavioral states per animal. (B) Mean daily time in each behavioral state per animal. Asterisks show statistical significance in pairwise comparison between Months. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October (Tukeys’s HSD, p < 0.05). The mean percentage of time spent in the High Activity State is lower in July in comparison to October and February (Tukeys’s HSD, p < 0.05)."}
+
 daily_budget_id$ID = paste0("#", daily_budget_id$ID)
 
 bar_time = ggplot(daily_budget_id, aes(perc, ID, fill = state, group = season)) +
@@ -872,185 +1005,7 @@ bar_time + bxp_time +
               heights = c(2.5,1)) +
   plot_annotation(tag_levels = "A")
 ```
-
 \newpage
-
-### Daily Activity Patterns
-
-Daily activity patterns for each behavioral state are shown in Figure \@ref(fig:plot-patterns). These plots show that, qualitatively, the timing of occurrence of High Activity and Light Exposure episodes follow a diurnal pattern. Medium Activity, however, is spread out along the 24h and do not follow a daily (24-hour) rhythm. It is important to note that the timing of peak occurrence of High Activity behavior does not appear to change dramatically along the year. In all four Months the peak of High Activity is around 14:00.
-
--   REF calculate peak
--   REF adicionar linha do meio dia solar
-
-\newpage
-
-```{r diel-rest-density, fig.asp=0.6, fig.width=9, out.width="100%"}
-color = tuco_pal[1]
-plot_id = ggplot(tuco %>% filter(state == "Rest")) +
-    geom_histogram(aes(x = time, y = ..density..), 
-                   binwidth = 60, 
-                   alpha = 0.2,
-                   fill = color) +
-    geom_density(aes(x = time),
-                 color = color,
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.5) +
-    facet_wrap(~factor(ID, levels = ID, 
-                       labels = paste0("#", ID)), 
-                       ncol = 3) +
-    scale_x_continuous(limits = c(0,1450), breaks = c(0, 720, 1440), labels = c(0, 12, 24)) +
-    scale_y_continuous(n.breaks = 2) +
-    scale_color_viridis_d() +
-    scale_fill_viridis_d() +
-    theme(legend.position = "none",text = element_text(size = 11)) +
-    xlab("Hour of the day") +
-    ylab("Density") +
-    ggtitle("Rest")
-
-
-plot_season = ggplot(tuco %>% filter(state == "Rest")) +
-    geom_vline(data = sunriset_season, aes(xintercept = dawn),
-               linetype = "dotted", color = "grey70") +
-    geom_vline(data = sunriset_season, aes(xintercept = dusk),
-               linetype = "dotted", color = "grey70") +
-    geom_histogram(aes(x = time, y = ..density..),
-                   binwidth = 60,
-                   alpha = 0.1,
-                   color = "white",
-                   fill = color) +
-    geom_density(aes(x = time),
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.7,
-                 color = color) +
-    facet_wrap(~season, ncol = 2) +
-    scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
-    #geom_rug(aes(x = time), alpha = 0.01) +
-    #scale_color_viridis_d() +
-    #scale_fill_viridis_d() +
-    ylab("") +
-    xlab("Hour of the day") +
-    theme(legend.position = "none") +
-    plot_layout(tag_level = "new")
-
-plot_rest = wrap_plots(plot_id, plot_season, widths = c(1.5,3))
-```
-
-```{r diel-medium-density, fig.asp=0.6, fig.width=9, out.width="100%"}
-color = tuco_pal[2]
-plot_id = ggplot(tuco %>% filter(state == "Medium")) +
-    geom_histogram(aes(x = time, y = ..density..), 
-                   binwidth = 60, 
-                   alpha = 0.2,
-                   fill = color) +
-    geom_density(aes(x = time),
-                 color = color,
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.5) +
-    facet_wrap(~factor(ID, levels = ID, labels = paste0("#", ID)),
-               ncol = 3) +
-    scale_x_continuous(limits = c(0,1450), breaks = c(0, 720, 1440), labels = c(0, 12, 24)) +
-    scale_y_continuous(n.breaks = 2) +
-    scale_color_viridis_d() +
-    scale_fill_viridis_d() +
-    theme(legend.position = "none",text = element_text(size = 11)) +
-    xlab("Hour of the day") +
-    ylab("Density") +
-    ggtitle("Medium Activity")
-
-
-plot_season = ggplot(tuco %>% filter(state == "Medium")) +
-    geom_vline(data = sunriset_season, aes(xintercept = dawn), 
-               linetype = "dotted", color = "grey70") +
-    geom_vline(data = sunriset_season, aes(xintercept = dusk), 
-               linetype = "dotted", color = "grey70") +
-    geom_histogram(aes(x = time, y = ..density..),
-                   binwidth = 60,
-                   alpha = 0.1,
-                   color = "white",
-                   fill = color) +
-    geom_density(aes(x = time),
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.7,
-                 color = color) +
-    facet_wrap(~season, ncol = 2) +
-    scale_x_continuous(limits = c(0,1440), breaks = c(0, 360,720, 1080, 1440), labels = c(0,6,12,18,24)) +
-    #geom_rug(aes(x = time), alpha = 0.01) +
-    #scale_color_viridis_d() +
-    #scale_fill_viridis_d() +
-    ylab("") +
-    xlab("Hour of the day") +
-    theme(legend.position = "none") +
-    plot_layout(tag_level = "new")
-
-plot_medium = wrap_plots(plot_id, plot_season, widths = c(1.5,3))
-```
-
-```{r diel-high-density, fig.asp=0.6, fig.width=9, out.width="100%"}
-color = tuco_pal[3]
-plot_id = ggplot(tuco %>% filter(state == "High")) +
-    geom_histogram(aes(x = time,
-                       y = ..density..),
-                       fill = color,
-                       binwidth = 60,
-                       alpha = 0.2) +
-    geom_density(aes(x = time), 
-                 color = color,
-                 alpha = 0.8, bw = 60, kernel = "g", size = 0.5) +
-    facet_wrap(~factor(ID,levels = ID, labels = paste0("#", ID)),
-               ncol = 3) +
-    scale_x_continuous(limits = c(0,1450), breaks = c(0, 720, 1440), labels = c(0, 12, 24)) +
-    scale_y_continuous(n.breaks = 2) +
-    scale_color_viridis_d() +
-    scale_fill_viridis_d() +
-    theme(legend.position = "none",text = element_text(size = 11)) +
-    ylab("Density") +
-    xlab("Hour of the day") + 
-    ggtitle("High Activity")
-
-plot_season = ggplot(tuco %>% filter(state == "High")) +
-    geom_vline(data = sunriset_season, aes(xintercept = dawn),
-               linetype = "dotted", color = "grey70") +
-    geom_vline(data = sunriset_season, aes(xintercept = dusk),
-               linetype = "dotted", color = "grey70") +
-    geom_histogram(aes(x = time, y = ..density..), 
-                   binwidth = 60,
-                   alpha = 0.1,
-                   color = "white",
-                   fill = color) +
-    geom_density(aes(x = time), 
-                 alpha = 0.8,
-                 bw = 60,
-                 kernel = "g",
-                 size = 0.7,
-                 color = color) +
-    facet_wrap(~season, ncol = 2) +
-    scale_x_continuous(limits = c(0,1440), 
-                       breaks = c(0, 360,720, 1080, 1440),
-                       labels = c(0,6,12,18,24)) +
-    #geom_rug(aes(x = time), alpha = 0.01) +
-    #scale_color_viridis_d() +
-    #scale_fill_viridis_d() +
-    theme(legend.position = "none") +
-    xlab("Hour of the day") +
-    ylab("") +
-    plot_layout(tag_level = "new")
-
-plot_high = wrap_plots(plot_id, plot_season, widths = c(1.5,3))
-```
-
-```{r plot-patterns, fig.height = 15, fig.width=10, out.width="95%", fig.cap="Density estimates of daily activity patterns of tuco-tucos' behavioral states. Solid lines indicate the Gaussian kernel density estimates. Light-colored bars show observed distribution of each behavioral state occurrence. The x-axis is hour of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show time of civil twilights. (A) High Activity State shows a diurnal pattern independent of the time of the year. (B) Medium Activity State shows no daily pattern. (C) Daily pattern of light exposure changes according to the season."}
-(plot_rest / plot_medium / plot_high) + plot_annotation(tag_levels = "A")
-```
-
-\clearpage
 
 ### Aboveground Activity
 
@@ -1082,12 +1037,9 @@ aboveground_activity = tuco_abv_act %>%
     ungroup()
 ```
 
-Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). The percentage of the high activity state that occurs on the surface is higher than the other activity states. The mean percentage of the high state that occurs aboveground is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`, whether for the medium state the mean is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`. Rest, in contrast, is the behavioral state that happens the least on the surface with a mean percentage of `r aboveground_activity %>% filter(state == "Rest") %>% summarise(mean = round(mean(perc), 2)) %>% dplyr::select(mean)`.\newline
+Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). There is no significant difference between month-groups within any state (Kruskal-Wallis, p > 0.05). The overall mean surface time spent on the high activity state is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, whether for the medium state the it is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes. Low activity, in contrast, is the behavioral state that happens the least on the surface with a mean of `r aboveground_activity %>% filter(state == "Low") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, considering all month-groups together. \newline
 
-- aqui ainda falta um teste. Precisa ser um não parametrico ou test-t dois a dois. O ANOVA não cabe nesses dados.
-- adicionar estatistica descritiva do tempo
-
-```{r aboveground-activity,  fig.asp=1, fig.width=9, out.width="100%", fig.pos="H", fig.align='center', fig.cap = "Distribution of the percentages of each activity state that happens aboveground during daytime."}
+```{r aboveground-activity,  fig.asp=0.8, fig.width=9, out.width="100%", fig.pos="H", fig.align='center', fig.cap = "Mean time per animal and individual percentages of behavioral states exhibited on the surface. (A) Percentage of aboveground time spent in each behavioral state per animal in relation to the total time on surface. (B) Mean daily time of behavioral states exhibited aboveground per animal. Asterisks shows statistical significant pairwise comparison between Months. There is no significant difference between month-groups within any state (Kruskal-Wallis, p > 0.05)."}
 
 abvg_bar = ggplot(aboveground_activity, aes(perc, ID, fill = state, group = season)) +
     geom_bar(position = "stack",
@@ -1105,16 +1057,16 @@ abvg_bar = ggplot(aboveground_activity, aes(perc, ID, fill = state, group = seas
     labs(fill = "State") +
     scale_x_continuous(labels = scales::percent_format()) +
     ylab("") +
-    xlab("Mean percentage of aboveground activity in state")
+    xlab("Mean percentage of time on surface")
 
 plot_abvact_time = ggplot(aboveground_activity, aes(season, time, color = state)) +
     gghalves::geom_half_point() +
     gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0) +
-    ylab("Mean time spent in\naboveground activity per animal (min)") +
+    ylab("Mean daily time in\naboveground activity (min)") +
     xlab("") +
     scale_color_manual(values = tuco_pal[1:3]) +
-    theme(legend.position = "none") +
-    facet_wrap(~state)
+    theme(legend.position = "none") + 
+    facet_wrap(vars(state))
 
 # plot_abvact_perc = ggplot(aboveground_activity, aes(state, perc, color = state)) +
 #     gghalves::geom_half_point() +
@@ -1125,59 +1077,10 @@ plot_abvact_time = ggplot(aboveground_activity, aes(season, time, color = state)
 #     theme(legend.position = "none") +
 #     scale_y_continuous(labels = scales::percent_format())
 
-abvg_bar / plot_abvact_time
-```
-
-\newpage
-
-### Diurnality
-
-High Activity State is predominately diurnal (DI \> 0.5). The average diurnality for the High Activity State is higher than 0.7 for all seasons. The Medium Activity State, however, has a diurnality index that ranges from 0.5 in March to 0.56 in July and February. The Rest State is predominantly nocturnal with Diurnality lower than 0.38 in all seasons. There is no statistical difference between seasons (ANOVA; p \> 0.2 for all states; Figure \@ref(fig:diurnality-plot)). \newline
-
-```{r calculate-diurnality}
-diurnality_vedba = tuco %>% 
-    group_by(ID, season, daylength, daytime) %>%
-    summarise(vedba_sum = sum(vedba)) %>% 
-    group_by(ID, season) %>% 
-    summarise(diurnality = (vedba_sum[daytime]/daylength)/
-                           (vedba_sum[daytime]/daylength + vedba_sum[!daytime]/(1440 - daylength)) ) %>% 
-    unique()
-diurnality_vedba$state = "General Activity"
-
-    
-diurnality = tuco %>% 
-    group_by(ID, date(datetime), season) %>% 
-    mutate(daylength = sum(daytime)) %>% 
-    group_by(ID, date(datetime), season, state) %>% 
-    summarise(daylength = median(daylength),
-              nighttime = sum(!daytime),
-              daytime = sum(daytime),
-              diurnality = (daytime/daylength)/
-                  (daytime/daylength + nighttime/(1440 - daylength))) %>% 
-    group_by(ID, season, state) %>% 
-    summarise(diurnality = mean(diurnality))
-
-diurnality = dplyr::full_join(diurnality, diurnality_vedba)
-diurnality$state = factor(diurnality$state, levels = c("Rest","Medium","High","General Activity"))
-```
-
-```{r diurnality-plot, fig.pos = "H", out.width="100%", fig.width=8, fig.asp=0.4, fig.cap = "Distribution of calculated diurnality index (DI). Between labelled states, only the High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all season. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal, "}
-
-ggplot(diurnality,
-      aes(x = season,
-          y = diurnality,
-          color = state)) +
-    geom_hline(yintercept = 0.5, linetype = "dashed", color = "grey90") +
-    gghalves::geom_half_boxplot(nudge = 0.05,
-                                outlier.color = NA) +
-    gghalves::geom_half_point() +
-    scale_color_manual(values = tuco_pal) +
-    scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
-    scale_y_continuous(limits = c(0,1))+
-    facet_wrap(~state, ncol = 4) +
-    xlab("") +
-    ylab("Diurnality Index (DI)") +
-    theme(legend.position = "none")
+abvg_bar + plot_abvact_time+
+  plot_layout(ncol = 1,
+              heights = c(1.8,1)) +
+  plot_annotation(tag_levels = "A")
 ```
 
 \newpage
@@ -1185,57 +1088,36 @@ ggplot(diurnality,
 ### Circadian Rhythmicity
 
 ```{r read-rhythmicity, message=FALSE, warning=FALSE, include=FALSE}
-acf_peaks = readRDS("../03_analysis/ACF/acf_peaks.rds")
-period_peaks = readRDS("../03_analysis/periodogram/peaks_period.rds")
-acf_peaks$state = factor(acf_peaks$state, labels = c("Rest","Medium","High","General Activity"))
+acf_peaks = readRDS("../03_analysis/rhythmicity/rhythmicity_classified.rds") %>% ungroup()
+period_peaks = readRDS("../03_analysis/periodogram/peaks_period.rds") %>% ungroup()
+
+levels(acf_peaks$state) = c("Low", "Medium", "High", "General Activity")
+levels(period_peaks$state) = c("Low", "Medium", "High", "General Activity")
 ```
 
-Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (REF APPENDIX - plotar ACFs individuais). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic (85.7%). In contrast, the medium activity state had, in total, 11 animals (52.4%) classified as rhythmic.
+Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (REF APPENDIX - plotar ACFs individuais). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic (85.7%). In contrast, 11 animals (52.4%) were classified as rhythmic for the medium activity state \@ref(tab:rhymicity-table).
 
-```{r rhymicity-bars, dpi=200, fig.width=6, fig.height=3, fig.cap="Percentege of animals classified as rhythmic for a circadian component (~24h). Classification of rhythmic animals was done visually using Autocorrelation plots. Animals that showed a rhythmic autocorrelation plot was classified as rhythmic."}
-# --------------------------------!!
-# TRANSFORMAR EM GRAFICO ---------!!
-#---------------------------------!!
-#---------------------------------!!
+```{r rhymicity-table, dpi=200, fig.width=6, fig.height=3, fig.cap="Percentege of animals classified as rhythmic for a circadian component (~24h). Classification of rhythmic animals was done visually using Autocorrelation plots. Animals that showed a rhythmic autocorrelation plot was classified as rhythmic."}
+#  --------------------------------!!
+#  TRANSFORMAR EM GRAFICO ---------!!
+# ---------------------------------!!
+# ---------------------------------!!
+acf_summary = acf_peaks %>%
+group_by(State = state) %>%
+summarise(Animals = length(rhythmic),
+         Rhythmic = sum(rhythmic),
+         Percentage = round(sum(rhythmic)/length(rhythmic)*100, 1)
+         )
 
-# acf_summary = acf_peaks %>%
-#   group_by(state) %>%
-#   summarise(Animals = length(rhythmic),
-#             Rhythmic = sum(rhythmic),
-#             Percentage_r = round(sum(rhythmic)/length(rhythmic)*100, 1),
-#             Percentage_arr = 100 - Percentage_r)
-# 
-# ggplot(acf_summary) +
-#     geom_bar(aes(x = state, y = Percentage_r, fill = state), stat = "identity") +
-#     ylab("Percentage of\nRhythmic Animals") +
-#     xlab("Behavioral State") +
-#     scale_fill_manual(values = tuco_pal)
-
-# acf_summary$season = factor(acf_summary$season, levels = c("March", "July", "October", "February"))
-# 
-# kable(acf_summary, caption = "Percentage of Rhythmic Animals")
+kable(acf_summary, caption = "Number and percentage of animals classified as rhythmic.")
 ```
 
-We calculated the RI only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \@ref(fig:plot-ri-and-period)A; ANOVA; p \< 0.05). We did not test for differences between seasons (See Methods).
+We calculated the RI only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \@ref(fig:plot-ri-and-period)A; Kruskal-Wallis; p \< 0.05). We did not test for differences between seasons (See Methods).
 
-```{r calculate-peaks}
-period_mean = period_peaks %>% 
-  group_by(state) %>% 
-  summarise(mean = mean(peak/60, na.rm = T),
-            sd = sd(peak/60, na.rm = T)) %>% 
-  summarise(state = state,
-            mean_sd = paste0(round(mean, 2), 
-                             "h ± ", 
-                             round(sd, 2)))
-```
+We used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A).
 
-Lastly, we used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. The high activity state has a mean period ± standard deviation of `r period_mean[period_mean$state == "High",]$mean_sd`. The medium activity state has a mean period of `r period_mean[period_mean$state == "Medium",]$mean_sd`.
-
-We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A). For VeDBA the mean estimated period was `r period_mean[period_mean$state == "vedba",]$mean_sd`.
-
-
-```{r plot-ri-and-period, fig.width=9, fig.height=3, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Distribution of Rhythmicity Index for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA. Graphs shows half boxplots and individual data"}
-acf_dist_plot = ggplot(acf_peaks,
+```{r plot-ri-and-period, fig.width=9, fig.height=3, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Rhythmicity metrics for estimated behavioral estates and VeDBA. (A) Rhythmicity Index calculated per animal for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA (Kruskal-Wallis, p > 0.05). (B) Period estimation for behavioral states and VeDBA. "}
+acf_dist_plot = ggplot(acf_peaks %>% filter(rhythmic == T),
                        aes(x = state,
                            y = acf,
                            color = state)) +
@@ -1248,18 +1130,20 @@ acf_dist_plot = ggplot(acf_peaks,
     geom_text(data = data.frame(state = "Medium", acf = 0.3), aes(state, acf), label = "*", color = "grey60", size = 5) +
     theme(legend.position = "none")
 
-period_dist_plot = ggplot(period_peaks) +
-    geom_density(aes(x = peak/60,
-                      fill = state,
-                      color = state), 
-                      alpha = 0.1) +
-    scale_y_continuous(n.breaks = 8) +
+period_dist_plot = ggplot(period_peaks %>% filter(rhythmic == T)) +
+    geom_histogram(aes(x = peak/60,
+                      fill = state), 
+                      alpha = 0.3,
+                      bins = 14,
+                   position = "identity") +
+    scale_y_continuous(n.breaks = 10) +
+    scale_x_continuous(breaks = seq(21,27), limits = c(21,27)) +
     xlab("Period") +
-    ylab("Density") +
+    ylab("Count") +
     scale_color_manual(values = tuco_pal) +
     scale_fill_manual(values = tuco_pal)
 
-acf_dist_plot + period_dist_plot + patchwork::plot_annotation(tag_levels = "A") +patchwork::plot_layout(widths = c(2,1))
+acf_dist_plot + period_dist_plot + patchwork::plot_annotation(tag_levels = "A") + patchwork::plot_layout(widths = c(2,1))
 ```
 
 \newpage
@@ -1269,13 +1153,11 @@ acf_dist_plot + period_dist_plot + patchwork::plot_annotation(tag_levels = "A") 
 -   mencionar que tudo que é medido foi a primeira vez em vida livre
 
 -   Optamos pelo tipo de modelos mais simples com outras a analises a posteriori. Existem outros métodos interessantes Patterson 2009. Extensions to out model could include (...)
-
     -   selecionamos os fatores mais relevantes baseados nas analises exploratorias
 
 -   limitações dos dados de lightlogger: não sabemos se os picos podem se extender durante a noite tbm.
 
 -   discutir as semelhancas entre arena e freeliving
-
     -   o padrão é igual, explicar o que foi visto nas arenas
 
 -   diferença ritmicidade vedba vs estados na ritmicidade
@@ -1285,33 +1167,26 @@ acf_dist_plot + period_dist_plot + patchwork::plot_annotation(tag_levels = "A") 
 -   uma boa mensagem para deixar pro futuro
 
 -   reler artigo catemeralidade
-
     -   nesse artigo foi percebido varios bouts de atividades
-
     -   tamiris: while not on the wheel they are doing different things
-
         -   não podemos assumir que quando nao está na roda ele está parado
         -   erkert artigo + voles lehmann (trabalhos de catemeralidade)
         -   esse ponto é essencial para conectar com o que o HMM fez
         -   HMM trouxe a tona outros ritmos presentes ao longo de todo dia + o componente circadiano que tbm vemos na roda, p.e.
         -   tbm falar que não era possível medir -> tecnologias diferentes.
 
--   Deixar os eixos como Atividade Geral (VeDBA)
-
-    -   colocar apenas na legenda que atividade geral é medida pelo VeDBA
-
 -   Erkert, H.G.; Cramer B. 2006. Chronobiological background to cathemerality: circadian rhythms in Eulemur fulvus albifrons (Prosimili) and Aotus azarai boliviensis (Anthropoidea). Folia Primatologica 77: 87--113.
 
 -   lehmann
 
 -   A atividade "catemera" não era prevista então isso é uma coisa interessante
-
     -   falar que é novo e interessante
     -   tudo isso foi medido pq fomos ao campo
     -   "qual a relacao entre o circadiano e os ultradianos?"
 
-------------------------------------------------------------------------
-
 -   os resultados do indice de ritmicidade devem ser interpretados com cuidado já que existe diferença na classificação dos animais em primeiro lugar.
-
     -   Isso principalmente na hora de interpretar o grafico de boxplot dos RI, entre HIGH e VEDBA.
+    
+- dizer que a ritmicidade é apenas para o range de 24h... seria legal analysar isso em ultradiano.
+
+
