@@ -7,7 +7,7 @@ tuco = readRDS("01_data/animals/animal_metadata.csv")
 tuco_luximeter = tuco.metadata %>% filter(lux, recaptured, collar_recovered) %>% dplyr::select(ID)    
 
 # calculate percentage of daylenght seen per animal
-time_aboveground_daily = tuco %>% 
+time_aboveground = tuco %>% 
     filter(ID %in% tuco_luximeter$ID) %>% 
     group_by(ID, season, date = lubridate::date(datetime)) %>% 
     summarise(daylength = sum(daytime),
@@ -22,44 +22,37 @@ time_aboveground_daily = tuco %>%
               daylength = median(daylength)) %>% 
     ungroup()
 
-# ANOVA TESTS ------------------------------------------------------------------
+# normality checking ----------------------------------------------------------
+# Time aboveground
+ggplot(time_aboveground, aes(sample = mean_t_aboveground)) +
+    ggplot2::geom_qq() +
+    stat_qq_line() +
+    scale_x_continuous()
 
+shapiro.test(time_aboveground %>% pluck("mean_t_aboveground"))
+#shapiro.test(time_aboveground %>% filter(season == "July") %>% pluck("mean_t_aboveground"))
+#shapiro.test(time_aboveground %>% filter(season == "October") %>% pluck("mean_t_aboveground"))
+#shapiro.test(time_aboveground %>% filter(season == "February") %>% pluck("mean_t_aboveground"))
+
+# Perc aboveground
+ggplot(time_aboveground, aes(sample = mean_p_aboveground)) +
+    ggplot2::geom_qq() +
+    stat_qq_line() +
+    scale_x_continuous()
+
+shapiro.test(time_aboveground %>% pluck("mean_p_aboveground"))
+# shapiro.test(time_aboveground %>% filter(season == "July") %>% pluck("mean_p_aboveground"))
+# shapiro.test(time_aboveground %>% filter(season == "October") %>% pluck("mean_p_aboveground"))
+# shapiro.test(time_aboveground %>% filter(season == "February") %>% pluck("mean_p_aboveground"))
+
+# ANOVA TESTS ------------------------------------------------------------------
 # AOV DAILY TIME OF LIGHT EXPOSURE
-aov_time_light = aov(data = time_aboveground_daily, formula = mean_t_aboveground~season)
+aov_time_light = aov(data = time_aboveground, formula = mean_t_aboveground~season)
 summary(aov_time_light)
 TukeyHSD(aov_time_light)
 
 # AOV DAILY PERCENTEGE OF LIGHT EXPOSURE
-aov_perc_light = aov(data = time_aboveground_daily, formula = mean_p_aboveground~season)
+aov_perc_light = aov(data = time_aboveground, formula = mean_p_aboveground~season)
 summary(aov_perc_light)
 TukeyHSD(aov_perc_light)
-
- 
-# tuco_bouts = tuco %>%
-#     group_by(ID, season, date = lubridate::date(datetime)) %>% 
-#     do(bouts(.$aboveground))
-# 
-# # Calculate mean number of bouts per season 
-# bouts_number = tuco_bouts %>% 
-#     na.omit() %>% 
-#     group_by(ID, season) %>% 
-#     summarise(mean_bouts = mean(number))
-# 
-# bouts_duration  = tuco_bouts %>% 
-#     na.omit() %>% 
-#     group_by(ID, season) %>% 
-#     summarise(mean_duration = mean(duration)) 
-
-
-# # AOV BOUTS NUMBER
-# aov_medium = aov(data = bouts_number, formula = mean_bouts~season)
-# summary(aov_medium)
-# #plot(aov_medium)
-# TukeyHSD(aov_medium)
-# 
-# # AOV BOUTS DURATION
-# aov_rest = aov(data = bouts_duration, formula = mean_duration~season)
-# summary(aov_rest)
-# #plot(aov_rest)
-# TukeyHSD(aov_rest)
 

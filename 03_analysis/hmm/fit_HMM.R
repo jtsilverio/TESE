@@ -5,7 +5,7 @@ library(ggplot2)
 set.seed(53)
 
 tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
-stateNames = c("Rest","Medium","High")
+stateNames = c("Low","Medium","High")
 
 # prep HMM data ------------------------------------------------------------
 tuco_hmm =  prepData(tuco, 

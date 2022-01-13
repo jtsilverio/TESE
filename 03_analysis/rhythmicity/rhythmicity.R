@@ -7,19 +7,19 @@ library(egg)
 library(patchwork)
 
 # Read Data ---------------------------------------------------------------
-tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
-tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
+tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
+tuco.metadata = fread("01_data/animals/animal_metadata.csv")
 
 # Read Model --------------------------------------------------------------
-m2 = readRDS("../03_analysis/hmm/m2.rds") # modelo com 
+m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com 
 
 # Viterbi State Decoding --------------------------------------------------
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
+tuco$state = factor(decoded, labels = c("Low","Medium","High"))
 
 # Widen State Column
 tuco = tuco %>% 
-    mutate(Rest = ifelse(state == "Rest", T, F),
+    mutate(Low = ifelse(state == "Low", T, F),
            Medium = ifelse(state == "Medium", T, F),
            High = ifelse(state == "High", T, F))
 
@@ -27,7 +27,7 @@ tuco = tuco %>%
 # Calculate ACF for each state and then find the third peak in the timeseries
 tuco_split = split(tuco, tuco$ID)
 
-for (state in c("Rest","Medium","High","vedba")) {
+for (state in c("Low","Medium","High","vedba")) {
     
     state_acf = lapply(tuco_split, function(x) as.numeric(x[[state]]))
     state_acf = lapply(state_acf, dplR::pass.filt,
@@ -38,7 +38,7 @@ for (state in c("Rest","Medium","High","vedba")) {
     state_acf = lapply(state_acf, acf, lag.max = 4000, plot = F)
     state_acf = data.table::rbindlist(state_acf, idcol = "ID", fill = T)
     
-    if(state == "Rest"){
+    if(state == "Low"){
         names(state_acf)[names(state_acf) == "acf"] = state
         acfs = state_acf
     }else{
@@ -48,15 +48,13 @@ for (state in c("Rest","Medium","High","vedba")) {
 
 # Calculate CI for ACF and merge season data
 acfs = acfs %>% 
-    dplyr::select(ID, lag, n.used, Rest, Medium, High, vedba) %>% 
+    dplyr::select(ID, lag, n.used, Low, Medium, High, "vedba") %>% 
     group_by(ID) %>% 
     mutate(acp_region = qnorm((1 + 0.9)/2) / sqrt(n.used)) %>% 
-    tidyr::pivot_longer(cols = c("Rest","Medium", "High","vedba"), names_to = "state", values_to = "acf") %>% 
+    tidyr::pivot_longer(cols = c("Low","Medium", "High", "vedba"), names_to = "state", values_to = "acf") %>% 
     ungroup() %>% 
     left_join(tuco.metadata)
 
-acfs$state = factor(acfs$state,
-                    levels = c("Rest", "Medium", "High", "vedba"))
 
 # Reorder IDs
 acfs$ID = factor(acfs$ID, levels = c("MAR01", "MAR02", "JUL15",
@@ -88,15 +86,23 @@ peaks_acf = peaks_acf %>%
             mutate(acp = ifelse(acf > acp_region, T, F))
 
 # reorder factors
-peaks_acf$state = factor(peaks_acf$state, levels = c("Rest", "Medium", "High", "vedba"))
+peaks_acf$state = factor(peaks_acf$state, levels = c("Low", "Medium", "High", "vedba"))
+
+# Save data
+saveRDS(peaks_acf %>% ungroup(), "03_analysis/rhythmicity/rhythmicity.rds")
 
 # ACF Plots -------------------------------------------------------------------
 
-# Visual Classification of autocorrelation plots based on ACF plots
-rhythmicity = readr::read_csv("../03_analysis/ACF/rhythmicity_acf.csv", col_types = "ffl")
+# This file contains the visual classification of the plot below. We visually classified animals between rhythmic and arrythmic
+rhythmicity = readr::read_csv("03_analysis/rhythmicity/visual_rhythmicity_analysis.csv", col_types = "ffl")
 peaks_acf = left_join(peaks_acf, rhythmicity)
 peaks_acf$acf = ifelse(peaks_acf$rhythmic == F, NA, peaks_acf$acf)
 peaks_acf$acf = ifelse(peaks_acf$acp == F, NA, peaks_acf$acf)
+
+saveRDS(peaks_acf %>% ungroup(), "03_analysis/rhythmicity/rhythmicity_classified.rds")
+
+
+# Plot --------------------------------------------------------
 
 acf_plot = ggplot(data = acfs, mapping = aes(x = lag, y = acf)) +
     geom_hline(aes(yintercept = acp_region), linetype = 2, color = "blue", alpha = 0.4) +
@@ -114,10 +120,7 @@ acf_plot = ggplot(data = acfs, mapping = aes(x = lag, y = acf)) +
           legend.title = element_blank(),
           text = element_text(size = 9.5))
 
-# Save Data and Plot --------------------------------------------------------
-saveRDS(peaks_acf, "../03_analysis/ACF/acf_peaks.rds")
-
-ggsave("04_figures/ACF/acf_plot.png", 
+ggsave("04_figures/rhythmicity/acf_plot.png", 
        acf_plot, "png", bg = "white",
        dpi = 200, width = 210, height = 290, units = "mm")
 

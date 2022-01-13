@@ -15,18 +15,18 @@ m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com
 
 # Viterbi State Decoding --------------------------------------------------
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
+tuco$state = factor(decoded, labels = c("Low","Medium","High"))
 
 # Widen State Column
 tuco = tuco %>% 
-    mutate(Rest = ifelse(state == "Rest", T, F),
+    mutate(Low = ifelse(state == "Low", T, F),
            Medium = ifelse(state == "Medium", T, F),
            High = ifelse(state == "High", T, F))
 
 # Periodogram -------------------------------------------------------------
 tuco_split = split(tuco, tuco$ID)
 
-for (state in c("Rest","Medium","High","vedba")) {
+for (state in c("Low","Medium","High","vedba")) {
     
     state_split = lapply(tuco_split, function(x) as.numeric(x[[state]]))
     
@@ -47,8 +47,8 @@ for (state in c("Rest","Medium","High","vedba")) {
     state_lomb = lapply(state_lomb, function(x) data.frame(scanned = x$scanned, power = x$power, sig_level = x$sig.level))
     state_lomb = data.table::rbindlist(state_lomb, idcol = "ID", fill = T)
     
-    if(state == "Rest"){
-        state_lomb$state = "Rest"
+    if(state == "Low"){
+        state_lomb$state = "Low"
         lomb = state_lomb
     }else{
         state_lomb$state = state
@@ -68,8 +68,7 @@ lomb$ID = factor(lomb$ID, levels = c("MAR01", "MAR02", "JUL15",
                                      "FEV03", "FEV05", "FEV06"))
 
 # Reorder states
-lomb$state = factor(lomb$state,
-                    levels = c("Rest", "Medium", "High", "vedba"))
+lomb$state = factor(lomb$state, levels = c("Low", "Medium", "High", "vedba"))
 
 # Find Peaks --------------------------------------------------------------
 peaks_period = lomb %>% 
@@ -78,7 +77,7 @@ peaks_period = lomb %>%
     ungroup()
 
 # Visual Classification of autocorrelation plots based on ACF plots
-rhythmicity = readr::read_csv("../03_analysis/ACF/rhythmicity_acf.csv", col_types = "ffl")
+rhythmicity = readr::read_csv("03_analysis/rhythmicity/visual_rhythmicity_analysis.csv", col_types = "ffl")
 peaks_period = left_join(peaks_period, rhythmicity)
 peaks_period$power = ifelse(peaks_period$rhythmic == F, NA, peaks_period$power)
 peaks_period$peak = ifelse(peaks_period$rhythmic == F, NA, peaks_period$peak)
@@ -125,9 +124,9 @@ periodogram = ggplot(lomb,
     ylab("Power")
 
 # Save Data and Plots --------------------------------------------------------
-saveRDS(peaks_period, "../03_analysis/periodogram/peaks_period.rds")
+saveRDS(peaks_period %>% ungroup(), "03_analysis/periodogram/peaks_period.rds")
 
-ggsave("../04_figures/periodogram/periodogram.png", 
+ggsave("04_figures/periodogram/periodogram.png", 
        periodogram, "png",
        bg = "white",
        width = 210,
@@ -148,7 +147,7 @@ period_distribution = ggplot(peaks_period, aes(x = season, y = peak/60, color = 
     ylab("Period (h)") +
     xlab("")
 
-ggsave("../04_figures/periodogram/period_distribution.png", 
+ggsave("04_figures/periodogram/period_distribution.png", 
        period_distribution,
        "png",
        bg = "white",

@@ -9,7 +9,7 @@ m2 = readRDS("03_analysis/hmm/m2.rds") # modelo com
 
 # Viterbi Decoding -------------------------------------------------------------
 decoded = viterbi(m2)
-tuco$state = factor(decoded, labels = c("rest","medium","high"))
+tuco$state = factor(decoded, labels = c("Rest","Medium","High"))
 
 # Calculate Daylenght ----------------------------------------------------------
 anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
@@ -30,32 +30,89 @@ daylength$dusk = maptools::crepuscule(crds = anillaco,
 daylength = daylength[, .(daylength = dusk - dawn), by = ID]
 tuco = left_join(tuco, daylength, by = "ID")
 
-# Calculate Time in States -----------------------------------------------------
-time_in_state = tuco %>% 
-    group_by(ID, season, daylength, daytime, state) %>% 
-    summarise(n = n()) %>% 
+# Calculate Diurnality -----------------------------------------------------
+diurnality_vedba = tuco %>% 
+    group_by(ID, season, daylength, daytime) %>%
+    summarise(vedba_sum = sum(vedba)) %>% 
+    group_by(ID, season) %>% 
+    summarise(diurnality = (vedba_sum[daytime]/daylength)/
+                  (vedba_sum[daytime]/daylength + vedba_sum[!daytime]/(1440 - daylength)) ) %>% 
+    unique()
+diurnality_vedba$state = "General Activity"
+
+
+diurnality = tuco %>% 
+    group_by(ID, date(datetime), season) %>% 
+    mutate(daylength = sum(daytime)) %>% 
+    group_by(ID, date(datetime), season, state) %>% 
+    summarise(daylength = median(daylength),
+              nighttime = sum(!daytime),
+              daytime = sum(daytime),
+              diurnality = (daytime/daylength)/
+                  (daytime/daylength + nighttime/(1440 - daylength))) %>% 
     group_by(ID, season, state) %>% 
-    summarise(diurnality = (sum(n[daytime])/daylength)/
-                  (sum(n[daytime])/daylength + sum(n[!daytime])/(1440-daylength))) %>% 
-    unique() %>% 
-    ungroup()
+    summarise(diurnality = mean(diurnality))
+
+diurnality = dplyr::full_join(diurnality, diurnality_vedba)
+diurnality$state = factor(diurnality$state, levels = c("Rest","Medium","High","General Activity"))
+
+
+
+shapiro.test(diurnality %>% 
+                 filter(state == "Rest") %>% 
+                 pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Rest" & season == "March") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Rest" & season == "July") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Rest" & season == "October") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Rest" & season == "February") %>%
+#                  pluck("diurnality"))
+
+shapiro.test(diurnality %>% filter(state == "Medium") %>% pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Medium" & season == "March") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Medium" & season == "July") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Medium" & season == "October") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "Medium" & season == "February") %>%
+#                  pluck("diurnality"))
+
+shapiro.test(diurnality %>% filter(state == "High") %>% pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "High" & season == "March") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "High" & season == "July") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "High" & season == "October") %>%
+#                  pluck("diurnality"))
+# shapiro.test(diurnality %>%
+#                  filter(state == "High" & season == "February") %>%
+#                  pluck("diurnality"))
+
 
 # ANOVA TESTS ------------------------------------------------------------------
 
 # AOV HIGH
-aov_high = aov(data = time_in_state %>% filter(state == "high"), formula = diurnality~season)
+aov_high = aov(diurnality %>% filter(state == "High"), formula = diurnality~season)
 summary(aov_high)
-#plot(aov_high)
-TukeyHSD(aov_high)
 
 # AOV MEDIUM
-aov_medium = aov(data = time_in_state %>% filter(state == "medium"), formula = diurnality~season)
+aov_medium = aov(diurnality %>% filter(state == "Medium"), formula = diurnality~season)
 summary(aov_medium)
-#plot(aov_medium)
-TukeyHSD(aov_medium)
 
 # AOV REST
-aov_rest = aov(data = time_in_state %>% filter(state == "rest"), formula = diurnality~season)
+aov_rest = aov(diurnality %>% filter(state == "Rest"), formula = diurnality~season)
 summary(aov_rest)
-#plot(aov_rest)
-TukeyHSD(aov_rest)
