@@ -307,7 +307,7 @@ We also visually compared daily patterns of general activity levels, time on sur
 
 ## Results
 
-We captured and deployed collars to 20 females and 10 males. A total of 13 collars had both sensors, lightloggers and accelerometers. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)), a total of 70% of success rate in collar recovery. One collar was found malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco-tuco's neck between the time of capture and recapture. A complete list of number of recorded days per animal can be seen in the Appendix \@ref(tab:animals-table-appendix).
+We captured and deployed collars to 20 females and 10 males, 13 collars had both sensors. We were able to recapture 24 tuco-tucos and recover 21 collars (Table \@ref(tab:table-captures)), a total of 70% of success rate in collar recovery. One collar was found malfunctioning because one animal got predated. The other two lost collars fell or were taken out of the tuco-tuco's neck between the time of capture and recapture. A complete list of number of recorded days per animal can be seen in the Appendix \@ref(tab:animals-table-appendix).
 
 ```{r calculate-captures, include=FALSE}
 # Since the tables have nested columns I couldn't generate them using R and opt to generated in LaTeX.
@@ -330,7 +330,7 @@ tuco.metadata %>%
 ```{=latex}
 \begin{table}[h]
 \centering
-\caption{Number of captured animals and sensors deployed in the field. There was a higher number of females captured independent of the season. Recapture rates in February 2021 are lower because field work had to be interrupted due to the covid outbreak. Not all recaptured tucos still had their collars. Some collar were taken out by the animals between the time of captured and recaptured. One tuco was predated and the collar was found 1km away from the initial capture burrow malfunctioning.}
+\caption{Number of captured animals and sensors deployed in the field. There was a higher number of females captured independent of the season. Recapture rates in March 2021 are lower because field work had to be interrupted due to the covid outbreak. Not all recaptured tucos still had their collars. Some collar were taken out by the animals between the time of captured and recaptured. One tuco was predated and the collar was found 1km away from the initial capture burrow malfunctioning.}
 \label{tab:table-captures}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llllllll} 
@@ -371,9 +371,9 @@ time_aboveground = tuco %>%
     ungroup()
 ```
 
-Surface emergence shows a changing temporal pattern along the year. In July, the peak of surface emergence is concentrated in the middle of the day. In other seasons the peak of surface emergence shifts to the the first hours of daylight (Fig. \@ref(fig:plot-light-exposure)A). 
+Surface emergence shows a changing daily temporal pattern along the year. In July, the peak of surface emergence is concentrated in the middle of the day. In other seasons the peak of surface emergence shifts to the the first hours of daylight (Fig. \@ref(fig:plot-light-exposure)A). 
 
-Time on surface, measured by light exposure, shows no difference along the year. The mean daily time on surface shows no significant differences among month groups (ANOVA, F = 2.148, p = 0.167), the overall mean and standard deviation of all animals is `r time_aboveground %>% summarise(mean = mean(mean_t_aboveground), sd = sd(mean_t_aboveground)) %>% summarise(mean = paste0(round(mean,2)," ± ", round(sd, 2)))` minutes on the surface during day. In contrast, the daily percentage of the time on surface in relation to day length was significantly different between groups (ANOVA; F = 4.38, p = 0.0429). Post hoc Tukey’s HSD shows a significant difference between July-February (p = 0.035; CI = [-0.12; -0.04]). For these groups the mean daily percentage of time on surface is `r time_aboveground %>% filter(season == "July") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for July, and `r time_aboveground %>% filter(season == "February") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for February.\newline
+The total time on surface shows no difference along the year. The overall mean and standard deviation of daily time on surface was `r time_aboveground %>% summarise(mean = mean(mean_t_aboveground), sd = sd(mean_t_aboveground)) %>% summarise(mean = paste0(round(mean,2)," ± ", round(sd, 2)))`, with no significant differences among month groups (ANOVA, F = 2.148, p = 0.167). In contrast, the daily percentage of the time on surface relative to day length was significantly different between groups (ANOVA; F = 4.38, p = 0.0429). Post hoc Tukey’s HSD shows a significant difference between July-February (p = 0.035). For these groups the mean daily percentage of time on surface is `r time_aboveground %>% filter(season == "July") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for July, and `r time_aboveground %>% filter(season == "February") %>% summarise(mean = mean(mean_p_aboveground), sd = sd(mean_p_aboveground)) %>% summarise(mean = paste0(scales::percent(round(mean,2)), " ± ", scales::percent(round(sd, 2))))` for February.\newline
 
 ```{r daily-lux-density, fig.pos = "H",fig.asp=0.6, fig.width=9, out.width="100%"}
 # Auxiliar function to extract data from the object returned by the activity::fitact as a data.frame
@@ -440,7 +440,7 @@ graph_p_aboveground = graph_p_aboveground +
    annotate("text", x = "October", y = 0.22, label = "*", size = 4, color = "grey60")
 ```
 
-```{r plot-light-exposure, fig.pos="H",fig.height=7, fig.width= 8, out.width="100%", fig.cap="Tuco-tuco’s daily patterns of surface emergence and average time on surface. (A) Daily temporal pattern of surface emergence. Density histogram and kernel estimates shows the relative probability of surface emergence. On the left: Individual daily patterns of surface emergence, pooling all daily counts of each animal. On the right: population-level patterns of surface emergence in each month of the year. Population-level is the pooled data for all days of all animals of each month of the year. Solid lines indicate the Gaussian kernel density estimates as a function of time. Light-colored bars shows observed surface emergence binned per hour. X-axis is time of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show times of civil twilights. (B) Mean daily time on surface per animal. Each point is an animal’s mean daily time on surface (ANOVA; p = 0.167). (C) Mean daily percentage of time on surface in relation to the daylength. Each point is an animal’s mean daily percentage of time on surface (ANOVA; p = 0.043). Asterisks indicates pairwise significant statistical difference (Tukey’s HSD; p < 0.05)."}
+```{r plot-light-exposure, fig.pos="H",fig.height=7, fig.width= 8, out.width="100%", fig.cap="Tuco-tuco’s daily patterns of surface emergence and average time on surface. (A) Daily temporal pattern of surface emergence. X-axis is time of the day in Anillaco, La Rioja (UTC-3). Dotted vertical lines show times of civil twilights. (B) Mean daily time on surface per animal. Each point is an animal’s mean daily time on surface (ANOVA; p = 0.167). (C) Mean daily percentage of time on surface in relation to the daylength. Each point is an animal’s mean daily percentage of time on surface (ANOVA; p = 0.043). Asterisks indicates pairwise significant statistical difference (Tukey’s HSD; p < 0.05)."}
  light_patterns / (graph_t_aboveground + graph_p_aboveground) + 
 #light_patterns / (graph_t_aboveground) +
     plot_annotation(tag_levels = "A") + 
@@ -453,9 +453,9 @@ graph_p_aboveground = graph_p_aboveground +
 
 Tuco-tuco's general activity follows a typical diurnal pattern. Hourly mean VeDBA is lower during the night time, rises just before dawn, remains generally higher during the daytime and falls just after dusk. The average daily VeDBA is significantly different among month-groups (ANOVA; F = 7.182, p = 0.002; \@ref(fig:vedba-boxplot)). There is a significant month-group difference between July-October and July-February (Tukey’s HSD, p < 0.05). In both pairwise comparisons July's average daily VeDBA is lower, with a difference in means of 0.029 g in comparison to October and 0.019 g in comparison to February. 
 
-The percentage of daytime VeDBA is also significantly different between months (ANOVA; F = 8.288, p = 0.001; \@ref(fig:vedba-boxplot)). Differently from the the daily mean VeDBA, however, there is only a significant difference between July-October (Tukey's HSD, p < 0.05), with a lower July VeDBA level and mean different of 0.13 g.\newline
+The percentage of daytime VeDBA is also significantly different between months (ANOVA; F = 8.288, p = 0.001; \@ref(fig:vedba-boxplot)). There significant difference between July-October and July-February (Tukey's HSD, p < 0.05), with a lower July VeDBA level and mean difference of 13%.\newline
 
-```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's daily temporal pattern of VeDBA and Mean daily VeDBA. (A) Daily temporal pattern of VeDBA binned by hour. Light gray horizontal lines show individual patterns, where each line is representative of an animal. Black lines show hourly mean VeDBA of all pooled animals in the respective month. (B) Mean daily VeDBA. Each point is an animal’s Mean daily VeDBA. There is a significant difference between month-groups (ANOVA, p = 0.002). In July tuco-tucos exhibited lower average daily VeDBA than October and February (Tukey’s HSD; Jul-Oct = 0.002, Jul-Feb = 0.049). (C) Percentage of VeDBA that occurs during daytime. Points show mean daytime percentage of VeDBA in relation to the total VeDBA during the day.  There is a significant group difference (ANOVA; p = 0.013). In July animal’s show lower VeDBA during the day than October and February (Tukey’s HSD; Jul-Oct = 0.001, Jul-Feb = 0.006). Vertical dotted lines shows time of civil twilights."}
+```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's daily temporal pattern of VeDBA and Mean daily VeDBA. (A) Daily temporal pattern of VeDBA binned by hour. Light gray horizontal lines show individual patterns, where each line is representative of an animal. Black lines show hourly mean VeDBA of all pooled animals in the respective month. (B) Mean daily VeDBA. Each point is an animal’s Mean daily VeDBA. There is a significant difference between month-groups (ANOVA, p = 0.002). In July tuco-tucos exhibited lower average daily VeDBA than October and February (Tukey’s HSD; Jul-Oct = 0.002, Jul-Feb = 0.049). (C) Percentage of VeDBA that occurs during daytime. Points show mean daytime percentage of VeDBA in relation to the total VeDBA during the day.  There is a significant group difference (ANOVA; p = 0.013). In July animal’s show lower VeDBA during the day than October and February (Tukey’s HSD; Jul-Oct = 0.001, Jul-Feb = 0.006). Vertical dotted lines show time of civil twilights."}
 
 # Daily VeDBA Patterns ----------------------------------
 tuco_hourly = tuco %>%
@@ -717,7 +717,7 @@ actograms_high = act_rle %>%
     ylab("")
 ```
 
-```{r actograms-results, fig.pos = "H", out.width = "100%", fig.width = 8, fig.height=4.5 ,fig.cap = "Actograms and time series plot of general activity, measured by VeDBA, and state-labelled data of a representative animal (\\#OCT09). The actograms shows daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C) classified using HMM. Medium Activity State shows no clear pattern of a daily rhythm, with episodes spread throughout the day. High Activity, on the other hand, has a higher concentration during daylight hours. The time series (D) shows 1-minute VeDBA measures colored by behavioral state. Dashed lines shows time of dawn and dusk."}
+```{r actograms-results, fig.pos = "H", out.width = "100%", fig.width = 8, fig.height=4.5 ,fig.cap = "Actograms and time series plots of general activity, measured by VeDBA, and state-labelled data of a representative animal (\\#OCT09). The actograms show daily patterns of VeDBA (A) and of Medium and High State occurrences (B and C) classified using HMM. Medium Activity State shows no clear pattern of a daily rhythm, with episodes spread throughout the day. High Activity, on the other hand, has a higher concentration during daylight hours. The time series (D) shows 1-minute VeDBA measures colored by behavioral state. Dashed lines show time of dawn and dusk."}
 # Select one tuco
 tuco_selected = tuco %>% filter(ID == "OCT09")
 remove_facet = theme(strip.text.x = element_blank(),
@@ -877,7 +877,7 @@ diurnality = dplyr::full_join(diurnality, diurnality_vedba)
 diurnality$state = factor(diurnality$state, levels = c("Low","Medium","High","General Activity"))
 ```
 
-```{r diurnality-plot, fig.pos = "H", out.width="100%", fig.width=8, fig.asp=0.4, fig.cap = " Distribution of calculated diurnality index (DI). Each point represents the DI of an animal. High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all month-groups. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal. Medium state is spread almost evenly between day and night. Low activity is concentated during the night."}
+```{r diurnality-plot, fig.pos = "H", out.width="100%", fig.width=8, fig.asp=0.4, fig.cap = "Distribution of calculated diurnality index (DI). Each point represents the DI of an animal. High Activity State is predominantly diurnal, with diurnality greater than 0.7 across all month-groups. General activity, measured by the unlabelled VeDBA, is also predominantly diurnal. Medium state is spread almost evenly between day and night. Low activity is concentated during the night."}
 
 ggplot(diurnality,
       aes(x = season,
@@ -899,9 +899,9 @@ ggplot(diurnality,
 
 ### Daily Time-Activity Budgets
 
-On an overall average, tuco-tucos spent 680 ± 67 minutes per day in the low activity state, with no statistical difference between seasons (ANOVA; F = 1.93, p = 0.163).
+On average, tuco-tucos spent 680 ± 67 minutes per day in the low activity state, with no statistical difference between seasons (ANOVA; F = 1.93, p = 0.163).
 
-In contrast, there is a significant difference in the percentage of time spent in Medium and High Activity States (Medium: ANOVA, F = 4.457, p = 0.0175; High: ANOVA, F = 13.62, p = < 0.001). In the medium state there is a significant difference between July-October (Tukey's HSD, p < 0.05). The mean time spent in the medium state in July was 491 ± 89.3 minutes and in October  357 ± 61.2 minutes. The high activity states shows a significant difference between October-July and February-July (Tukey's HSD, p < 0.01). The daily mean time spent in high activity was: July, 227 ± 43.7 minutes; October, 424 ± 82 minutes; February 355 ± 52.2 minutes.
+In contrast, there is a significant difference in the percentage of time spent in Medium and High Activity States (Medium: ANOVA, F = 4.457, p = 0.0175; High: ANOVA, F = 13.62, p = < 0.001). In the medium state there is a significant difference between July-October (Tukey's HSD, p < 0.05). The mean time spent in the medium state in July was 491 ± 89.3 minutes and in October  357 ± 61.2 minutes. The high activity states show a significant difference between October-July and February-July (Tukey's HSD, p < 0.01). The daily mean time spent in high activity was: July, 227 ± 43.7 minutes; October, 424 ± 82 minutes; February 355 ± 52.2 minutes.
 
 ```{r calculate-time-state}
 daily_budget_id = tuco %>% 
@@ -917,7 +917,7 @@ daily_budget_id = tuco %>%
     )
 ```
 
-```{r plot-activity-budget, fig.asp=1, fig.width=9, out.width="100%", fig.cap="Time spent in each behavioral state and corresponding individual time-activity budgets. (A) Time-activity budget of the allocation of behavioral states per animal. (B) Mean daily time in each behavioral state per animal. Asterisks show statistical significance in pairwise comparison between Months. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October (Tukeys’s HSD, p < 0.05). The mean percentage of time spent in the High Activity State is lower in July in comparison to October and February (Tukeys’s HSD, p < 0.05)."}
+```{r plot-activity-budget, fig.asp=1, fig.width=9, out.width="100%", fig.cap = "Time spent in each behavioral state and corresponding individual time-activity budgets. (A) Time-activity budget of the allocation of behavioral states per animal. (B) Mean daily time in each behavioral state per animal. Asterisks show statistical significance in pairwise comparison between Months. The mean percentage of time spent in the Medium Activity State, however, is higher in July in comparison with October (Tukeys’s HSD, p < 0.05). The mean percentage of time spent in the High Activity State is lower in July in comparison to October and February (Tukeys’s HSD, p < 0.05)."}
 
 daily_budget_id$ID = paste0("#", daily_budget_id$ID)
 
@@ -1018,7 +1018,7 @@ aboveground_activity = tuco_abv_act %>%
     ungroup()
 ```
 
-Outside of their tunnels, when exposed to light, tuco-tucos are mostly in a active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). There is no significant difference between month-groups within any state (Kruskal-Wallis, p > 0.05). The overall mean surface time spent on the high activity state is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, whether for the medium state the it is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes. Low activity, in contrast, is the behavioral state that happens the least on the surface with a mean of `r aboveground_activity %>% filter(state == "Low") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, considering all month-groups together. \newline
+Outside of their tunnels, when exposed to light, tuco-tucos are mostly in an active state, either high or medium state (Fig. \@ref(fig:aboveground-activity)). There is no significant difference between month-groups within any state (Kruskal-Wallis, p > 0.05). The overall mean surface time spent on the high activity state is `r aboveground_activity %>% filter(state == "High") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, whether for the medium state the it is `r aboveground_activity %>% filter(state == "Medium") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes. Low activity, in contrast, is the behavioral state that happens the least on the surface with a mean of `r aboveground_activity %>% filter(state == "Low") %>% summarise(mean = round(mean(time), 2)) %>% dplyr::select(mean)` minutes, considering all month-groups together. \newline
 
 ```{r aboveground-activity,  fig.asp=0.8, fig.width=9, out.width="100%", fig.pos="H", fig.align='center', fig.cap = "Mean time per animal and individual percentages of behavioral states exhibited on the surface. (A) Percentage of aboveground time spent in each behavioral state per animal in relation to the total time on surface. (B) Mean daily time of behavioral states exhibited aboveground per animal. Asterisks shows statistical significant pairwise comparison between Months. There is no significant difference between month-groups within any state (Kruskal-Wallis, p > 0.05)."}
 
@@ -1078,7 +1078,7 @@ levels(period_peaks$state) = c("Low", "Medium", "High", "General Activity")
 
 Circadian rhythms are present in all states as seen in the visual analysis of the autocorrelation plots (REF APPENDIX - plotar ACFs individuais). The percentage of animals classified as rhythmic is higher for the high activity state, where a total of 18 animals were classified as rhythmic (85.7%). In contrast, 11 animals (52.4%) were classified as rhythmic for the medium activity state \@ref(tab:rhymicity-table).
 
-```{r rhymicity-table, dpi=200, fig.width=6, fig.height=3, fig.cap="Percentege of animals classified as rhythmic for a circadian component (~24h). Classification of rhythmic animals was done visually using Autocorrelation plots. Animals that showed a rhythmic autocorrelation plot was classified as rhythmic."}
+```{r rhymicity-table, dpi=200, fig.width=6, fig.height=3, fig.cap="Percentage of animals classified as rhythmic for a circadian component (~24h). Classification of rhythmic animals was done visually using Autocorrelation plots. Animals that showed a rhythmic autocorrelation plot was classified as rhythmic."}
 #  --------------------------------!!
 #  TRANSFORMAR EM GRAFICO ---------!!
 # ---------------------------------!!
@@ -1093,11 +1093,11 @@ summarise(Animals = length(rhythmic),
 kable(acf_summary, caption = "Number and percentage of animals classified as rhythmic.")
 ```
 
-We calculated the RI only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A). It is important to note that animals classified as arrhythmic were excluded from this analysis, which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \@ref(fig:plot-ri-and-period)A; Kruskal-Wallis; p \< 0.05). We did not test for differences between seasons (See Methods).
+We calculated the RI only for animals classified as rhythmic (Figure \@ref(fig:plot-ri-and-period)A), which is why there is a different number of samples between each category. Nonetheless, the Medium Activity State is significantly different from the other states and VeDBA (Figure \@ref(fig:plot-ri-and-period)A; Kruskal-Wallis; p \< 0.05). We did not test for differences between seasons (See Methods).
 
-We used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. We also estimated RI and periodicity for VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A).
+We used Lomb-Scargle periodograms to estimate the periodicity of each state (Figure \@ref(fig:plot-ri-and-period)B). All estimated periods, independent of state, were in the 24-hour range. We also estimated RI and periodicity for unlabelled VeDBA. In comparison with state-labelled data VeDBA analysis are more similar to the high activity state. The number of animals classified as rhythmic based on the autocorrelation plot is similar between VeDBA and high activity state data. The distribution of RI shows no difference between High state and VeDBA (Figure \@ref(fig:plot-ri-and-period) A).
 
-```{r plot-ri-and-period, fig.width=9, fig.height=3, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Rhythmicity metrics for estimated behavioral estates and VeDBA. (A) Rhythmicity Index calculated per animal for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA (Kruskal-Wallis, p > 0.05). (B) Period estimation for behavioral states and VeDBA. "}
+```{r plot-ri-and-period, fig.width=9, fig.height=3, fig.pos = "H", out.width="100%", fig.align='center', fig.cap = "Rhythmicity metrics for estimated behavioral estates and unlabelled VeDBA. (A) Rhythmicity Index calculated per animal for state-labelled data and VeDBA. The distribution of the Medium State is statistically different from all other states and VeDBA (Kruskal-Wallis, p > 0.05). (B) Period estimation for behavioral states and VeDBA. "}
 acf_dist_plot = ggplot(acf_peaks %>% filter(rhythmic == T),
                        aes(x = state,
                            y = acf,
