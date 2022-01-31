@@ -263,7 +263,7 @@ In the basic HMM formulation the observable *state-dependent process* comes from
 
 #### Model Formulation and State Classification
 
-In our models we have chosen VeDBA as our activity metric. We determined *a priori* a possible number of three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (REF Figure \@ref(fig:appendix-eda)) and in the biological interpretability of the states. It is important to note, however, that the states do not correspond directly to specific behaviors (e.g. feeding, foraging or digging) but can be assumed to roughly correspond to behavioral states (e.g. activity levels) that can encompass a range of different behaviors [@leosbarajas2017; @papastamatiou2018]. We labelled the states as roughly corresponding to low, medium and high intensity activity.
+In our models we have chosen VeDBA as our activity metric. We determined *a priori* a possible number of three different states ($N=3$). This decision was made based on our research question, in the VeDBA distributions (REF Figure \@ref(fig:appendix-eda)) and in the biological interpretability of the states. We labelled the states as roughly corresponding to low, medium and high intensity activity.
 
 HMMs can be fitted individually [e.g. @vandekerk2015] or to a pool of animals [@langrock2012]. The models can also include covariate effects that modify either the *state-dependent* distribution parameters or the transition probabilities [@patterson2009; @langrock2012]. We fitted a 3-state HMM to the 1-minute VeDBA data using a 'complete pooling' approach. This means that the *state-dependent* distribution parameters are common to all animals. Therefore, we assume that individuals are independent and behaviors are the same to all individuals and across the year. However, given that the season/month of the year seems to be an important feature influencing the VeDBA distribution (Figure \@ref(fig:appendix-eda)) we included season as a covariate in the *state process*. Hence, we let the probability of changing from one state to another vary in relation to the season/month of the year. We also fitted an empty model, with no covariate effects, and used Akaike's Information Criteria (AIC) to select the model with best fit to the data.
 
@@ -429,7 +429,7 @@ graph_p_aboveground = ggplot(data = time_aboveground, aes(x = season, y = mean_p
     gghalves::geom_half_point(color = "orange") +
     gghalves::geom_half_boxplot(nudge = 0.05, outlier.alpha = 0, color = "orange") +
 	xlab("") +
-	ylab("Mean time on surface\nin relation to daylength (%)") +
+	ylab("Mean time on surface\nrelative to daylength (%)") +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1),
                        breaks = c(0, 0.05, 0.1, 0.15, 0.20, 0.25),
                        limits = c(0, 0.25))
@@ -545,7 +545,7 @@ bx_daytime_vedba = ggplot(data = vedba_daytime,
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     scale_y_continuous(breaks = seq(0.5, 1, 0.1), labels = scales::percent, limits = c(0.5, 0.85)) +
     xlab("") +
-    ylab("Mean daytime \npercentage of VeDBA") +
+    ylab("Mean percentage of daytime VeDBA relative to total daily VeDBA") +
     theme(legend.position = "none")
 
 
@@ -553,7 +553,7 @@ df1 = data.frame(x = c(1.9, 3), y = c(0.8,0.8))
 df2 = data.frame(x = c(1.9, 4), y = c(0.825, 0.825))
 bx_daytime_vedba = bx_daytime_vedba +
    geom_line(data = df1, mapping = aes(x,y, group = 1), color = "grey60") +
-   annotate("text", x = 2.5, y = 0.809, label = "*", size = 4, color = "grey60")
+   annotate("text", x = 2.5, y = 0.809, label = "*", size = 4, color = "grey60") +
    geom_line(data = df2, mapping = aes(x,y, group = 1), color = "grey60") +
    annotate("text", x = 3, y = 0.835, label = "*", size = 4, color = "grey60")
 
