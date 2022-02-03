@@ -455,7 +455,7 @@ Tuco-tuco's general activity follows a typical diurnal pattern. Hourly mean VeDB
 
 The percentage of daytime VeDBA is also significantly different between months (ANOVA; F = 8.288, p = 0.001; Figure \@ref(fig:vedba-boxplot)). There is a significant difference between July-October and July-February (Tukey's HSD, p < 0.05), with a lower July VeDBA level and mean difference of 13%.\newline
 
-```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's daily temporal pattern of VeDBA and Mean daily VeDBA. (A) Daily temporal pattern of VeDBA binned by hour. Light gray horizontal lines show individual patterns, where each line is representative of an animal. Black lines show hourly mean VeDBA of all pooled animals in the respective month. (B) Mean daily VeDBA. Each point is an animal’s Mean daily VeDBA. There is a significant difference between month-groups (ANOVA, p = 0.002). In July tuco-tucos exhibited lower average daily VeDBA than October and February (Tukey’s HSD; Jul-Oct = 0.002, Jul-Feb = 0.049). (C) Percentage of VeDBA that occurs during daytime. Points show mean daytime percentage of VeDBA in relation to the total VeDBA during the day.  There is a significant group difference (ANOVA; p = 0.013). In July animal’s show lower VeDBA during the day than October and February (Tukey’s HSD; Jul-Oct = 0.001, Jul-Feb = 0.006). Vertical dotted lines show time of civil twilights."}
+```{r vedba-boxplot, fig.width=9, fig.asp = 0.8, out.width="100%", fig.pos="H", fig.cap="Tuco-tuco's daily temporal pattern of VeDBA and Mean daily VeDBA. (A) Daily temporal pattern of VeDBA binned by hour. Light gray horizontal lines show individual patterns, where each line is representative of an animal. Black lines show hourly mean VeDBA of all pooled animals in the respective month. (B) Mean daily VeDBA. Each point is an animal’s Mean daily VeDBA. There is a significant difference between month-groups (ANOVA, p = 0.002). In July tuco-tucos exhibited lower average daily VeDBA than October and February (Tukey’s HSD; Jul-Oct = 0.002, Jul-Feb = 0.049). (C) Percentage of daytime VeDBA relative to total daily VeDBA. Points show mean daytime percentage of VeDBA in relation to the total VeDBA during the day.  There is a significant group difference (ANOVA; p = 0.013). In July animal’s show lower VeDBA during the day than October and February (Tukey’s HSD; Jul-Oct = 0.001, Jul-Feb = 0.006). Vertical dotted lines show time of civil twilights."}
 
 # Daily VeDBA Patterns ----------------------------------
 tuco_hourly = tuco %>%
@@ -545,7 +545,7 @@ bx_daytime_vedba = ggplot(data = vedba_daytime,
     scale_x_discrete(labels = c("Mar","Jul","Oct","Feb")) +
     scale_y_continuous(breaks = seq(0.5, 1, 0.1), labels = scales::percent, limits = c(0.5, 0.85)) +
     xlab("") +
-    ylab("Mean percentage of daytime VeDBA\nrelative to total daily VeDBA") +
+    ylab("Mean percentage of daytime VeDBA (%)") +
     theme(legend.position = "none")
 
 
