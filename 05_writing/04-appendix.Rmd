@@ -27,32 +27,33 @@ tuco %>%
 
 ## Anillaco's Plant Community
 
-Following methods similar to [@aranda-rickert2014] a non-extensive survey of the plant community was done in May 2019. Three perpendicular 50m transects were defined near the study site (COORDINATES). A point-intercept method was used to record plant species present in the transects, species right below the sampling points were registered in the data. Sampling points were defined every 1m along the 50m transects. Plant species were identified in the field by a Botanist, except for a few members of the Poaceae family.
+Following methods similar to [@aranda-rickert2014] a non-extensive survey of the plant community was done in May 2019. Three perpendicular 50m transects were defined near the study site. A point-intercept method was used to record plant species present in the transects, species right below the sampling points were registered in the data. Sampling points were defined every 1m along the 50m transects. Plant species were identified in the field by a Botanist, except for a few members of the Poaceae family.
 
 The results for the plant survey is in line with what has been described in the literature for the region [@abraham2009; @aranda-rickert2014; @fracchia2011]. The results show a dominance of Zygolhyllaceae, Poaceae and Fabaceae families. The relative frequency of plant families and species recorded in the area are shown in the graphs below (Fig. \@ref(fig:appendix-plants)).
-\pagebreak
 
 ```{r appendix-plants, out.width = "100%", fig.cap="Relative frequency of plants family (A) and species (B) in three transects near the Study Site. The plant community is dominated by members of the Zygolhyllaceae, Poaceae and Fabaceae families and is in accordance with what has been described in the literature. (n = 145)", echo=F, }
     include_graphics("../04_figures/appendix/plot_plants.png")
 ```
-\clearpage
+
+\pagebreak
 
 ## Anillaco's Weather
 
 ```{r appendix-weather, fig.pos="H", out.width = "100%", fig.cap="Temperature  and Rainfall yearly trends in Anillaco, Argentina. Data was collected in the years 2017 and 2019 from a weather Station (Vantage Pro 2, Davis Instuments. USA.) maintened in CRILAR, aproximately 5km away from the study site.", echo=F}
     include_graphics("../04_figures/appendix/plot_weather.png")
 ```
+
 \pagebreak
 
 ## Anillaco's Yearly Daylength Changes
-
-- Adicionar tabela com duração do dia nas datas de coleta
 
 ```{r appendix-daylength, fig.pos="H", out.width = "100%", fig.cap = "Changes in daytime changes across the year in Anillaco, La Rioja. Maximum duration of daytime, during summer, is 14 hours and 53 minutes. Mininum duration of daytime, during winter, is 11 hours and 10 minutes."}
     include_graphics("../04_figures/appendix/plot_daylength.png")
 ```
 
-# Accelerometer Data Exploration
+\clearpage
+
+# Accelerometer Data Exploration {#vedba-distribution}
 
 ## Static Acceleration Smooth Window Assessment
 
@@ -60,26 +61,80 @@ The results for the plant survey is in line with what has been described in the 
     include_graphics("../04_figures/appendix/plot_smoothing_window.png")
 ```
 
-## Exploratory VeDBA data Analysis
-<!--
-```{r appendix-eda, echo = FALSE, child = "../03_analysis/eda/eda.Rmd"}
+\pagebreak
+
+## VeDBA Summary and Distributions
+
+```{r range-table, message=FALSE, warning=FALSE, out.width = "100%"}
+range = tuco %>%
+  group_by(ID, season, sex) %>%
+  summarise(Mean = mean(vedba),
+            Median = median(vedba),
+            Max = max(vedba),
+            Min = min(vedba),
+            Range = Max - Min)
+
+kable(range, caption = "Summary table of individual VeDBA data.")
 ```
--->
+
+---
+
+```{r}
+median_tuco = tuco %>% 
+    group_by(season, sex) %>% 
+    summarise(median = median(vedba),
+              mean = mean(vedba),
+              max = max(vedba),
+              n.animals = length(unique(ID)),
+              n.points = n())
+
+kable(median_tuco, caption = "Summary table of VeDBA data grouped by season.")
+```
+
+---
+
+```{r appendix-vedba-hist, fig.width=10, fig.asp=1.2, fig.cap="Individual density histogram of VeDBA data. Colors represents different seasons.", out.width = "100%", fig.pos="H"}
+graph_hist = ggplot(tuco) +
+  geom_histogram(aes(x = vedba, fill = season, y=..density..), bins = 40 ) +
+  facet_wrap(~ID, ncol = 3) +
+  theme(legend.position = "bottom") +
+  theme(panel.grid.major.y = element_line(color = "grey95"))
+
+
+sexlabels = unique(tuco %>% select(ID, sex) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))) 
+graph_hist = graph_hist +
+            geom_text(x = Inf, y = Inf, 
+                aes(label = sex), 
+                data = sexlabels, vjust = 1.3, hjust = 1.3, 
+                fontface = "bold", size = 5, color = "grey50") + 
+            theme(legend.position = "none")+
+            xlab("VeDBA") +
+            ylab("Density")
+
+graph_hist
+```
+
+---
+
+```{r appendix-density, fig.width=8, fig.asp=0.8, out.width = "100%", fig.cap="Density plots of pooled VeDBA data."}
+ggplot(tuco) +
+    geom_density(aes(x = vedba, fill = sex, col = sex), alpha = 0.5)+
+    facet_grid(season~.) +
+    xlab("VeDBA")+
+    ylab("Density")
+```
+
+\clearpage
 
 # Hidden Markov Model
 
 ## AIC
 
--   Adicionar o LL
-
 ```{r table-aic}
-#m1 = readRDS(paste0(dir, "/03_analysis/hmm/m1.rds"))  # Empty Model
-#m2 = readRDS(paste0(dir, "/03_analysis/hmm/m2.rds"))  # Model with season covariate
-
 mod_df = AIC(m1, m2)
 mod_df = mod_df %>% 
     mutate(Formula = c("~season", "~1"), .after = 1)
-kable(mod_df)
+kable(mod_df, caption = "HMM models AIC table.")
 ```
 
 ## Estimated Parameters
@@ -114,35 +169,59 @@ kable(parameters_table,
 include_graphics("../04_figures/residuals/m2_PR.png")
 ```
 
-# Individual Actograms and Circadian Analysis Plots
+\clearpage
+
+# Individual Actograms
+
+Individual VeDBA and behavioral states actograms show only the first five days data. Surface emergence actograms all days of recordings.
+
+\pagebreak
 
 ## VeDBA Actograms
 
-```{r vedba-actograms, out.width="100%", fig.cap="VeDBA Actograms."}
-include_graphics("../04_figures/actograms/actograms_vedba.png")
+```{r vedba-actograms, out.width="95%", fig.pos = "H", fig.cap="VeDBA Actograms."}
+include_graphics("../04_figures/actograms/actograms_vedba.jpeg")
 ```
 
 ## High Activity Actograms
 
-```{r high-actograms, out.width="100%"}
-include_graphics("../04_figures/actograms/actograms_high.png")
+```{r high-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_high.jpeg")
 ```
 
 ## Medium Activity Actograms
 
-```{r medium-actograms, out.width="100%"}
-include_graphics("../04_figures/actograms/actograms_medium.png")
+```{r medium-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_medium.jpeg")
 ```
 
-## Individual Rhythmicity Plots
+## Low Activity Actograms
 
-```{r, out.width="100%"}
+```{r low-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_low.jpeg")
+```
+
+## Surface Emergence Actograms
+
+```{r lux-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_lux.jpeg")
+```
+
+\clearpage
+
+# Individual Circadian Analysis
+
+\pagebreak
+
+## Individual Autocorrelation Plots
+
+```{r appendix-acf, fig.pos = "H", out.width="95%", fig.cap = "Individual Autocorrelation plots."}
 include_graphics("../04_figures/rhythmicity/acf_plot.png")
 ```
 
 ## Individual Period Estimation
 
-```{r, out.width="100%"}
+```{r, fig.pos = "H", out.width="100%"}
 include_graphics("../04_figures/periodogram/periodogram.png")
 ```
 
