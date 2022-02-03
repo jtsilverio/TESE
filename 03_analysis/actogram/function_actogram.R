@@ -5,9 +5,9 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
     require(egg)
     require(lubridate)
     require(dplyr)
-    source("../03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
-    source("../03_analysis/actogram/stat-tile-etho.R") # From ggetho
-    
+    source("03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
+    source("03_analysis/actogram/stat-tile-etho.R") # From ggetho 
+
     # Calculate Sunrise and Sunset Times
     # TODO: Take the median date first and only calculate crepuscules for that date.
     anillaco = matrix(c(-66.95, -28.8), nrow = 1) 
@@ -101,7 +101,7 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
             theme(panel.grid.major.y = element_line(color = "grey95"))
     }else{
         
-        if(height %in% c("Rest","Medium","High")){
+        if(height %in% c("Low","Medium","High")){
             tuco$plot_state = F
             tuco$plot_state[which(tuco$state == height)] = T
         }else{
@@ -127,12 +127,10 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
     actograms = actograms + geom_text(x = Inf, y = Inf, 
                                       aes(label = sex), 
                                       data = sexlabels, vjust = 1.2, hjust = 1.2, 
-                                      size = 3, family = "Arial Unicode MS") + 
+                                      size = 3, family = "roboto") + 
         theme(legend.position = "none")
     actograms
 }
-
-
 
 
 
