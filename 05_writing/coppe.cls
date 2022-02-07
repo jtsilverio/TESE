@@ -68,7 +68,7 @@
 \RequirePackage[T1]{fontenc}
 
 \RequirePackage[a4paper,bindingoffset=0.0cm,vcentering=true,%
-top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
+top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 \def\CoppeTeX{{\rm C\kern-.05em{\sc o\kern-.025em p\kern-.025em
 	p\kern-.025em e}}\kern-.08em
 	T\kern-.1667em\lower.5ex\hbox{E}\kern-.125emX\spacefactor1000}
@@ -239,17 +239,18 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
 		\begin{center}
 			\nohyphens{%
 				\if@english
-				\MakeUppercase\foreign@title
+				  \MakeUppercase\foreign@title\par
+			      \MakeUppercase\local@title\par
 				\else
-				\MakeUppercase\local@title\par
-				\MakeUppercase{\small\foreign@title}
+				   \MakeUppercase\local@title\par
+				   \MakeUppercase{\small\foreign@title}\par
 				\fi}
 				\par
-			\vspace*{3cm}
+			\vspace*{2cm}
 			\nohyphens{\@authname\ \@authsurn}\par
 		\end{center}
 		
-		\vspace*{1.5cm}
+		\vspace*{1cm}
 		
         \begin{flushright}
           \begin{minipage}{8.45cm}
@@ -298,11 +299,12 @@ top=2.5cm,bottom=2.5cm,left=3.0cm,right=3.0cm]{geometry}
   \begin{center}
     \sloppy\nohyphens{
       \if@english
-        \MakeUppercase\foreign@title
+        \MakeUppercase\foreign@title\par
+        \MakeUppercase\local@title\par
       \else
         \MakeUppercase\local@title\par
-        \MakeUppercase{\small\foreign@title}
-      \fi}\par
+        \MakeUppercase{\small\foreign@title}\par
+      \fi}\par 
     \vspace*{7mm}
     {\@authname\ \@authsurn}\par
   \end{center}\par
