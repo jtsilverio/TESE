@@ -1,8 +1,8 @@
 ---
 doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
 english: false
-title: 'Port:Activity patterns in free-living tuco-tucos (_Ctenomys_ sp.)'
-foreigntitle: 'Activity patterns in free-living tuco-tucos (_Ctenomys_ sp.)'
+title: 'Mudanças nos padrões diários de atividade ao longo do ano em tuco-tucos de vida livre (_Ctenomys_ aff. _knightii_)'
+foreigntitle: 'Changes in daily activity patterns throughout the year in free-living tuco-tucos (_Ctenomys_ aff. _knighti_)'
 department: "pos-fisio" # this is the name of the variable. Name of department is defined in coppe.cls
 date_month: "`r format(Sys.time(), '%m')`"
 date_year: "`r format(Sys.time(), '%Y')`"
@@ -19,7 +19,7 @@ advisor:
     name: Verónica
     surname: Valentinuzzi
     degree: Ph.D
-  - title: Prof.
+  - title: Dra.
     name: Patricia
     surname: Tachinardi
     degree: Ph.D
@@ -40,9 +40,9 @@ dedication: |
 thanks:
 - title: Agradecimentos
   text:  |
-    Gostaria de agradecer a X
-abstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = "\n  ")`'
+    O presente trabalho foi realizado com apoio da Coordenação de Aperfeiçoamento de Pessoal de Nível Superior – Brasil (CAPES) – Código de Financiamento 001
 foreignabstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = "\n  ")`'
+abstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = "\n  ")`'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 #biblio-style: "apa.csl" # this is not working, I think it might have been deprecated in bookdown? I replaced it for the csl below
