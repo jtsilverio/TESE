@@ -239,18 +239,19 @@ top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
 		\begin{center}
 			\nohyphens{%
 				\if@english
-				  \MakeUppercase\foreign@title\par
-			      \MakeUppercase\local@title\par
+                    \MakeUppercase\local@title\par
+                    ---\par
+                    \MakeUppercase{\small\foreign@title}\par
 				\else
 				   \MakeUppercase\local@title\par
+				   ---\par
 				   \MakeUppercase{\small\foreign@title}\par
 				\fi}
 				\par
-			\vspace*{2cm}
+			\vspace*{1.5cm}
 			\nohyphens{\@authname\ \@authsurn}\par
+			\vspace*{0.5cm}
 		\end{center}
-		
-		\vspace*{1cm}
 		
         \begin{flushright}
           \begin{minipage}{8.45cm}
@@ -299,20 +300,22 @@ top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
   \begin{center}
     \sloppy\nohyphens{
       \if@english
-        \MakeUppercase\foreign@title\par
         \MakeUppercase\local@title\par
+        ---\par
+        \MakeUppercase{\small\foreign@title}\par
       \else
         \MakeUppercase\local@title\par
+        ---\par
         \MakeUppercase{\small\foreign@title}\par
       \fi}\par 
-    \vspace*{7mm}
+    \vspace*{2cm}
     {\@authname\ \@authsurn}\par
   \end{center}\par
 
-  \vspace*{4mm}
+  %\vspace*{4mm}
   %\frontpage@maintext
-  \vspace*{16mm}
-  \nohyphens{%
+  %\vspace*{16mm}
+  \nohyphens{
 
   \vspace*{20mm}
 
