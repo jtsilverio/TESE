@@ -173,7 +173,7 @@ Fieldwork was conducted at a site located approximately 5km away from the villag
 
 ```{r methods-map, echo=F, out.width = "100%", fig.cap="Study site location (orange polygon) at the Monte Desert, approximately 5km away from the village of Anillaco, northwest of Argentina. Study site has an area of approximately 75 m². Geographical information retrieved from ESRI satellites (Datum SIRGAS 2002 UTM 19s)."}
 
-include_graphics("../04_figures/map/tuco_map.png")
+include_graphics("../04_figures/map/tuco_map.jpeg")
 ```
 
 ### Animal Capture and Handling
