@@ -1,12 +1,12 @@
 ---
 doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
 english: false
-title: 'Mudanças nos padrões diários de atividade ao longo do ano em tuco-tucos de vida livre (_Ctenomys_ aff. _knightii_)'
+title: 'Mudanças nos padrões diários de atividade ao longo do ano em tuco-tucos de vida livre (_Ctenomys_ aff. _knighti_)'
 foreigntitle: 'Changes in daily activity patterns throughout the year in free-living tuco-tucos (_Ctenomys_ aff. _knighti_)'
 department: "pos-fisio" # this is the name of the variable. Name of department is defined in coppe.cls
 date_month: "`r format(Sys.time(), '%m')`"
 date_year: "`r format(Sys.time(), '%Y')`"
-keyword: [biologging, hidden markov models, chronobiology]
+keyword: [biologging, hidden markov models, chronobiology, subterranean rodent, activity patterns, diurnality, cronobiologia, roedor subterrâneo, padrões de atividade, diurnalidade]
 author:
   - name: Jefferson T.
     surname: Silvério
