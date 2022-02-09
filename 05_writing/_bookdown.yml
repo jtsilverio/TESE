@@ -1,6 +1,5 @@
 book_filename: "tese_jefferson"
 chapter_name: "Capítulo"
-#rmd_files: ["index.Rmd", "00-intro.Rmd","01-sleep-science.Rmd", "02-tese.Rmd", "03-conclusion.Rmd", "04-appendix.Rmd", "99-references.Rmd"]
-rmd_files: ["index.Rmd", "02-tese.Rmd", "99-references.Rmd", "04-appendix.Rmd"]
+rmd_files: ["index.Rmd", "00-intro.Rmd","01-sleep-science.Rmd", "02-tese.Rmd", "03-conclusion.Rmd", "04-appendix.Rmd", "99-references.Rmd"]
 download: [["thesis.pdf", "PDF"], ["thesis.epub", "EPUB"], ["thesis.docx", "Word"]]
 delete_merged_file: true
