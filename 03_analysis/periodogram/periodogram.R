@@ -40,8 +40,8 @@ for (state in c("Low","Medium","High","vedba")) {
                           from = 900,
                           to = 1920,
                           type = "period",
-                          ofac = 20,
-                          normalize = "press",
+                          ofac = 5,
+                          #normalize = "press",
                           plot = F)
     
     state_lomb = lapply(state_lomb, function(x) data.frame(scanned = x$scanned, power = x$power, sig_level = x$sig.level))
@@ -73,7 +73,7 @@ lomb$state = factor(lomb$state, levels = c("Low", "Medium", "High", "vedba"))
 # Find Peaks --------------------------------------------------------------
 peaks_period = lomb %>% 
     group_by(ID, state) %>% 
-    summarise(peak = scanned[which.max(power)], power = max(power), sig_level = sig_level[1], season = season[1], sex = sex[1]) %>% 
+    summarise(peak = scanned[which.max(power)], sig_level = sig_level[which.max(power)], power = max(power), season = season[1], sex = sex[1]) %>% 
     ungroup()
 
 # Visual Classification of autocorrelation plots based on ACF plots
@@ -155,5 +155,4 @@ ggsave("04_figures/periodogram/period_distribution.png",
        height = 290,
        units = "mm",
        dpi = 200)
-
 
