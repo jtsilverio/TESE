@@ -62,7 +62,7 @@
 \RequirePackage{tabularx}
 \RequirePackage{eqparbox}
 \RequirePackage{ltxcmds}
-\RequirePackage{mathpazo} % added to change default font
+\RequirePackage{newpxtext} % added to change default font
 %\RequirePackage[english]{babel}
 %\RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
