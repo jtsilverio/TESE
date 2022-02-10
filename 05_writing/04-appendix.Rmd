@@ -163,11 +163,15 @@ kable(parameters_table,
       caption = "Gamma State-dependent distribution parameters, mean and standard deviation, estimated by a three-state Hidden Markov Model.")
 ```
 
+\clearpage
+
 ## Pseudo-residuals
 
-```{r appendix-residuals, out.width="100%", fig.cap="Model Residuals."}
+```{r appendix-residuals, fig.pos="H", out.width="100%", fig.cap="Model Residuals."}
 include_graphics("../04_figures/residuals/m2_PR.png")
 ```
+
+\clearpage
 
 ## Stationary Probabilities
 
@@ -236,7 +240,7 @@ df %>%
 
 # Individual Actograms
 
-Individual VeDBA and behavioral states actograms show only the first five days data. Surface emergence actograms all days of recordings.
+Individual VeDBA and behavioral states actograms show only the first five days of data. Surface emergence actograms show all days of recordings.
 
 \pagebreak
 
