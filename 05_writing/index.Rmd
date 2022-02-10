@@ -41,22 +41,22 @@ thanks:
 - title: Agradecimentos
   text:  |
     Agradeço aos meus pais, Gerson e Dalva, e minha irmã, Beatriz, pelo apoio em um caminho de carreira que tem características tão particulares. Sem o apoio de vocês eu não teria conseguido trilhar esse caminho. Agradeço também a minha segunda família, Gilvan e Vânia, pelo acolhimento tão carinhoso nesse meu tempo em São Paulo.
-    
-    Agradeço a minhas orientadoras Gisele e Verônica por terem me acolhido no laboratório. Pela dedicação nesses anos, mesmo à distância, e pelos ensinamentos em cronobiologia e em trabalho em grupo. Agradeço também a minha orientadora Patricia por ter me deixado participar desse projeto e pelas discussões, scripts, extrações e idéias sobre tucos e reprodução e pela companhia nas coletas de campo.
-    
+
+    Agradeço a minhas orientadoras Gisele e Verônica por terem me acolhido no laboratório. Pela dedicação nesses anos, mesmo à distância, e pelos ensinamentos em cronobiologia e em trabalho em grupo. Agradeço também a minha orientadora Patricia por ter me deixado participar desse projeto e pelas discussões, scripts, extrações e ideias sobre tucos e reprodução e pela companhia nas coletas de campo.
+
     Agradeço aos colegas de laboratório Danilo, Milene e Giovane pela ajuda nas coletas de campo, discussões, desabafos e pela companhia e refeições compartilhadas no CRILAR. Obrigado também ao Danilo pelas conversas sobre tecnologia. Obrigado a Johana que me ajudou a resolver diversos problemas em espanhol e também me ajudou nas coletas de campo. Obrigado também aos amigos da minha "coorte" de pós na fisiologia: Beatriz e Mila.
-    
+
     Agradeço aos amigos do _Alô Ciência?_: Arnoni, Amanda, Beatriz, Caramelo, Camila, Leandro, Lucas e Marx pelas discussões sobre ciência e por toda companhia durante os últimos anos. Fazer parte desse grupo me deu uma visão muito mais abrangente de ciência e da sociedade. É um prazer dividir um planeta com vocês.
-    
+
     Agradeço também aos comentaristas de BBB: Arnoni, Bala, Caramelo, Limão, Marx e Zattar. Vocês fizeram esses últimos anos trancados em casa muito melhores.
-    
+
     Agradeço ao time de ultimate Frisbee que me ajudou a manter a sanidade nos últimos anos e que também me deram uma visão muito diferente sobre o esporte e dureza mental. Um agradecimento especial aos treinadores Paolo, Gus e Nat. Agradeço também ao Alex por todo tempo dedicado na MoVer-se que me ajudaram a conseguir sentar, correr e jogar sem me preocupar com tantas dores.
-    
+
     I also thank James Kenagy for taking interest in me and my project and for accepting being part of my committee. I enjoyed our email exchanges and the teaching moments in CRILAR. Thank you for all the personal, scientific and writing advice and references.
-    
+
     Obrigado também aos amigos feitos no LASC: Guada, Mayara, Julia e Nathalia pela companhia no congresso e pelas conversas depois dele.
     
-    Por último, agradeço principalmente a Aline que foi essencial e a pessoa que mais esteve presente nessa jornada. Você não só me ajudou em planejamentos e ideias, mas também manteve meu pés no chão durante todo esse tempo. É um prazer dividir minha vida com você.
+    Por último, agradeço principalmente a Aline que foi a pessoa que mais esteve presente nessa jornada e foi essencial para o término dessa tese. Você não só me ajudou em planejamentos e ideias, mas também manteve meus pés no chão durante todo esse tempo. É um prazer dividir minha vida com você.
     
     O presente trabalho foi realizado com apoio da Coordenação de Aperfeiçoamento de Pessoal de Nível Superior – Brasil (CAPES) – Código de Financiamento 001.
 foreignabstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = "\n  ")`'
