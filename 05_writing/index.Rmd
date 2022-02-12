@@ -1,38 +1,38 @@
 ---
-doc_type: 'msc' # 'msc' or 'dscexam' or 'dsc'
+doc_type: "msc" # 'msc' or 'dscexam' or 'dsc'
 english: false
-title: 'Mudanças nos padrões diários de atividade ao longo do ano em tuco-tucos de vida livre (_Ctenomys_ sp.)'
-foreigntitle: 'Changes in daily activity patterns throughout the year in free-living tuco-tucos (_Ctenomys_ sp.)'
+title: "Mudanças nos padrões diários de atividade ao longo do ano em tuco-tucos de vida livre"
+foreigntitle: "Changes in daily activity patterns throughout the year in free-living tuco-tucos"
 department: "pos-fisio" # this is the name of the variable. Name of department is defined in coppe.cls
 date_month: "`r format(Sys.time(), '%m')`"
 date_year: "`r format(Sys.time(), '%Y')`"
-keyword: [biologging, hidden markov models, chronobiology, subterranean rodent, neotroprical rodent, activity patterns, diurnality, cronobiologia, roedor subterrâneo, roedor neotropical, padrões de atividade, diurnalidade]
+keyword: [Ctenomys, biologging, hidden markov models, chronobiology, subterranean rodent, neotroprical rodent, activity patterns, diurnality, cronobiologia, roedor subterrâneo, roedor neotropical, padrões de atividade, diurnalidade]
 author:
   - name: Jefferson T.
     surname: Silvério
 advisor:
-  - title: Prof.
+  - title: Profa.
     name: Gisele A.
     surname: Oda
-    degree: D.Sc.
-  - title: Prof.
-    name: Verónica
+    degree: Dr.
+  - title: Profa.
+    name: Verónica S.
     surname: Valentinuzzi
-    degree: Ph.D
+    degree: Dr.
   - title: Dra.
     name: Patricia
-    surname: Tachinardi
+    surname: Tachinardi Andrade Silva
     degree: Ph.D
 examiner:
-  - title: Prof.
-    name: Nome Completo do Primeiro Examinador
-    degree: D.Sc.
-  - title: Prof.
-    name: Nome Completo do Segundo Examinador
-    degree: Ph.D
-  - title: Prof.
-    name: Nome Completo do Terceiro Examinador
-    degree: Ph.D
+  - title: Prof. Dr.
+    name: Enrico L. Rezende
+    degree: Dr.
+  - title: Dr.
+    name: Francisco V. Dénes
+    degree: Dr.
+  - title: Prof. Dr.
+    name: Tiago G. de Andrade
+    degree: Dr.
 listoftables: false
 listoffigures: false
 dedication: |
@@ -52,7 +52,7 @@ thanks:
 
     Agradeço ao time de ultimate Frisbee que me ajudou a manter a sanidade nos últimos anos e que também me deram uma visão muito diferente sobre o esporte e dureza mental. Um agradecimento especial aos treinadores Paolo, Gus e Nat. Agradeço também ao Alex por todo tempo dedicado na MoVer-se que me ajudaram a conseguir sentar, correr e jogar sem me preocupar com tantas dores.
 
-    I also thank James Kenagy for taking interest in me and my project and for accepting being part of my committee. I enjoyed our email exchanges and the teaching moments in CRILAR. Thank you for all the personal, scientific and writing advice and references.
+    I also thank James Kenagy for taking interest in me and my project and for accepting being part of my committee. I enjoyed our email exchanges and the teaching moments in CRILAR. Thank you for all the personal, scientific and writing advice and references. It was a privilage to get to know you.
 
     Obrigado também aos amigos feitos no LASC: Guada, Mayara, Julia e Nathalia pela companhia no congresso e pelas conversas depois dele.
     
@@ -67,7 +67,7 @@ site: bookdown::bookdown_site
 csl: "citation-style/chicago.csl"
 link-citations: true
 bibliography: references.bib
-output: 
+output:
   coppedown::thesis_pdf: default
   #coppedown::thesis_gitbook: default
   #coppedown::thesis_word: 

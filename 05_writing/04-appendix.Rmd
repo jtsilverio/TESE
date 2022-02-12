@@ -53,6 +53,44 @@ The results for the plant survey is in line with what has been described in the 
 
 \clearpage
 
+# Individual Actograms
+
+Individual VeDBA and behavioral states actograms show only the first five days of data. Surface emergence actograms show all days of recordings.
+
+\pagebreak
+
+## Surface Emergence Actograms
+
+```{r lux-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_lux.jpeg")
+```
+
+## VeDBA Actograms
+
+```{r vedba-actograms, out.width="95%", fig.pos = "H", fig.cap="VeDBA Actograms."}
+include_graphics("../04_figures/actograms/actograms_vedba.jpeg")
+```
+
+## High Activity Actograms
+
+```{r high-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_high.jpeg")
+```
+
+## Medium Activity Actograms
+
+```{r medium-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_medium.jpeg")
+```
+
+## Low Activity Actograms
+
+```{r low-actograms, fig.pos = "H", out.width="95%"}
+include_graphics("../04_figures/actograms/actograms_low.jpeg")
+```
+
+\clearpage
+
 # Accelerometer Data Exploration {#vedba-distribution}
 
 ## Assessment of Static Acceleration Smoothing Window 
@@ -233,45 +271,6 @@ df %>%
     ylab("Transition Probabilities") +
     scale_y_continuous(position = "right") + 
     theme(panel.grid.major.y = element_line(color = "grey90")) 
-```
-
-
-\clearpage
-
-# Individual Actograms
-
-Individual VeDBA and behavioral states actograms show only the first five days of data. Surface emergence actograms show all days of recordings.
-
-\pagebreak
-
-## VeDBA Actograms
-
-```{r vedba-actograms, out.width="95%", fig.pos = "H", fig.cap="VeDBA Actograms."}
-include_graphics("../04_figures/actograms/actograms_vedba.jpeg")
-```
-
-## High Activity Actograms
-
-```{r high-actograms, fig.pos = "H", out.width="95%"}
-include_graphics("../04_figures/actograms/actograms_high.jpeg")
-```
-
-## Medium Activity Actograms
-
-```{r medium-actograms, fig.pos = "H", out.width="95%"}
-include_graphics("../04_figures/actograms/actograms_medium.jpeg")
-```
-
-## Low Activity Actograms
-
-```{r low-actograms, fig.pos = "H", out.width="95%"}
-include_graphics("../04_figures/actograms/actograms_low.jpeg")
-```
-
-## Surface Emergence Actograms
-
-```{r lux-actograms, fig.pos = "H", out.width="95%"}
-include_graphics("../04_figures/actograms/actograms_lux.jpeg")
 ```
 
 \clearpage
