@@ -13,7 +13,7 @@ This is a repository for my masters' thesis. This thesis was presented to _depar
 - `requirements.txt`: Script with all necessary packages used in the markdown and analysis documents.
 - `tuco-tuco-activity.Rproj`: Rstudio project.
 
-# Installing the R package momentuHMM on linux
+# Installing the R-package momentuHMM on linux
 
 Some external dependencies are needed in order to compile and install the `momentuHMM` package:
 
