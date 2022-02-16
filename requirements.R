@@ -34,6 +34,7 @@ install.packages("spectr")
 install.packages("lomb")
 install.packages("pracma")
 install.packages("readxl")
+install.packages("xts")
 
 
 
