@@ -18,6 +18,13 @@ library(grid)
 library(lubridate)
 library(activity)
 library(stringr)
+library(egg)
+library(gghalves)
+library(tidyr)
+library(ggforce)
+library(zoo)
+library(kableExtra)
+
 
 # Set Global Chunk Options
 knitr::opts_chunk$set(
@@ -91,7 +98,7 @@ daylength$dusk = maptools::crepuscule(crds = anillaco,
 daylength = daylength[, .(daylength = dusk - dawn), by = ID]
 tuco = left_join(tuco, daylength, by = "ID")
 
-# Set Theme ----------------------------------------------------------
+# Set Theme --------------------------------------------------------------------
 font_add_google("Roboto Condensed", "roboto")
 showtext_auto()
 
@@ -112,7 +119,6 @@ theme_set(theme_tuco)
 ```{r for-review-only, include=FALSE}
 # Set LaTeX tables styling
 if(knitr::is_latex_output()){
-  library(kableExtra)
   kable = function(data, caption = NULL, scale = F){
     
     if(scale == F){
@@ -136,15 +142,15 @@ if(knitr::is_latex_output()){
     }
   }
 }else{
-    library("magick")
-    library("webshot")
-    library(flextable)
-    kable = function(data, caption = "NULL", scale = F){
-      flextable::flextable(data) %>% 
-        flextable::set_caption(caption) %>% 
-        colformat_double(digits = 2) %>% 
-        plot(zoom = 2, expand = 10)
-    }
+    # library("magick")
+    # library("webshot")
+    # library(flextable)
+    # kable = function(data, caption = "NULL", scale = F){
+    #   flextable::flextable(data) %>% 
+    #     flextable::set_caption(caption) %>% 
+    #     colformat_double(digits = 2) %>% 
+    #     plot(zoom = 2, expand = 10)
+    # }
 }
 ```
 
