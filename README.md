@@ -13,3 +13,32 @@ This is a repository for my masters' thesis. This thesis was presented to _depar
 - `requirements.txt`: Script with all necessary packages used in the markdown and analysis documents.
 - `tuco-tuco-activity.Rproj`: Rstudio project.
 
+# Installing the R package momentuHMM on linux
+
+Some external dependencies are needed in order to compile and install the `momentuHMM` package:
+
+```
+On Ubuntu based distros:
+---
+sudo apt install libssl-dev
+sudo apt install libnode-dev
+sudo apt install libprotobuf-dev
+sudo apt install libjq-dev
+sudo apt install protobuf-compiler
+sudo apt install libudunits2-dev
+sudo apt install libgeos-dev
+sudo apt install libudunits2-0
+sudo apt install libgdal-dev
+
+On Fedora:
+---
+sudo dnf install protobuf-devel -y
+sudo dnf install jq-devel -y
+sudo dnf install libcurl-devel -y
+sudo dnf install udunits2-devel -y
+sudo dnf install v8-devel -y
+sudo dnf install geos-devel -y
+sudo dnf install gdal-devel -y
+sudo dnf install proj-devel -y
+sudo dnf install sqlite-devel -y
+```
