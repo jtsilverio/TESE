@@ -38,8 +38,8 @@ knitr::opts_chunk$set(
 # Read Data --------------------------------------------------------------------
 tuco = readRDS("../01_data/activity_processed/tuco_processed.rds")
 tuco.metadata = fread("../01_data/animals/animal_metadata.csv")
-source("../03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
-source("../03_analysis/actogram/stat-tile-etho.R") # From ggetho 
+source("../03_analysis/plot_actogram/stat-bar-tile-etho.R") # From ggetho
+source("../03_analysis/plot_actogram/stat-tile-etho.R") # From ggetho 
 
 # Decode HMM state -------------------------------------------------------------
 # Read Models 

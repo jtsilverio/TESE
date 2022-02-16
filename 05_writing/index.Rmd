@@ -62,17 +62,15 @@ thanks:
 foreignabstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-foreignabstract.Rmd"), collapse = "\n  ")`'
 abstract: '`r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = "\n  ")`'
 knit: "bookdown::render_book"
-site: bookdown::bookdown_site
+site: "bookdown::bookdown_site"
 #biblio-style: "apa.csl" # this is not working, I think it might have been deprecated in bookdown? I replaced it for the csl below
 csl: "citation-style/chicago.csl"
 link-citations: true
 bibliography: references.bib
 output:
   coppedown::thesis_pdf: default
-  #coppedown::thesis_gitbook: default
   #coppedown::thesis_word: 
   #  reference_docx: template.docx
-  #coppedown::thesis_epub: default
 ---
 
 <!--
