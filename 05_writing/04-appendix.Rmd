@@ -206,7 +206,7 @@ kable(parameters_table,
 ## Pseudo-residuals
 
 ```{r appendix-residuals, fig.pos="H", out.width="100%", fig.cap="Model Residuals."}
-include_graphics("../04_figures/residuals/m2_PR.png")
+include_graphics("../04_figures/appendix/residuals/m2_PR.png")
 ```
 
 \clearpage
@@ -282,13 +282,13 @@ df %>%
 ## Individual Autocorrelation Plots
 
 ```{r appendix-acf, fig.pos = "H", out.width="95%", fig.cap = "Individual Autocorrelation plots."}
-include_graphics("../04_figures/rhythmicity/acf_plot.png")
+include_graphics("../04_figures/appendix/rhythmicity/acf_plot.png")
 ```
 
 ## Individual Period Estimation
 
 ```{r, fig.pos = "H", out.width="100%"}
-include_graphics("../04_figures/periodogram/periodogram.png")
+include_graphics("../04_figures/appendix/periodogram/periodogram.png")
 ```
 
 
