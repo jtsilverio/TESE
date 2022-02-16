@@ -97,31 +97,6 @@ if(!require(devtools))
 if(!require(coppedown))
   devtools::install_github("COPPE-UFRJ/coppedown")
 
-# Set LaTeX tables styling
-if(knitr::is_latex_output()){
-  library(kableExtra)
-  kable = function(data, caption = NULL){
-    knitr::kable(x = data,
-                 booktabs = TRUE,
-                 digits = 3,
-                 align = "c",
-                 caption = caption,
-                 format = "latex") %>% 
-    kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
-    print()
-  }
-}else{
-    library("magick")
-    library("webshot")
-    library(flextable)
-    kable = function(data, caption = "NULL"){
-      flextable::flextable(data) %>% 
-        flextable::set_caption(caption) %>% 
-        colformat_double(digits = 2) %>% 
-        plot(zoom = 2, expand = 10)
-    }
-}
-
 # Set Global Chunk Options
 knitr::opts_chunk$set(
     fig.align = "center",
