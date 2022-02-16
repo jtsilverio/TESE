@@ -4,6 +4,9 @@ library(data.table)
 library(momentuHMM)
 library(ggplot2)
 library(spectr)
+library(dplR)
+library(spectr)
+library(lomb)
 
 # Read Data ---------------------------------------------------------------
 tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
