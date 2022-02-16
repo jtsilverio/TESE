@@ -5,8 +5,8 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
     require(egg)
     require(lubridate)
     require(dplyr)
-    source("03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
-    source("03_analysis/actogram/stat-tile-etho.R") # From ggetho 
+    source("03_analysis/plot_actogram/stat-bar-tile-etho.R") # From ggetho
+    source("03_analysis/plot_actogram/stat-tile-etho.R") # From ggetho 
 
     # Calculate Sunrise and Sunset Times
     # TODO: Take the median date first and only calculate crepuscules for that date.

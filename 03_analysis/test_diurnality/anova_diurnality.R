@@ -1,6 +1,7 @@
 library(dplyr)
 library(ggplot2)
 library(momentuHMM)
+library(lubridate)
 
 tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
 
@@ -42,9 +43,9 @@ diurnality_vedba$state = "General Activity"
 
 
 diurnality = tuco %>% 
-    group_by(ID, date(datetime), season) %>% 
+    group_by(ID, date = lubridate::date(datetime), season) %>% 
     mutate(daylength = sum(daytime)) %>% 
-    group_by(ID, date(datetime), season, state) %>% 
+    group_by(ID, date = lubridate::date(datetime), season, state) %>% 
     summarise(daylength = median(daylength),
               nighttime = sum(!daytime),
               daytime = sum(daytime),

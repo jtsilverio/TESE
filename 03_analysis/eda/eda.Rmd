@@ -9,9 +9,6 @@ tuco.metadata = fread(paste0(dir,"/01_data/animals/animal_metadata.csv"))
 color_pal = c(rest = "#DDAA33", medium = "#BB5566", high = "#004488")
 ```
 
-- adicionar descrião dos animais
-    - peso, por sexo e estacao
-
 ## Time Series Plot
 
 Primeiro uma verificada geral nos dados em formato de série temporal. Os gráficos mostram apenas os 4 primeiros dias de registro de cada animal. 

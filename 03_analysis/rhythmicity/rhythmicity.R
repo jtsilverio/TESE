@@ -5,6 +5,7 @@ library(ggplot2)
 library(dplR)
 library(egg)
 library(patchwork)
+library(pracma)
 
 # Read Data ---------------------------------------------------------------
 tuco = readRDS("01_data/activity_processed/tuco_processed.rds")

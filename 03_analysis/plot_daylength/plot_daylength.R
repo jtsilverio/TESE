@@ -1,6 +1,5 @@
 require(ggplot2)
 require(maptools)
-source("03_analysis/tuco_theme.R")
 
  # Anillaco's Coordinates
 anillaco = matrix(c(-66.95, -28.8), nrow = 1)

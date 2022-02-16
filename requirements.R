@@ -32,6 +32,9 @@ install.packages("kableExtra")
 install.packages("dplR")
 install.packages("spectr")
 install.packages("lomb")
+install.packages("pracma")
+install.packages("readxl")
+
 
 
 

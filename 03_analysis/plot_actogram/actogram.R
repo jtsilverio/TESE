@@ -5,9 +5,9 @@ library(dplyr)
 library(showtext)
 library(lubridate)
 library(scales)
-source("03_analysis/actogram/stat-bar-tile-etho.R") # From ggetho
-source("03_analysis/actogram/stat-tile-etho.R") # From ggetho 
-source(file = "03_analysis/actogram/function_actogram.R")
+source("03_analysis/plot_actogram/stat-bar-tile-etho.R") # From ggetho
+source("03_analysis/plot_actogram/stat-tile-etho.R") # From ggetho 
+source(file = "03_analysis/plot_actogram/function_actogram.R")
 tuco = readRDS("01_data/activity_processed/tuco_processed.rds")
 m2 = readRDS("03_analysis/hmm/m2.rds")
 
