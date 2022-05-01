@@ -68,7 +68,8 @@ csl: "citation-style/chicago.csl"
 link-citations: true
 bibliography: references.bib
 output:
-  coppedown::thesis_pdf: default
+  coppedown::thesis_pdf:
+    keep_md: true
   #coppedown::thesis_word: 
   #  reference_docx: template.docx
 ---
@@ -100,7 +101,8 @@ knitr::opts_chunk$set(
     fig.align = "center",
     echo = FALSE, 
     message = FALSE,
-    warning = FALSE
+    warning = FALSE,
+    background = "white"
     )
 ```
 
