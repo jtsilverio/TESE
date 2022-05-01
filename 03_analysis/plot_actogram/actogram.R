@@ -63,9 +63,9 @@ sunriset$dusk = maptools::crepuscule(crds = anillaco,
                                      direction = "dusk",
                                      POSIXct.out=TRUE)$day_frac  * 1440
 
-
+tucos_lux = c("JUL16","JUL17","JUL18","JUL20","JUL21","JUL23","OCT01","OCT10","FEV01","FEV02","FEV03","FEV05","FEV06")
 actograms_lux = tuco %>% 
-    filter(ID %in% c("JUL16","JUL17","JUL18","JUL20","JUL21","JUL23","OCT01","OCT10","FEV01","FEV02","FEV03","FEV05","FEV06")) %>%
+    filter(ID %in% tucos_lux) %>%
     mutate(date = date(datetime), 
            aboveground = as.numeric(aboveground)) %>% 
     mutate(aboveground = if_else(is.na(aboveground), 0, aboveground)) %>% 
@@ -82,6 +82,19 @@ actograms_lux = tuco %>%
     ylab("") + 
     #theme_article() +
     theme(panel.grid.major.y = element_line(color = "grey95"))
+
+sexlabels = tuco %>% 
+    filter(ID %in% tucos_lux) %>% 
+    select(sex, ID) %>%
+    group_by(ID) %>% 
+    summarise(sex = first(sex)) %>% 
+    mutate(sex = if_else(sex == "m", "M", "F"))
+
+actograms_lux = actograms_lux + geom_text(x = Inf, y = Inf, 
+                         aes(label = sex), 
+                         data = sexlabels, vjust = 1.5, hjust = 1.6, 
+                         size = 3, family = "roboto") + 
+    theme(legend.position = "none")
 
 actograms_vedba = plot_actogram(tuco, plot_days = 5)
 actograms_high = plot_actogram(tuco, height = "High", plot_days = 5)

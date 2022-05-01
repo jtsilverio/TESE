@@ -123,10 +123,10 @@ plot_actogram = function(tuco, height = "vedba", plot_days = NA){
             theme(panel.grid.major.y = element_line(color = "grey95"))
     }
     
-    sexlabels = unique(tuco[,.(sex,ID)]) %>% mutate(sex = if_else(sex == "m", "♂", "♀"))
+    sexlabels = unique(tuco[,.(sex,ID)]) %>% mutate(sex = if_else(sex == "m", "M", "F"))
     actograms = actograms + geom_text(x = Inf, y = Inf, 
                                       aes(label = sex), 
-                                      data = sexlabels, vjust = 1.2, hjust = 1.2, 
+                                      data = sexlabels, vjust = 1.5, hjust = 1.6, 
                                       size = 3, family = "roboto") + 
         theme(legend.position = "none")
     actograms
