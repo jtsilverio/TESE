@@ -2,6 +2,10 @@
 `r if(knitr:::is_latex_output()) "# Apêndice {-}"`
 `r if(!knitr:::is_latex_output()) "# Apêndice"`
 
+# Source Code
+
+A complete version of this thesis and all related R code can be found at: https://github.com/jtsilverio/mestrado_tuco-tucos_chronobiology
+
 # Animals
 
 ```{r animals-table-appendix}
